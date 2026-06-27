@@ -10,6 +10,10 @@ import DatasheetPage from './pages/DatasheetPage'
 import Login from "./pages/Login"
 import NotFound from "./pages/NotFound"
 import SignupPage from "./pages/SignupPage"
+import RegisterPage from "./pages/RegisterPage"
+import VerifyEmail from "./pages/VerifyEmail"
+import ForgotPassword from "./pages/ForgotPassword"
+import ResetPassword from "./pages/ResetPassword"
 import AccountPage from "./pages/AccountPage"
 import DemoPage from "./pages/DemoPage"
 import DemoUploadPage from "./pages/DemoUploadPage"
@@ -36,6 +40,10 @@ export default function App() {
         <Route path="/datasheet" element={<DatasheetPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/demo" element={<DemoPage />} />
         <Route path="/demo/upload" element={<DemoUploadPage />} />

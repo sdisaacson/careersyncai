@@ -280,8 +280,8 @@ export default function SignupPage() {
               }}
               asChild
             >
-              <Link to="/login" state={{ from: "/signup" }}>
-                Continue with Kimi
+              <Link to="/register" state={{ from: "/signup" }}>
+                Create account
               </Link>
             </Button>
           )}
@@ -292,7 +292,7 @@ export default function SignupPage() {
           >
             {isAuthenticated
               ? "Signing up creates your subscription and activates the selected plan."
-              : "Sign up with your Kimi account. After login you’ll return here to activate your plan."}
+              : "Create a free account to get started. After signing up you’ll return here to activate your plan."}
           </p>
 
           <p
