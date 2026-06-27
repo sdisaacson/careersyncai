@@ -43,7 +43,7 @@ export const subscriptionIntervalEnum = pgEnum("subscription_interval", [
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  unionId: varchar("unionId", { length: 255 }),
+  unionId: varchar("unionId", { length: 255 }).unique(),
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 320 }).notNull().unique(),
   avatar: text("avatar"),
@@ -51,7 +51,7 @@ export const users = pgTable("users", {
   emailVerified: boolean("emailVerified").default(false).notNull(),
   emailVerificationToken: varchar("emailVerificationToken", { length: 255 }),
   passwordResetToken: varchar("passwordResetToken", { length: 255 }),
-  passwordResetExpires: timestamp("passwordResetExpires"),
+  passwordResetExpires: timestamp("passwordResetExpires", { withTimezone: true }),
   role: userRoleEnum("role").default("user").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt")
