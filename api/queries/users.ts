@@ -42,10 +42,13 @@ export async function findUserByResetToken(token: string) {
 
 export async function createUser(data: InsertUser) {
   const values = { ...data };
+  if (values.email) {
+    values.email = values.email.toLowerCase();
+  }
   if (
     values.role === undefined &&
     values.email &&
-    env.adminEmails.includes(values.email.toLowerCase())
+    env.adminEmails.includes(values.email)
   ) {
     values.role = "admin";
   }
