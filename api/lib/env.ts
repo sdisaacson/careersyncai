@@ -21,7 +21,11 @@ export const env = {
   stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY ?? "",
   stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
-  adminEmails: process.env.ADMIN_EMAILS?.split(",").map((e) => e.trim()) ?? [],
+  adminEmails: process.env.ADMIN_EMAILS
+    ? process.env.ADMIN_EMAILS.split(",")
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean)
+    : [],
   resendApiKey: process.env.RESEND_API_KEY ?? "",
   fromEmail: process.env.FROM_EMAIL ?? "",
 };
