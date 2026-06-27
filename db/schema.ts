@@ -50,6 +50,9 @@ export const users = pgTable("users", {
   passwordHash: varchar("passwordHash", { length: 255 }),
   emailVerified: boolean("emailVerified").default(false).notNull(),
   emailVerificationToken: varchar("emailVerificationToken", { length: 255 }),
+  emailVerificationTokenExpires: timestamp("emailVerificationTokenExpires", {
+    withTimezone: true,
+  }),
   passwordResetToken: varchar("passwordResetToken", { length: 255 }),
   passwordResetExpires: timestamp("passwordResetExpires", { withTimezone: true }),
   role: userRoleEnum("role").default("user").notNull(),
@@ -59,6 +62,7 @@ export const users = pgTable("users", {
     .notNull()
     .$onUpdate(() => new Date()),
   lastSignInAt: timestamp("lastSignInAt").defaultNow().notNull(),
+  sessionVersion: integer("sessionVersion").default(0).notNull(),
 });
 
 export type User = typeof users.$inferSelect;

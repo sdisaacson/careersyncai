@@ -1,8 +1,9 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import * as schema from "@db/schema";
 import type { InsertUser } from "@db/schema";
 import { getDb } from "./connection";
 import { env } from "../lib/env";
+import { hashToken } from "../auth/token";
 
 export async function findUserById(id: number) {
   const rows = await getDb()
@@ -23,19 +24,21 @@ export async function findUserByEmail(email: string) {
 }
 
 export async function findUserByVerificationToken(token: string) {
+  const hashed = hashToken(token);
   const rows = await getDb()
     .select()
     .from(schema.users)
-    .where(eq(schema.users.emailVerificationToken, token))
+    .where(eq(schema.users.emailVerificationToken, hashed))
     .limit(1);
   return rows.at(0);
 }
 
 export async function findUserByResetToken(token: string) {
+  const hashed = hashToken(token);
   const rows = await getDb()
     .select()
     .from(schema.users)
-    .where(eq(schema.users.passwordResetToken, token))
+    .where(eq(schema.users.passwordResetToken, hashed))
     .limit(1);
   return rows.at(0);
 }
@@ -65,6 +68,7 @@ export async function markEmailVerified(userId: number) {
     .set({
       emailVerified: true,
       emailVerificationToken: null,
+      emailVerificationTokenExpires: null,
     })
     .where(eq(schema.users.id, userId));
 }
@@ -73,9 +77,14 @@ export async function setEmailVerificationToken(
   userId: number,
   token: string,
 ) {
+  const hashed = hashToken(token);
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
   await getDb()
     .update(schema.users)
-    .set({ emailVerificationToken: token })
+    .set({
+      emailVerificationToken: hashed,
+      emailVerificationTokenExpires: expiresAt,
+    })
     .where(eq(schema.users.id, userId));
 }
 
@@ -84,10 +93,11 @@ export async function setPasswordResetToken(
   token: string,
   expiresAt: Date,
 ) {
+  const hashed = hashToken(token);
   await getDb()
     .update(schema.users)
     .set({
-      passwordResetToken: token,
+      passwordResetToken: hashed,
       passwordResetExpires: expiresAt,
     })
     .where(eq(schema.users.id, userId));
@@ -100,6 +110,16 @@ export async function updatePasswordHash(userId: number, hash: string) {
       passwordHash: hash,
       passwordResetToken: null,
       passwordResetExpires: null,
+      sessionVersion: sql`${schema.users.sessionVersion} + 1`,
+    })
+    .where(eq(schema.users.id, userId));
+}
+
+export async function incrementSessionVersion(userId: number) {
+  await getDb()
+    .update(schema.users)
+    .set({
+      sessionVersion: sql`${schema.users.sessionVersion} + 1`,
     })
     .where(eq(schema.users.id, userId));
 }

@@ -56,14 +56,14 @@ export const authRouter = createRouter({
         return { success: true };
       }
       const passwordHash = await bcrypt.hash(input.password, 12);
-      const verificationToken = generateToken();
       const user = await createUser({
         email: input.email,
         passwordHash,
-        emailVerificationToken: verificationToken,
       });
+      const verificationToken = generateToken();
+      await setEmailVerificationToken(user.id, verificationToken);
       await sendVerificationEmail(input.email, verificationToken);
-      return { success: true, userId: user.id };
+      return { success: true };
     }),
 
   login: publicQuery
@@ -78,11 +78,12 @@ export const authRouter = createRouter({
         throw new Error("Invalid email or password.");
       }
       if (!user.emailVerified) {
-        throw new Error("Please verify your email before logging in.");
+        throw new Error("Invalid email or password.");
       }
       const token = await signSessionToken({
         userId: user.id,
         email: user.email,
+        sessionVersion: user.sessionVersion,
       });
       const cookieOpts = getSessionCookieOptions(ctx.req.headers);
       ctx.resHeaders.append(
@@ -102,7 +103,11 @@ export const authRouter = createRouter({
     .input(z.object({ token: z.string() }))
     .mutation(async ({ input }) => {
       const user = await findUserByVerificationToken(input.token);
-      if (!user) {
+      if (
+        !user ||
+        !user.emailVerificationTokenExpires ||
+        user.emailVerificationTokenExpires < new Date()
+      ) {
         throw new Error("Invalid or expired verification token.");
       }
       await markEmailVerified(user.id);

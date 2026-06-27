@@ -18,5 +18,8 @@ export async function authenticateRequest(headers: Headers) {
   if (!user || !user.emailVerified) {
     throw Errors.forbidden("User not found or email not verified.");
   }
+  if (user.sessionVersion !== claim.sessionVersion) {
+    throw Errors.forbidden("Invalid authentication token.");
+  }
   return user;
 }

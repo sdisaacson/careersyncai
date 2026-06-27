@@ -4,6 +4,7 @@ import { env } from "../lib/env";
 export type SessionPayload = {
   userId: number;
   email: string;
+  sessionVersion: number;
 };
 
 const JWT_ALG = "HS256";
@@ -30,11 +31,15 @@ export async function verifySessionToken(
     const { payload } = await jose.jwtVerify(token, secret, {
       algorithms: [JWT_ALG],
     });
-    const { userId, email } = payload;
-    if (!userId || !email) {
+    const { userId, email, sessionVersion } = payload;
+    if (!userId || !email || sessionVersion === undefined) {
       return null;
     }
-    return { userId: Number(userId), email: String(email) };
+    return {
+      userId: Number(userId),
+      email: String(email),
+      sessionVersion: Number(sessionVersion),
+    };
   } catch {
     return null;
   }
