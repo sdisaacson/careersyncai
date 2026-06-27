@@ -4,15 +4,6 @@ import type { InsertUser } from "@db/schema";
 import { getDb } from "./connection";
 import { env } from "../lib/env";
 
-export async function findUserByUnionId(unionId: string) {
-  const rows = await getDb()
-    .select()
-    .from(schema.users)
-    .where(eq(schema.users.unionId, unionId))
-    .limit(1);
-  return rows.at(0);
-}
-
 export async function findUserById(id: number) {
   const rows = await getDb()
     .select()
@@ -22,24 +13,90 @@ export async function findUserById(id: number) {
   return rows.at(0);
 }
 
-export async function upsertUser(data: InsertUser) {
-  const values = { ...data };
-  const updateSet: Partial<InsertUser> = {
-    lastSignInAt: new Date(),
-    ...data,
-  };
+export async function findUserByEmail(email: string) {
+  const rows = await getDb()
+    .select()
+    .from(schema.users)
+    .where(eq(schema.users.email, email.toLowerCase()))
+    .limit(1);
+  return rows.at(0);
+}
 
+export async function findUserByVerificationToken(token: string) {
+  const rows = await getDb()
+    .select()
+    .from(schema.users)
+    .where(eq(schema.users.emailVerificationToken, token))
+    .limit(1);
+  return rows.at(0);
+}
+
+export async function findUserByResetToken(token: string) {
+  const rows = await getDb()
+    .select()
+    .from(schema.users)
+    .where(eq(schema.users.passwordResetToken, token))
+    .limit(1);
+  return rows.at(0);
+}
+
+export async function createUser(data: InsertUser) {
+  const values = { ...data };
   if (
     values.role === undefined &&
-    values.unionId &&
-    values.unionId === env.ownerUnionId
+    values.email &&
+    env.adminEmails.includes(values.email.toLowerCase())
   ) {
     values.role = "admin";
-    updateSet.role = "admin";
   }
-
-  await getDb()
+  const [user] = await getDb()
     .insert(schema.users)
     .values(values)
-    .onConflictDoUpdate({ target: schema.users.unionId, set: updateSet });
+    .returning({ id: schema.users.id });
+  return user;
+}
+
+export async function markEmailVerified(userId: number) {
+  await getDb()
+    .update(schema.users)
+    .set({
+      emailVerified: true,
+      emailVerificationToken: null,
+    })
+    .where(eq(schema.users.id, userId));
+}
+
+export async function setEmailVerificationToken(
+  userId: number,
+  token: string,
+) {
+  await getDb()
+    .update(schema.users)
+    .set({ emailVerificationToken: token })
+    .where(eq(schema.users.id, userId));
+}
+
+export async function setPasswordResetToken(
+  userId: number,
+  token: string,
+  expiresAt: Date,
+) {
+  await getDb()
+    .update(schema.users)
+    .set({
+      passwordResetToken: token,
+      passwordResetExpires: expiresAt,
+    })
+    .where(eq(schema.users.id, userId));
+}
+
+export async function updatePasswordHash(userId: number, hash: string) {
+  await getDb()
+    .update(schema.users)
+    .set({
+      passwordHash: hash,
+      passwordResetToken: null,
+      passwordResetExpires: null,
+    })
+    .where(eq(schema.users.id, userId));
 }
