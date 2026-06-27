@@ -135,13 +135,21 @@ CREATE TABLE "tailoredResumes" (
 --> statement-breakpoint
 CREATE TABLE "users" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"unionId" varchar(255) NOT NULL,
+	"unionId" varchar(255),
 	"name" varchar(255),
-	"email" varchar(320),
+	"email" varchar(320) NOT NULL,
 	"avatar" text,
+	"passwordHash" varchar(255),
+	"emailVerified" boolean DEFAULT false NOT NULL,
+	"emailVerificationToken" varchar(255),
+	"emailVerificationTokenExpires" timestamp with time zone,
+	"passwordResetToken" varchar(255),
+	"passwordResetExpires" timestamp with time zone,
 	"role" "user_role" DEFAULT 'user' NOT NULL,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL,
 	"lastSignInAt" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "users_unionId_unique" UNIQUE("unionId")
+	"sessionVersion" integer DEFAULT 0 NOT NULL,
+	CONSTRAINT "users_unionId_unique" UNIQUE("unionId"),
+	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
