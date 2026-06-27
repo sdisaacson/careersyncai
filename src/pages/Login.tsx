@@ -8,12 +8,14 @@ import { Label } from "@/components/ui/label";
 
 export default function Login() {
   const navigate = useNavigate();
+  const utils = trpc.useUtils();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const loginMutation = trpc.auth.login.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
+      await utils.auth.me.invalidate();
       navigate("/dashboard");
     },
     onError: (err) => {
@@ -59,7 +61,7 @@ export default function Login() {
               />
             </div>
             {error && (
-              <p className="text-sm text-destructive">{error}</p>
+              <p role="alert" className="text-sm text-destructive">{error}</p>
             )}
             <Button
               type="submit"

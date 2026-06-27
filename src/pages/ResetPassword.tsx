@@ -90,6 +90,7 @@ export default function ResetPassword() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <p className="text-xs text-muted-foreground">Must be at least 8 characters</p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirm-password">Confirm new password</Label>
@@ -101,9 +102,10 @@ export default function ResetPassword() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
+              <p className="text-xs text-muted-foreground">Must be at least 8 characters</p>
             </div>
             {error && (
-              <p className="text-sm text-destructive">{error}</p>
+              <p role="alert" className="text-sm text-destructive">{error}</p>
             )}
             <Button
               type="submit"

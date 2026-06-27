@@ -89,6 +89,7 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <p className="text-xs text-muted-foreground">Must be at least 8 characters</p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirm-password">Confirm password</Label>
@@ -102,7 +103,7 @@ export default function RegisterPage() {
               />
             </div>
             {error && (
-              <p className="text-sm text-destructive">{error}</p>
+              <p role="alert" className="text-sm text-destructive">{error}</p>
             )}
             <Button
               type="submit"
