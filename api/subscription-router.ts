@@ -47,7 +47,7 @@ export const subscriptionRouter = createRouter({
         interval: plan.interval,
         currentPeriodEnd: addMonths(new Date(), 1),
         cancelAtPeriodEnd: false,
-        stripeCustomerId: `cus_mock_${ctx.user.unionId}`,
+        stripeCustomerId: `cus_mock_${ctx.user.id}`,
         stripeSubscriptionId: `sub_mock_${Date.now()}`,
       };
 

@@ -1,13 +1,18 @@
 # Graph Report - app  (2026-06-27)
 
 ## Corpus Check
-- 179 files · ~133,170 words
+- 181 files · ~135,651 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1302 nodes · 2159 edges · 89 communities (75 shown, 14 thin omitted)
+- 1333 nodes · 2188 edges · 97 communities (82 shown, 15 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 47 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `965ee895`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Package Dependencies|Package Dependencies]]
@@ -32,13 +37,16 @@
 - [[_COMMUNITY_Dashboard Preview Asset|Dashboard Preview Asset]]
 - [[_COMMUNITY_Menubar UI|Menubar UI]]
 - [[_COMMUNITY_Interview API & Schema|Interview API & Schema]]
+- [[_COMMUNITY_Community 22|Community 22]]
 - [[_COMMUNITY_Dropdown Menu UI|Dropdown Menu UI]]
 - [[_COMMUNITY_Graphify Query Tools|Graphify Query Tools]]
 - [[_COMMUNITY_Auth Router & Middleware|Auth Router & Middleware]]
 - [[_COMMUNITY_Graphify Skills & Watch|Graphify Skills & Watch]]
 - [[_COMMUNITY_Carousel UI|Carousel UI]]
+- [[_COMMUNITY_Community 28|Community 28]]
 - [[_COMMUNITY_Input & Textarea UI|Input & Textarea UI]]
 - [[_COMMUNITY_Project Documentation|Project Documentation]]
+- [[_COMMUNITY_Community 31|Community 31]]
 - [[_COMMUNITY_Graphify Extraction Agents|Graphify Extraction Agents]]
 - [[_COMMUNITY_Chart UI|Chart UI]]
 - [[_COMMUNITY_Sheet UI|Sheet UI]]
@@ -56,14 +64,19 @@
 - [[_COMMUNITY_Hero Background Asset|Hero Background Asset]]
 - [[_COMMUNITY_Toggle UI|Toggle UI]]
 - [[_COMMUNITY_GitHub Clone & Merge|GitHub Clone & Merge]]
+- [[_COMMUNITY_Community 49|Community 49]]
+- [[_COMMUNITY_Community 50|Community 50]]
 - [[_COMMUNITY_Alert UI|Alert UI]]
 - [[_COMMUNITY_OTP Input UI|OTP Input UI]]
+- [[_COMMUNITY_Community 53|Community 53]]
 - [[_COMMUNITY_Tabs UI|Tabs UI]]
 - [[_COMMUNITY_Skeleton Loading UI|Skeleton Loading UI]]
 - [[_COMMUNITY_Error Contracts|Error Contracts]]
 - [[_COMMUNITY_Hover Card UI|Hover Card UI]]
+- [[_COMMUNITY_Community 59|Community 59]]
 - [[_COMMUNITY_Vite Server Helpers|Vite Server Helpers]]
 - [[_COMMUNITY_Graphify Hooks|Graphify Hooks]]
+- [[_COMMUNITY_Community 62|Community 62]]
 - [[_COMMUNITY_Vitest Config|Vitest Config]]
 - [[_COMMUNITY_Community 71|Community 71]]
 - [[_COMMUNITY_Community 72|Community 72]]
@@ -131,27 +144,27 @@
 - **Sample Job Listings** — public_dashboard_preview_current_job_opportunities, public_dashboard_preview_senior_ux_ui_designer, public_dashboard_preview_lead_software_engineer, public_dashboard_preview_data_scientist, public_dashboard_preview_marketing_manager, public_dashboard_preview_devops_engineer [INFERRED 0.85]
 - **Network Visualization Elements** — public_hero_neural_bg_network_nodes, public_hero_neural_bg_connections, public_hero_neural_bg_neural_network [EXTRACTED 1.00]
 
-## Communities (89 total, 14 thin omitted)
+## Communities (97 total, 15 thin omitted)
 
 ### Community 0 - "Package Dependencies"
 Cohesion: 0.03
 Nodes (76): dependencies, @aws-sdk/client-s3, @aws-sdk/s3-request-presigner, class-variance-authority, clsx, cmdk, cookie, date-fns (+68 more)
 
 ### Community 1 - "UI Components"
-Cohesion: 0.08
-Nodes (27): easeOutExpo, PLAN_OPTIONS, SETTING_KEYS, Alert(), AlertDescription(), AlertTitle(), alertVariants, FormControl() (+19 more)
+Cohesion: 0.14
+Nodes (16): easeOutExpo, PLAN_OPTIONS, SETTING_KEYS, Alert(), AlertDescription(), AlertTitle(), alertVariants, Select() (+8 more)
 
 ### Community 2 - "Core App & Pages"
-Cohesion: 0.12
-Nodes (11): Menubar(), MenubarCheckboxItem(), MenubarContent(), MenubarItem(), MenubarLabel(), MenubarRadioItem(), MenubarSeparator(), MenubarShortcut() (+3 more)
+Cohesion: 0.20
+Nodes (11): easeOutExpo, Navbar(), navLinks, Button(), Card(), CardAction(), CardContent(), CardDescription() (+3 more)
 
 ### Community 3 - "Mock Job Data & Dashboard"
 Cohesion: 0.07
 Nodes (38): COMPANIES, DESCRIPTION_TEMPLATES, EXPERIENCE_LEVELS, generateDeadline(), generateDescription(), generateMatchReasons(), generateMockJobs(), generatePostedDate() (+30 more)
 
 ### Community 4 - "Resume & Tailoring"
-Cohesion: 0.13
-Nodes (31): CHANGE_TEMPLATES, COMPANIES, generateDate(), generateMockResumes(), getRandomItems(), HIGHLIGHT_TEMPLATES, JOB_TITLES, KEYWORDS (+23 more)
+Cohesion: 0.12
+Nodes (32): CHANGE_TEMPLATES, COMPANIES, generateDate(), generateMockResumes(), getRandomItems(), HIGHLIGHT_TEMPLATES, JOB_TITLES, KEYWORDS (+24 more)
 
 ### Community 5 - "Package Configuration"
 Cohesion: 0.05
@@ -170,20 +183,24 @@ Cohesion: 0.07
 Nodes (26): compilerOptions, allowImportingTsExtensions, baseUrl, erasableSyntaxOnly, jsx, lib, module, moduleDetection (+18 more)
 
 ### Community 9 - "API & Database Core"
-Cohesion: 0.12
-Nodes (20): jobRouter, adminQuery, authedQuery, requireAuth, t, profileRouter, researchRouter, resumeRouter (+12 more)
+Cohesion: 0.15
+Nodes (15): jobRouter, adminQuery, profileRouter, researchRouter, resumeRouter, sectorRouter, settingsRouter, appSettings (+7 more)
 
 ### Community 10 - "Homepage & Marketing"
 Cohesion: 0.10
 Nodes (10): AnimatedCounter(), AnimatedCounterProps, NeuralCanvas(), NeuralCanvasProps, Node, easeOutExpo, featureCards, processSteps (+2 more)
 
 ### Community 11 - "Kimi Auth & Session"
-Cohesion: 0.15
-Nodes (13): AppError, Errors, authenticateRequest(), jwks, users, signSessionToken(), verifySessionToken(), SessionPayload (+5 more)
+Cohesion: 0.12
+Nodes (19): app, createContext(), TrpcContext, AppRouter, Paths, InsertUser, User, authenticateRequest() (+11 more)
 
 ### Community 12 - "Server TSConfig"
 Cohesion: 0.10
 Nodes (20): compilerOptions, allowImportingTsExtensions, baseUrl, esModuleInterop, lib, module, moduleDetection, moduleResolution (+12 more)
+
+### Community 14 - "Auth Layout & Sidebar"
+Cohesion: 0.13
+Nodes (8): footerColumns, Layout(), easeOutExpo, easeOutExpo, messages, steps, Login(), NotFound()
 
 ### Community 15 - "Node TSConfig"
 Cohesion: 0.10
@@ -194,8 +211,8 @@ Cohesion: 0.13
 Nodes (17): ButtonGroup(), ButtonGroupSeparator(), ButtonGroupText(), buttonGroupVariants, Item(), ItemActions(), ItemContent(), ItemDescription() (+9 more)
 
 ### Community 17 - "Sidebar & Tooltip UI"
-Cohesion: 0.08
-Nodes (38): AuthLayoutContent(), AuthLayoutContentProps, menuItems, useIsMobile(), Avatar(), AvatarFallback(), AvatarImage(), Sidebar() (+30 more)
+Cohesion: 0.07
+Nodes (34): AdminLayout(), navItems, Sheet(), SheetContent(), SheetDescription(), SheetFooter(), SheetHeader(), SheetOverlay() (+26 more)
 
 ### Community 18 - "shadcn/ui Configuration"
 Cohesion: 0.11
@@ -207,23 +224,27 @@ Nodes (17): Apex Brand, Apply Now Action, Bookmark Action, Current Job Opportuni
 
 ### Community 20 - "Menubar UI"
 Cohesion: 0.06
-Nodes (40): cn(), AccordionContent(), AccordionItem(), AccordionTrigger(), BreadcrumbEllipsis(), BreadcrumbItem(), BreadcrumbLink(), BreadcrumbList() (+32 more)
+Nodes (42): cn(), ContextMenuCheckboxItem(), ContextMenuContent(), ContextMenuItem(), ContextMenuLabel(), ContextMenuRadioItem(), ContextMenuSeparator(), ContextMenuShortcut() (+34 more)
 
 ### Community 21 - "Interview API & Schema"
-Cohesion: 0.11
-Nodes (18): interviewRouter, AppSetting, InsertAppSetting, InsertInterview, InsertInterviewQuestion, InsertJob, InsertProfile, InsertSector (+10 more)
+Cohesion: 0.08
+Nodes (24): interviewRouter, AppSetting, InsertAppSetting, InsertInterview, InsertInterviewQuestion, InsertJob, InsertProfile, InsertSector (+16 more)
+
+### Community 22 - "Community 22"
+Cohesion: 0.15
+Nodes (12): Connection Changes (`api/queries/connection.ts`), Context, Database Backend Migration: MySQL → Supabase (PostgreSQL), Decision Log, Dependency Changes (`package.json`), Drizzle Kit Config (`drizzle.config.ts`), Environment Variables, Goal (+4 more)
 
 ### Community 23 - "Dropdown Menu UI"
-Cohesion: 0.12
-Nodes (11): DropdownMenu(), DropdownMenuCheckboxItem(), DropdownMenuContent(), DropdownMenuItem(), DropdownMenuLabel(), DropdownMenuRadioItem(), DropdownMenuSeparator(), DropdownMenuShortcut() (+3 more)
+Cohesion: 0.07
+Nodes (25): AuthLayoutContent(), AuthLayoutContentProps, menuItems, useIsMobile(), Avatar(), AvatarFallback(), AvatarImage(), DropdownMenu() (+17 more)
 
 ### Community 24 - "Graphify Query Tools"
 Cohesion: 0.19
 Nodes (12): graphify, graphify, Fast Path for Existing Graph, /graphify explain, /graphify path, /graphify query, query reference, BFS Traversal (+4 more)
 
 ### Community 25 - "Auth Router & Middleware"
-Cohesion: 0.36
-Nodes (5): authRouter, ErrorMessages, Session, getSessionCookieOptions(), isLocalhost()
+Cohesion: 0.18
+Nodes (10): authRouter, authedQuery, requireAuth, t, PLANS, subscriptionRouter, ErrorMessages, Session (+2 more)
 
 ### Community 26 - "Graphify Skills & Watch"
 Cohesion: 0.17
@@ -233,13 +254,21 @@ Nodes (11): graphify, Graph Health Check, GRAPH_REPORT.md, graphify, GraphRAG-Re
 Cohesion: 0.19
 Nodes (13): Carousel(), CarouselApi, CarouselContent(), CarouselContext, CarouselContextProps, CarouselItem(), CarouselNext(), CarouselOptions (+5 more)
 
+### Community 28 - "Community 28"
+Cohesion: 0.29
+Nodes (9): AuthLayout(), PricingCard(), PricingCardProps, useAuth(), getPlanById(), PRICING_PLANS, PricingPlan, easeOutExpo (+1 more)
+
 ### Community 29 - "Input & Textarea UI"
-Cohesion: 0.09
-Nodes (16): Checkbox(), HoverCardContent(), InputGroup(), InputGroupAddon(), inputGroupAddonVariants, InputGroupButton(), inputGroupButtonVariants, InputGroupInput() (+8 more)
+Cohesion: 0.07
+Nodes (16): Checkbox(), HoverCardContent(), InputOTP(), InputOTPGroup(), InputOTPSlot(), Progress(), ResizableHandle(), ResizablePanelGroup() (+8 more)
 
 ### Community 30 - "Project Documentation"
 Cohesion: 0.19
 Nodes (12): CareerMatch AI, CareerMatch AI, Node.js 20, shadcn/ui, Tailwind CSS, Vite, Expanding the ESLint configuration, React (+4 more)
+
+### Community 31 - "Community 31"
+Cohesion: 0.23
+Nodes (10): FormControl(), FormDescription(), FormFieldContext, FormFieldContextValue, FormItem(), FormItemContext, FormItemContextValue, FormLabel() (+2 more)
 
 ### Community 32 - "Graphify Extraction Agents"
 Cohesion: 0.18
@@ -250,16 +279,16 @@ Cohesion: 0.22
 Nodes (8): ChartConfig, ChartContainer(), ChartContext, ChartContextProps, ChartLegendContent(), ChartTooltipContent(), THEMES, useChart()
 
 ### Community 34 - "Sheet UI"
-Cohesion: 0.17
-Nodes (10): navItems, UseAuthOptions, Sheet(), SheetContent(), SheetDescription(), SheetFooter(), SheetHeader(), SheetOverlay() (+2 more)
+Cohesion: 0.14
+Nodes (10): UseAuthOptions, ACCEPTED_TYPES, ExtractedProfile, ParsedResume, UploadState, queryClient, trpc, trpcClient (+2 more)
 
 ### Community 35 - "Navigation Menu UI"
 Cohesion: 0.22
 Nodes (9): NavigationMenu(), NavigationMenuContent(), NavigationMenuIndicator(), NavigationMenuItem(), NavigationMenuLink(), NavigationMenuList(), NavigationMenuTrigger(), navigationMenuTriggerStyle (+1 more)
 
 ### Community 36 - "API Boot & Context"
-Cohesion: 0.25
-Nodes (7): app, createContext(), TrpcContext, AppRouter, Paths, User, createOAuthCallbackHandler()
+Cohesion: 0.18
+Nodes (10): File Structure, Self-Review Checklist, Supabase (PostgreSQL) Migration Implementation Plan, Task 1: Swap database dependencies, Task 2: Update Drizzle Kit configuration, Task 3: Convert schema from MySQL to PostgreSQL, Task 4: Switch database connection driver, Task 5: Update environment documentation (+2 more)
 
 ### Community 37 - "Graphify Core Pipeline"
 Cohesion: 0.33
@@ -282,8 +311,8 @@ Cohesion: 0.25
 Nodes (8): exports reference, Token Reduction Benchmark, FalkorDB Export, GraphML Export, MCP Server, Neo4j Export, SVG Export, Wiki Export
 
 ### Community 42 - "Empty State UI"
-Cohesion: 0.06
-Nodes (36): easeOutExpo, easeOutExpo, AuthLayoutSkeleton(), AnswerState, AnswerType, buildProfileDisplay(), InterviewPage(), Question (+28 more)
+Cohesion: 0.13
+Nodes (19): easeOutExpo, easeOutExpo, Badge(), badgeVariants, Empty(), EmptyContent(), EmptyDescription(), EmptyHeader() (+11 more)
 
 ### Community 43 - "Graphify Incremental Update"
 Cohesion: 0.48
@@ -298,20 +327,32 @@ Cohesion: 0.33
 Nodes (7): Artificial Intelligence, Career Matching Theme, Node Connections, Hero Neural Background Image, Machine Learning, Network Nodes, Neural Network
 
 ### Community 47 - "Toggle UI"
-Cohesion: 0.43
-Nodes (5): ToggleGroup(), ToggleGroupContext, ToggleGroupItem(), Toggle(), toggleVariants
+Cohesion: 0.24
+Nodes (9): InputGroup(), InputGroupAddon(), inputGroupAddonVariants, InputGroupButton(), inputGroupButtonVariants, InputGroupInput(), InputGroupText(), InputGroupTextarea() (+1 more)
 
 ### Community 48 - "GitHub Clone & Merge"
 Cohesion: 0.40
 Nodes (6): GitHub Clone, github-and-merge reference, GitHub Clone, Cross-Repo Merge, graphify clone, Monorepo Layout
+
+### Community 49 - "Community 49"
+Cohesion: 0.33
+Nodes (6): AccountPage(), easeOutExpo, formatDate(), formatPrice(), Input(), Label()
+
+### Community 50 - "Community 50"
+Cohesion: 0.29
+Nodes (6): AnswerState, AnswerType, buildProfileDisplay(), InterviewPage(), Question, QUESTIONS
 
 ### Community 51 - "Alert UI"
 Cohesion: 0.06
 Nodes (28): Job, TailoredResume, BARBARA_COMPANIES, BARBARA_INTERVIEW_ANSWERS, BARBARA_LOCATIONS, BARBARA_PARSED_RESUME, BARBARA_PROFILE, BARBARA_SECTORS (+20 more)
 
 ### Community 52 - "OTP Input UI"
+Cohesion: 0.25
+Nodes (6): BreadcrumbEllipsis(), BreadcrumbItem(), BreadcrumbLink(), BreadcrumbList(), BreadcrumbPage(), BreadcrumbSeparator()
+
+### Community 53 - "Community 53"
 Cohesion: 0.40
-Nodes (3): InputOTP(), InputOTPGroup(), InputOTPSlot()
+Nodes (3): AccordionContent(), AccordionItem(), AccordionTrigger()
 
 ### Community 54 - "Tabs UI"
 Cohesion: 0.08
@@ -326,12 +367,12 @@ Cohesion: 0.08
 Nodes (24): For /graphify add and --watch, For /graphify query, For the commit hook and native CLAUDE.md integration, For --update and --cluster-only, /graphify, Honesty Rules, Interpreter guard for subcommands, Part A - Structural extraction for code files (+16 more)
 
 ### Community 58 - "Hover Card UI"
-Cohesion: 0.05
-Nodes (49): easeOutExpo, AdminLayout(), AuthLayout(), footerColumns, Layout(), Navbar(), navLinks, PricingCard() (+41 more)
+Cohesion: 0.12
+Nodes (15): Command(), CommandDialog(), CommandGroup(), CommandInput(), CommandItem(), CommandList(), CommandSeparator(), CommandShortcut() (+7 more)
 
 ### Community 61 - "Graphify Hooks"
 Cohesion: 0.20
-Nodes (9): adminRouter, jobsRelations, profilesRelations, subscriptionsRelations, tailoredResumesRelations, usersRelations, jobs, subscriptions (+1 more)
+Nodes (9): adminRouter, jobsRelations, profilesRelations, subscriptionsRelations, tailoredResumesRelations, usersRelations, profiles, subscriptions (+1 more)
 
 ### Community 71 - "Community 71"
 Cohesion: 0.18
@@ -402,24 +443,24 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ## Knowledge Gaps
-- **505 isolated node(s):** `app`, `jwks`, `RequestConfig`, `App`, `t` (+500 more)
+- **531 isolated node(s):** `app`, `jwks`, `RequestConfig`, `App`, `t` (+526 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `Menubar UI` to `UI Components`, `Sheet UI`, `Chart UI`, `Core App & Pages`, `Navigation Menu UI`, `UI Primitives`, `Community 71`, `Empty State UI`, `Command & Dialog UI`, `Auth Layout & Sidebar`, `Toggle UI`, `Button Group & Item UI`, `Sidebar & Tooltip UI`, `OTP Input UI`, `Dropdown Menu UI`, `Hover Card UI`, `Carousel UI`, `Input & Textarea UI`?**
-  _High betweenness centrality (0.170) - this node is a cross-community bridge._
+- **Why does `cn()` connect `Menubar UI` to `UI Components`, `Core App & Pages`, `UI Primitives`, `Command & Dialog UI`, `Button Group & Item UI`, `Sidebar & Tooltip UI`, `Dropdown Menu UI`, `Carousel UI`, `Community 28`, `Input & Textarea UI`, `Community 31`, `Chart UI`, `Navigation Menu UI`, `Empty State UI`, `Toggle UI`, `Community 49`, `OTP Input UI`, `Community 53`, `Hover Card UI`, `Community 59`, `Community 71`?**
+  _High betweenness centrality (0.187) - this node is a cross-community bridge._
 - **Why does `Job` connect `Alert UI` to `Mock Job Data & Dashboard`, `Resume & Tailoring`, `Interview API & Schema`?**
-  _High betweenness centrality (0.017) - this node is a cross-community bridge._
-- **Why does `trpc` connect `Empty State UI` to `UI Components`, `Sheet UI`, `Mock Job Data & Dashboard`, `Resume & Tailoring`, `Research Agent UI`, `Hover Card UI`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+- **Why does `trpc` connect `Sheet UI` to `UI Components`, `Core App & Pages`, `Mock Job Data & Dashboard`, `Resume & Tailoring`, `Research Agent UI`, `Empty State UI`, `Community 49`, `Community 50`, `Community 28`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **What connects `app`, `jwks`, `RequestConfig` to the rest of the system?**
-  _510 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _536 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Package Dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.02631578947368421 - nodes in this community are weakly interconnected._
 - **Should `UI Components` be split into smaller, more focused modules?**
-  _Cohesion score 0.08235294117647059 - nodes in this community are weakly interconnected._
-- **Should `Core App & Pages` be split into smaller, more focused modules?**
-  _Cohesion score 0.11764705882352941 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1380952380952381 - nodes in this community are weakly interconnected._
+- **Should `Mock Job Data & Dashboard` be split into smaller, more focused modules?**
+  _Cohesion score 0.070578231292517 - nodes in this community are weakly interconnected._

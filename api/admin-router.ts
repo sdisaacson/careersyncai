@@ -30,7 +30,6 @@ export const adminRouter = createRouter({
       return db
         .select({
           id: users.id,
-          unionId: users.unionId,
           name: users.name,
           email: users.email,
           role: users.role,
