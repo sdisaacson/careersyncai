@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createRouter, publicQuery } from "./middleware";
 import { getDb } from "./queries/connection";
 import { jobs } from "@db/schema";
-import { eq, desc, asc, and, gte, like, sql } from "drizzle-orm";
+import { eq, desc, asc, and, gte, sql } from "drizzle-orm";
 
 export const jobRouter = createRouter({
   create: publicQuery
@@ -30,8 +30,8 @@ export const jobRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      const result = await db.insert(jobs).values(input);
-      return { id: Number(result[0].insertId) };
+      const [{ id }] = await db.insert(jobs).values(input).returning({ id: jobs.id });
+      return { id };
     }),
 
   createMany: publicQuery
@@ -39,7 +39,7 @@ export const jobRouter = createRouter({
     .mutation(async ({ input }) => {
       const db = getDb();
       if (input.length === 0) return { count: 0 };
-      const result = await db.insert(jobs).values(input as any);
+      await db.insert(jobs).values(input as any);
       return { count: input.length };
     }),
 

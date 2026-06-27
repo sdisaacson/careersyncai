@@ -46,7 +46,7 @@ export const subscriptionRouter = createRouter({
         priceCents: plan.priceCents,
         interval: plan.interval,
         currentPeriodEnd: addMonths(new Date(), 1),
-        cancelAtPeriodEnd: 0,
+        cancelAtPeriodEnd: false,
         stripeCustomerId: `cus_mock_${ctx.user.unionId}`,
         stripeSubscriptionId: `sub_mock_${Date.now()}`,
       };
@@ -77,7 +77,7 @@ export const subscriptionRouter = createRouter({
 
     await db
       .update(subscriptions)
-      .set({ status: "canceled", cancelAtPeriodEnd: 1 })
+      .set({ status: "canceled", cancelAtPeriodEnd: true })
       .where(eq(subscriptions.id, existing[0].id));
 
     return { success: true };
@@ -97,7 +97,7 @@ export const subscriptionRouter = createRouter({
 
     await db
       .update(subscriptions)
-      .set({ status: "active", cancelAtPeriodEnd: 0, currentPeriodEnd: addMonths(new Date(), 1) })
+      .set({ status: "active", cancelAtPeriodEnd: false, currentPeriodEnd: addMonths(new Date(), 1) })
       .where(eq(subscriptions.id, existing[0].id));
 
     return { success: true };

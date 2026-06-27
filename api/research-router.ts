@@ -9,14 +9,14 @@ export const researchRouter = createRouter({
     .input(z.object({ profileId: z.number(), totalSectors: z.number().default(8) }))
     .mutation(async ({ input }) => {
       const db = getDb();
-      const result = await db.insert(researchSessions).values({
+      const [{ id }] = await db.insert(researchSessions).values({
         profileId: input.profileId,
         totalSectors: input.totalSectors,
         completedSectors: 0,
         totalJobsFound: 0,
         status: "running",
-      });
-      return { id: Number(result[0].insertId) };
+      }).returning({ id: researchSessions.id });
+      return { id };
     }),
 
   get: publicQuery

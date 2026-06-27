@@ -18,8 +18,8 @@ export const resumeRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      const result = await db.insert(tailoredResumes).values(input);
-      return { id: Number(result[0].insertId) };
+      const [{ id }] = await db.insert(tailoredResumes).values(input).returning({ id: tailoredResumes.id });
+      return { id };
     }),
 
   createMany: publicQuery
@@ -27,7 +27,7 @@ export const resumeRouter = createRouter({
     .mutation(async ({ input }) => {
       const db = getDb();
       if (input.length === 0) return { count: 0 };
-      const result = await db.insert(tailoredResumes).values(input as any);
+      await db.insert(tailoredResumes).values(input as any);
       return { count: input.length };
     }),
 

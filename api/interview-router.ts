@@ -9,13 +9,13 @@ export const interviewRouter = createRouter({
     .input(z.object({ profileId: z.number() }))
     .mutation(async ({ input }) => {
       const db = getDb();
-      const result = await db.insert(interviews).values({
+      const [{ id }] = await db.insert(interviews).values({
         profileId: input.profileId,
         status: "in_progress",
         currentQuestion: 0,
         totalQuestions: 8,
-      });
-      return { id: Number(result[0].insertId) };
+      }).returning({ id: interviews.id });
+      return { id };
     }),
 
   get: publicQuery

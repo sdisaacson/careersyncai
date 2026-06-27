@@ -29,7 +29,7 @@ export const settingsRouter = createRouter({
       await db
         .insert(appSettings)
         .values({ key: input.key, value: input.value })
-        .onDuplicateKeyUpdate({ set: { value: input.value } });
+        .onConflictDoUpdate({ target: appSettings.key, set: { value: input.value } });
       return { success: true };
     }),
 
@@ -41,7 +41,7 @@ export const settingsRouter = createRouter({
         await db
           .insert(appSettings)
           .values({ key, value })
-          .onDuplicateKeyUpdate({ set: { value } });
+          .onConflictDoUpdate({ target: appSettings.key, set: { value } });
       }
       return { success: true };
     }),

@@ -31,8 +31,8 @@ export const profileRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      const result = await db.insert(profiles).values(input);
-      return { id: Number(result[0].insertId), success: true };
+      const [{ id }] = await db.insert(profiles).values(input).returning({ id: profiles.id });
+      return { id, success: true };
     }),
 
   getByUser: publicQuery
