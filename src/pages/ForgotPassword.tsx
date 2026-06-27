@@ -1,38 +1,57 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { trpc } from "@/providers/trpc";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function Login() {
-  const navigate = useNavigate();
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
-  const loginMutation = trpc.auth.login.useMutation({
+  const forgotMutation = trpc.auth.forgotPassword.useMutation({
     onSuccess: () => {
-      navigate("/dashboard");
+      setSuccess(true);
     },
     onError: (err) => {
-      setError(err.message ?? "Login failed. Please try again.");
+      setError(err.message ?? "Request failed. Please try again.");
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    loginMutation.mutate({ email, password });
+    forgotMutation.mutate({ email });
   };
+
+  if (success) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <Card className="w-full max-w-sm">
+          <CardHeader className="text-center">
+            <CardTitle>Check your email</CardTitle>
+            <CardDescription>
+              If an account exists for <strong>{email}</strong>, we sent password reset instructions.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center text-sm">
+            <Link to="/login" className="text-primary hover:underline">
+              Back to sign in
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <CardTitle>Sign in</CardTitle>
-          <CardDescription>Enter your email and password to continue</CardDescription>
+          <CardTitle>Reset password</CardTitle>
+          <CardDescription>Enter your email and we’ll send you reset instructions</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -47,17 +66,6 @@ export default function Login() {
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
             {error && (
               <p className="text-sm text-destructive">{error}</p>
             )}
@@ -65,19 +73,17 @@ export default function Login() {
               type="submit"
               className="w-full"
               size="lg"
-              disabled={loginMutation.isPending}
+              disabled={forgotMutation.isPending}
             >
-              {loginMutation.isPending ? "Signing in..." : "Sign in"}
+              {forgotMutation.isPending ? "Sending..." : "Send reset link"}
             </Button>
           </form>
-          <div className="mt-6 flex items-center justify-between text-sm">
-            <Link to="/register" className="text-primary hover:underline">
-              Create account
+          <p className="mt-6 text-center text-sm">
+            Remember your password?{" "}
+            <Link to="/login" className="text-primary hover:underline">
+              Sign in
             </Link>
-            <Link to="/forgot-password" className="text-primary hover:underline">
-              Forgot password?
-            </Link>
-          </div>
+          </p>
         </CardContent>
       </Card>
     </div>
