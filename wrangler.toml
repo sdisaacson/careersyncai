@@ -21,6 +21,16 @@ APP_ID = ""
 BASE_URL = "https://careersyncai.sisaacson.io"
 ADMIN_SECRET_PATH = "/admin/login"
 ADMIN_EMAILS = "scott@sisaacson.io"
+APP_SECRET=jJKjtlbE38Yqb9lDazZBD7KdImoF3TWgF1w
+DATABASE_URL=postgresql://postgres.ijcavxnozqxypbjsyzeq:woxUeiSRkGAtJDz1@aws-1-us-west-2.pooler.supabase.com:6543/postgres
+ADMIN_EMAILS=scott@sisaacson.io # Comma-separated list of emails that get admin role on signup
+OWNER_UNION_ID=
+# ── Email (Resend) ──────────────────────────────────────────────
+RESEND_API_KEY=re_RrSi54mF_11VKQ5T2Rv9aEoTc8HqxdGHR
+FROM_EMAIL=scott@sisaacson.io               # Sender address, e.g. noreply@yourdomain.com
+
+# ── Moonshot API ────────────────────────────────────────────────
+MOONSHOT_API_KEY=
 
 # Secrets should NOT be in wrangler.toml — move these to wrangler secret:
 # APP_SECRET, DATABASE_URL, RESEND_API_KEY, FROM_EMAIL, MOONSHOT_API_KEY
