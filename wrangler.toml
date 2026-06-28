@@ -4,6 +4,7 @@ main = "api/worker.ts"
 # Set this to today's date
 compatibility_date = "2026-06-27"
 compatibility_flags = [ "nodejs_compat" ]
+workers_dev = true
 
 [build]
 command = "npm run build"
@@ -15,8 +16,14 @@ zone_name = "careersyncai.sisaacson.io"
 # Cloudflare Workers environment variables (use wrangler secret for sensitive values)
 [vars]
 APP_ID = ""
-BASE_URL = "https://careersyncai.sisaacson.io"
+BASE_URL = "https://careersyncai.scott-43f.workers.dev"
 ADMIN_SECRET_PATH = "/admin/login"
+APP_SECRET=jJKjtlbE38Yqb9lDazZBD7KdImoF3TWgF1w
+DATABASE_URL=postgresql://postgres.ijcavxnozqxypbjsyzeq:woxUeiSRkGAtJDz1@aws-1-us-west-2.pooler.supabase.com:6543/postgres
+ADMIN_EMAILS=scott@sisaacson.io # Comma-separated list of emails that get admin role on signup
+RESEND_API_KEY=re_RrSi54mF_11VKQ5T2Rv9aEoTc8HqxdGHR
+FROM_EMAIL=scott@sisaacson.io
+MOONSHOT_API_KEY=
 
 # Secrets (set via: wrangler secret put <name>)
 # APP_SECRET
