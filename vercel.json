@@ -2,6 +2,14 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/api/og/rotate",
+      "destination": "/api/og/rotate.ts"
+    },
+    {
+      "source": "/api/og/current.png",
+      "destination": "/api/og/current.ts"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/index.ts"
     },
@@ -12,6 +20,12 @@
     {
       "source": "/(.*)",
       "destination": "/index.html"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/og/rotate",
+      "schedule": "0 0 * * *"
     }
   ]
 }
