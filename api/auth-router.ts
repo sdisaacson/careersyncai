@@ -50,9 +50,9 @@ export const authRouter = createRouter({
 
   signup: publicQuery
     .input(authInput)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       try {
-        const existing = await findUserByEmail(input.email);
+        const existing = await findUserByEmail(input.email, ctx.cloudflareEnv);
         if (existing) {
           return { success: true };
         }
@@ -60,10 +60,10 @@ export const authRouter = createRouter({
         const user = await createUser({
           email: input.email,
           passwordHash,
-        });
+        }, ctx.cloudflareEnv);
         const verificationToken = generateToken();
-        await setEmailVerificationToken(user.id, verificationToken);
-        await sendVerificationEmail(input.email, verificationToken);
+        await setEmailVerificationToken(user.id, verificationToken, ctx.cloudflareEnv);
+        await sendVerificationEmail(input.email, verificationToken, ctx.cloudflareEnv);
         return { success: true };
       } catch (err) {
         console.error("[signup error]", err);
@@ -74,7 +74,7 @@ export const authRouter = createRouter({
   login: publicQuery
     .input(authInput)
     .mutation(async ({ input, ctx }) => {
-      const user = await findUserByEmail(input.email);
+      const user = await findUserByEmail(input.email, ctx.cloudflareEnv);
       if (!user || !user.passwordHash) {
         throw new Error("Invalid email or password.");
       }
@@ -89,7 +89,7 @@ export const authRouter = createRouter({
         userId: user.id,
         email: user.email,
         sessionVersion: user.sessionVersion,
-      });
+      }, ctx.cloudflareEnv);
       const cookieOpts = getSessionCookieOptions(ctx.req.headers);
       ctx.resHeaders.append(
         "set-cookie",
@@ -106,8 +106,8 @@ export const authRouter = createRouter({
 
   verifyEmail: publicQuery
     .input(z.object({ token: z.string() }))
-    .mutation(async ({ input }) => {
-      const user = await findUserByVerificationToken(input.token);
+    .mutation(async ({ input, ctx }) => {
+      const user = await findUserByVerificationToken(input.token, ctx.cloudflareEnv);
       if (
         !user ||
         !user.emailVerificationTokenExpires ||
@@ -115,31 +115,31 @@ export const authRouter = createRouter({
       ) {
         throw new Error("Invalid or expired verification token.");
       }
-      await markEmailVerified(user.id);
+      await markEmailVerified(user.id, ctx.cloudflareEnv);
       return { success: true };
     }),
 
   resendVerification: publicQuery
     .input(z.object({ email: z.string().email() }))
-    .mutation(async ({ input }) => {
-      const user = await findUserByEmail(input.email);
+    .mutation(async ({ input, ctx }) => {
+      const user = await findUserByEmail(input.email, ctx.cloudflareEnv);
       if (user && !user.emailVerified) {
         const token = generateToken();
-        await setEmailVerificationToken(user.id, token);
-        await sendVerificationEmail(input.email, token);
+        await setEmailVerificationToken(user.id, token, ctx.cloudflareEnv);
+        await sendVerificationEmail(input.email, token, ctx.cloudflareEnv);
       }
       return { success: true };
     }),
 
   forgotPassword: publicQuery
     .input(z.object({ email: z.string().email() }))
-    .mutation(async ({ input }) => {
-      const user = await findUserByEmail(input.email);
+    .mutation(async ({ input, ctx }) => {
+      const user = await findUserByEmail(input.email, ctx.cloudflareEnv);
       if (user) {
         const token = generateToken();
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
-        await setPasswordResetToken(user.id, token, expiresAt);
-        await sendPasswordResetEmail(input.email, token);
+        await setPasswordResetToken(user.id, token, expiresAt, ctx.cloudflareEnv);
+        await sendPasswordResetEmail(input.email, token, ctx.cloudflareEnv);
       }
       return { success: true };
     }),
@@ -151,8 +151,8 @@ export const authRouter = createRouter({
         password: z.string().min(8),
       }),
     )
-    .mutation(async ({ input }) => {
-      const user = await findUserByResetToken(input.token);
+    .mutation(async ({ input, ctx }) => {
+      const user = await findUserByResetToken(input.token, ctx.cloudflareEnv);
       if (!user || !user.passwordResetExpires) {
         throw new Error("Invalid or expired reset token.");
       }
@@ -160,7 +160,7 @@ export const authRouter = createRouter({
         throw new Error("Reset token has expired.");
       }
       const hash = await bcrypt.hash(input.password, 12);
-      await updatePasswordHash(user.id, hash);
+      await updatePasswordHash(user.id, hash, ctx.cloudflareEnv);
       return { success: true };
     }),
 });

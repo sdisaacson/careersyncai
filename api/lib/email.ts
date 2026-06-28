@@ -1,10 +1,24 @@
 import { Resend } from "resend";
-import { env } from "./env";
+import type { CloudflareEnv } from "../context";
 
-const resend = env.resendApiKey ? new Resend(env.resendApiKey) : null;
+function getResendApiKey(cloudflareEnv?: CloudflareEnv): string | undefined {
+  return cloudflareEnv?.RESEND_API_KEY || (typeof process !== "undefined" ? process.env?.RESEND_API_KEY : undefined);
+}
 
-function buildUrl(path: string, token: string) {
-  const url = new URL(path, env.baseUrl);
+function getFromEmail(cloudflareEnv?: CloudflareEnv): string | undefined {
+  return cloudflareEnv?.FROM_EMAIL || (typeof process !== "undefined" ? process.env?.FROM_EMAIL : undefined);
+}
+
+function getBaseUrl(cloudflareEnv?: CloudflareEnv): string {
+  return cloudflareEnv?.BASE_URL || (typeof process !== "undefined" ? process.env?.BASE_URL : undefined) || "http://localhost:4173";
+}
+
+function isProduction(cloudflareEnv?: CloudflareEnv): boolean {
+  return cloudflareEnv?.NODE_ENV === "production" || (typeof process !== "undefined" && process.env?.NODE_ENV === "production");
+}
+
+function buildUrl(path: string, token: string, cloudflareEnv?: CloudflareEnv) {
+  const url = new URL(path, getBaseUrl(cloudflareEnv));
   url.searchParams.set("token", token);
   return url.toString();
 }
@@ -16,16 +30,20 @@ async function sendEmail(args: {
   text: string;
   description: string;
   fallbackLink: string;
-}) {
-  if (!resend || !env.fromEmail) {
-    if (env.isProduction) {
+}, cloudflareEnv?: CloudflareEnv) {
+  const resendApiKey = getResendApiKey(cloudflareEnv);
+  const fromEmail = getFromEmail(cloudflareEnv);
+  const resend = resendApiKey ? new Resend(resendApiKey) : null;
+
+  if (!resend || !fromEmail) {
+    if (isProduction(cloudflareEnv)) {
       throw new Error(`Email cannot be sent in production: ${args.description}`);
     }
     console.log(`[email] ${args.description} for ${args.to}: ${args.fallbackLink}`);
     return { success: true };
   }
   const { error } = await resend.emails.send({
-    from: env.fromEmail,
+    from: fromEmail,
     to: args.to,
     subject: args.subject,
     html: args.html,
@@ -37,8 +55,8 @@ async function sendEmail(args: {
   return { success: true };
 }
 
-export async function sendVerificationEmail(to: string, token: string) {
-  const link = buildUrl("/verify-email", token);
+export async function sendVerificationEmail(to: string, token: string, cloudflareEnv?: CloudflareEnv) {
+  const link = buildUrl("/verify-email", token, cloudflareEnv);
   return sendEmail({
     to,
     subject: "Verify your email",
@@ -46,11 +64,11 @@ export async function sendVerificationEmail(to: string, token: string) {
     text: `Verify your email: ${link}`,
     description: "Verification link",
     fallbackLink: link,
-  });
+  }, cloudflareEnv);
 }
 
-export async function sendPasswordResetEmail(to: string, token: string) {
-  const link = buildUrl("/reset-password", token);
+export async function sendPasswordResetEmail(to: string, token: string, cloudflareEnv?: CloudflareEnv) {
+  const link = buildUrl("/reset-password", token, cloudflareEnv);
   return sendEmail({
     to,
     subject: "Reset your password",
@@ -58,5 +76,5 @@ export async function sendPasswordResetEmail(to: string, token: string) {
     text: `Reset your password (expires in 1 hour): ${link}`,
     description: "Password reset link",
     fallbackLink: link,
-  });
+  }, cloudflareEnv);
 }
