@@ -1,7 +1,7 @@
 import { eq, sql } from "drizzle-orm";
-import * as schema from "../../db/schema.js";
-import type { InsertUser } from "../../db/schema.js";
-import { getDb } from "./connection";
+import * as schema from "../../../db/schema.js";
+import type { InsertUser } from "../../../db/schema.js";
+import { getDb } from "./connection.js";
 import { getCurrentCloudflareEnv } from "../../lib/cloudflare-env.js";
 import { hashToken } from "../../auth/token.js";
 

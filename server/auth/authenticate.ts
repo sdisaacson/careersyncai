@@ -1,7 +1,7 @@
 import * as cookie from "cookie";
 import { Session } from "@contracts/constants";
 import { Errors } from "@contracts/errors";
-import { verifySessionToken } from "./session";
+import { verifySessionToken } from "./session.js";
 import { findUserById } from "../queries/api/users.js";
 
 export async function authenticateRequest(headers: Headers) {

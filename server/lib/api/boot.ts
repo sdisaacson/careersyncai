@@ -2,8 +2,8 @@ import { Hono } from "hono";
 import { bodyLimit } from "hono/body-limit";
 import type { HttpBindings } from "@hono/node-server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { appRouter } from "./router";
-import { createContext } from "./context";
+import { appRouter } from "./router.js";
+import { createContext } from "./context.js";
 import { env } from "../../../api/lib/env.js";
 import { serveStatic } from "@hono/node-server/serve-static";
 import fs from "fs";
@@ -20,7 +20,7 @@ app.use("/api/*", async (c, next) => {
   c.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   c.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   if (c.req.method === "OPTIONS") {
-    return c.text("", 204);
+    return c.body(null, 204);
   }
   await next();
 });
