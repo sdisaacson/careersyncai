@@ -14,7 +14,7 @@ app.use("/api/*", async (c, next) => {
   c.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   c.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   if (c.req.method === "OPTIONS") {
-    return c.text("", 204);
+    return c.text("", 204 as unknown as Parameters<typeof c.text>[1]);
   }
   await next();
 });

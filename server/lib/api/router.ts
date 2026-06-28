@@ -1,14 +1,14 @@
-import { authRouter } from "../../routes/auth-router";
-import { profileRouter } from "../../routes/profile-router";
-import { interviewRouter } from "../../routes/interview-router";
-import { jobRouter } from "../../routes/job-router";
-import { resumeRouter } from "../../routes/resume-router";
-import { researchRouter } from "../../routes/research-router";
-import { sectorRouter } from "../../routes/sector-router";
-import { subscriptionRouter } from "../../routes/subscription-router";
-import { settingsRouter } from "../../routes/settings-router";
-import { adminRouter } from "../../routes/admin-router";
-import { createRouter, publicQuery } from "./middleware";
+import { authRouter } from "../../routes/auth-router.js";
+import { profileRouter } from "../../routes/profile-router.js";
+import { interviewRouter } from "../../routes/interview-router.js";
+import { jobRouter } from "../../routes/job-router.js";
+import { resumeRouter } from "../../routes/resume-router.js";
+import { researchRouter } from "../../routes/research-router.js";
+import { sectorRouter } from "../../routes/sector-router.js";
+import { subscriptionRouter } from "../../routes/subscription-router.js";
+import { settingsRouter } from "../../routes/settings-router.js";
+import { adminRouter } from "../../routes/admin-router.js";
+import { createRouter, publicQuery } from "./middleware.js";
 
 export const appRouter = createRouter({
   ping: publicQuery.query(() => ({ ok: true, ts: Date.now() })),
