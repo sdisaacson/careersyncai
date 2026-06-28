@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   Download,
@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import type { MockTailoredResume } from "@/lib/resumeMockData";
 import {
-  getScoreColor,
   getScoreGradient,
   getSectorColor,
 } from "@/lib/resumeUtils";
@@ -32,10 +31,8 @@ export default function ResumeListRow({
   onPreview,
   onDownload,
 }: ResumeListRowProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const { job, highlights } = item;
   const score = job.fitScore ?? 0;
-  const scoreColor = getScoreColor(score);
   const scoreGradient = getScoreGradient(score);
   const sectorName =
     [

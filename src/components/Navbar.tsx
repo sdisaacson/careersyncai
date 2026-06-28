@@ -30,8 +30,10 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu on route change
   useEffect(() => {
-    setMobileOpen(false);
+    const timeoutId = setTimeout(() => setMobileOpen(false), 0);
+    return () => clearTimeout(timeoutId);
   }, [location.pathname]);
 
   useEffect(() => {

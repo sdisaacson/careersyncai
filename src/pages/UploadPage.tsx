@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -16,7 +16,7 @@ import {
   ArrowRight,
   Loader2,
 } from 'lucide-react';
-import { trpc } from '@/providers/trpc';
+import { trpc } from '@/lib/trpc.tsx';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */

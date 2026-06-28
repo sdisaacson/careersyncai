@@ -1,4 +1,4 @@
-import { trpc } from "@/providers/trpc";
+import { trpc } from "@/lib/trpc.tsx";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,

@@ -1,5 +1,5 @@
 import { memo, useRef, useEffect } from "react";
-import { Activity } from "lucide-react";
+import { Activity, CheckCircle2, Circle, Loader2 } from "lucide-react";
 import type { LogEntry } from "@/lib/researchMockData";
 
 export type ActivityLogProps = {
@@ -38,6 +38,18 @@ const ActivityLog = memo(function ActivityLog({ entries, onClear }: ActivityLogP
           >
             Activity Log
           </h4>
+          {entries.length > 0 && (
+            <span
+              className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+              style={{
+                backgroundColor: "rgba(0, 201, 255, 0.15)",
+                color: "#00C9FF",
+                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+              }}
+            >
+              {entries.length}
+            </span>
+          )}
         </div>
         <button
           onClick={onClear}
@@ -54,13 +66,13 @@ const ActivityLog = memo(function ActivityLog({ entries, onClear }: ActivityLogP
         className="flex-1 overflow-y-auto px-5 py-4"
         style={{ scrollBehavior: "smooth" }}
       >
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2.5">
           {entries.map((entry) => (
             <div
               key={entry.id}
               className="flex items-start gap-3"
               style={{
-                animation: "logSlideIn 0.2s ease-out",
+                animation: "logSlideIn 0.25s ease-out",
               }}
             >
               {/* Timestamp */}
@@ -76,28 +88,16 @@ const ActivityLog = memo(function ActivityLog({ entries, onClear }: ActivityLogP
                 {entry.timestamp}
               </span>
 
-              {/* Status dot */}
-              <div className="mt-1.5 shrink-0">
+              {/* Status icon */}
+              <div className="mt-0.5 shrink-0">
                 {entry.status === "active" && (
-                  <div
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{
-                      backgroundColor: "#00C9FF",
-                      animation: "pulse 1.5s infinite",
-                    }}
-                  />
+                  <Loader2 size={12} className="animate-spin" style={{ color: "#00C9FF" }} />
                 )}
                 {entry.status === "complete" && (
-                  <div
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{ backgroundColor: "#22C55E" }}
-                  />
+                  <CheckCircle2 size={12} style={{ color: "#22C55E" }} />
                 )}
                 {entry.status === "queued" && (
-                  <div
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{ backgroundColor: "#334155" }}
-                  />
+                  <Circle size={12} style={{ color: "#334155" }} />
                 )}
               </div>
 
@@ -144,10 +144,6 @@ const ActivityLog = memo(function ActivityLog({ entries, onClear }: ActivityLogP
             opacity: 1;
             transform: translateY(0);
           }
-        }
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
         }
       `}</style>
     </div>

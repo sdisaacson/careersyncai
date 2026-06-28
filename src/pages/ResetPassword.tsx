@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
-import { trpc } from "@/providers/trpc";
+import { trpc } from "@/lib/trpc.tsx";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +25,9 @@ export default function ResetPassword() {
 
   useEffect(() => {
     if (!token) {
-      setError("Missing reset token.");
+      // Defer state update to avoid synchronous setState in effect
+      const timeoutId = setTimeout(() => setError("Missing reset token."), 0);
+      return () => clearTimeout(timeoutId);
     }
   }, [token]);
 
@@ -85,6 +87,7 @@ export default function ResetPassword() {
               <Input
                 id="password"
                 type="password"
+                autoComplete="new-password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -97,6 +100,7 @@ export default function ResetPassword() {
               <Input
                 id="confirm-password"
                 type="password"
+                autoComplete="new-password"
                 placeholder="••••••••"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}

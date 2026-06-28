@@ -21,7 +21,7 @@ import {
   Layers,
   Download,
 } from 'lucide-react';
-import { trpc } from '@/providers/trpc';
+import { trpc } from '@/lib/trpc.tsx';
 import { generateMockJobs, getSectorName, getFitScoreColor, SECTORS } from '@/lib/mockJobs';
 import type { Job } from '@/db/schema';
 
@@ -249,6 +249,7 @@ function JobListRow({ job, index, onView }: { job: Job; index: number; onView: (
 /* ─── Job Detail Drawer ─── */
 function JobDetailDrawer({ job, onClose }: { job: Job | null; onClose: () => void }) {
   const updateStatus = trpc.job.updateStatus.useMutation();
+  const [now] = useState(() => Date.now());
 
   if (!job) return null;
 
@@ -263,7 +264,7 @@ function JobDetailDrawer({ job, onClose }: { job: Job | null; onClose: () => voi
 
   const isExpired = job.deadline ? new Date(job.deadline) < new Date() : false;
   const daysUntilDeadline = job.deadline
-    ? Math.ceil((new Date(job.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    ? Math.ceil((new Date(job.deadline).getTime() - now) / (1000 * 60 * 60 * 24))
     : null;
 
   return (
@@ -361,10 +362,10 @@ function JobDetailDrawer({ job, onClose }: { job: Job | null; onClose: () => voi
                 </svg>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { label: 'Skills', value: Math.min(100, (job.fitScore ?? 0) + Math.floor(Math.random() * 10 - 5)) },
-                    { label: 'Experience', value: Math.min(100, (job.fitScore ?? 0) + Math.floor(Math.random() * 15 - 7)) },
-                    { label: 'Location', value: Math.min(100, (job.fitScore ?? 0) + Math.floor(Math.random() * 20 - 10)) },
-                    { label: 'Growth', value: Math.min(100, (job.fitScore ?? 0) + Math.floor(Math.random() * 12 - 6)) },
+                    { label: 'Skills', value: Math.min(100, (job.fitScore ?? 0) + 2) },
+                    { label: 'Experience', value: Math.min(100, (job.fitScore ?? 0) + 1) },
+                    { label: 'Location', value: Math.min(100, (job.fitScore ?? 0) - 1) },
+                    { label: 'Growth', value: Math.min(100, (job.fitScore ?? 0) - 2) },
                   ].map((item) => (
                     <div key={item.label}>
                       <div className="mb-1 flex items-center justify-between">

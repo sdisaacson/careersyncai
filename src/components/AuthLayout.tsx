@@ -17,8 +17,8 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-  useSidebar,
 } from "@/components/ui/sidebar";
+import { useSidebar } from "@/components/ui/use-sidebar";
 import { LOGIN_PATH } from "@/const";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
@@ -117,11 +117,12 @@ function AuthLayoutContent({
   const activeMenuItem = menuItems.find(item => item.path === location.pathname);
   const isMobile = useIsMobile();
 
+  // Sync isResizing when collapsed state changes
   useEffect(() => {
-    if (isCollapsed) {
+    if (isCollapsed && isResizing) {
       setIsResizing(false);
     }
-  }, [isCollapsed]);
+  }, [isCollapsed, isResizing]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {

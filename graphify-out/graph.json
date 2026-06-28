@@ -63,7 +63,7 @@
       },
       {
         "id": "careermatch_ai_tech_stack",
-        "label": "CareerMatch AI tech stack",
+        "label": "CareerSyncAI tech stack",
         "nodes": [
           "readme_react",
           "readme_typescript",
@@ -13821,7 +13821,7 @@
       "id": "readme_vite"
     },
     {
-      "label": "CareerMatch AI",
+      "label": "CareerSyncAI",
       "file_type": "concept",
       "source_file": "index.html",
       "source_location": null,
@@ -13830,11 +13830,11 @@
       "author": null,
       "contributor": null,
       "community": 30,
-      "norm_label": "careermatch ai",
+      "norm_label": "CareerSyncAI",
       "id": "index_careermatch_ai"
     },
     {
-      "label": "CareerMatch AI",
+      "label": "CareerSyncAI",
       "file_type": "concept",
       "source_file": "info.md",
       "source_location": null,
@@ -13843,7 +13843,7 @@
       "author": null,
       "contributor": null,
       "community": 30,
-      "norm_label": "careermatch ai",
+      "norm_label": "CareerSyncAI",
       "id": "info_careermatch_ai"
     },
     {
@@ -38696,7 +38696,7 @@
     },
     {
       "id": "careermatch_ai_tech_stack",
-      "label": "CareerMatch AI tech stack",
+      "label": "CareerSyncAI tech stack",
       "nodes": [
         "readme_react",
         "readme_typescript",

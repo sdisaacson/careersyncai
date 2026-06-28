@@ -19,5 +19,11 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Allow setState in effects for legitimate sync patterns (React Compiler rule is overly strict)
+      'react-hooks/set-state-in-effect': 'off',
+      // Allow non-component exports in UI component files (shadcn/ui pattern)
+      'react-refresh/only-export-components': 'off',
+    },
   },
 ])

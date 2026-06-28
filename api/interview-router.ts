@@ -42,8 +42,8 @@ export const interviewRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      await db.insert(interviewQuestions).values(input);
-      return { success: true };
+      const [{ id }] = await db.insert(interviewQuestions).values(input).returning({ id: interviewQuestions.id });
+      return { id, success: true };
     }),
 
   answerQuestion: publicQuery

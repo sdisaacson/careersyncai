@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Download,
@@ -14,7 +14,7 @@ import {
   Table,
   RotateCcw,
 } from "lucide-react";
-import { trpc } from "@/providers/trpc";
+import { trpc } from "@/lib/trpc.tsx";
 import { useAuth } from "@/hooks/useAuth";
 import { generateMockResumes, type MockTailoredResume } from "@/lib/resumeMockData";
 import {
@@ -23,7 +23,6 @@ import {
   downloadResumeAsHtml,
   downloadSelectedAsZip,
   downloadAllAsZip,
-  getSectorColor,
 } from "@/lib/resumeUtils";
 import ResumeCard from "@/components/resume/ResumeCard";
 import ResumeListRow from "@/components/resume/ResumeListRow";
@@ -56,7 +55,7 @@ const SORT_OPTIONS = [
 ];
 
 export default function ResumesPage() {
-  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isLoading: authLoading } = useAuth();
   const profileId = 1; // Mock profile ID for demo
 
   // Fetch data from tRPC

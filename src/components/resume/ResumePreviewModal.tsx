@@ -8,7 +8,6 @@ import {
   Pencil,
   ZoomIn,
   ZoomOut,
-  Minus,
   Building2,
   MapPin,
   Calendar,

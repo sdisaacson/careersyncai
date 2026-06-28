@@ -2,10 +2,11 @@ import { getDb } from "../api/queries/connection";
 // TODO: import tables from "./schema"
 
 async function seed() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const db = getDb();
   console.log("Seeding database...");
 
-  // TODO: insert seed data, e.g.
+  // TODO: insert seed data, e.g. (use db variable)
   // await db.insert(schema.posts).values([
   //   { title: "First post", content: "Hello world" },
   // ]);

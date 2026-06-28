@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
-import { trpc } from "@/providers/trpc";
+import { trpc } from "@/lib/trpc.tsx";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,13 +35,14 @@ export default function VerifyEmail() {
 
   useEffect(() => {
     if (!token) {
-      setError("Missing verification token.");
-      return;
+      // Defer state update to avoid synchronous setState in effect body
+      const timeoutId = setTimeout(() => setError("Missing verification token."), 0);
+      return () => clearTimeout(timeoutId);
     }
     if (hasVerified.current) return;
     hasVerified.current = true;
     verifyMutation.mutate({ token });
-  }, [token]);
+  }, [token, verifyMutation]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">

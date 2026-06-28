@@ -6,6 +6,7 @@ import type { AppRouter } from "../../api/router";
 import type { ReactNode } from "react";
 
 export const trpc = createTRPCReact<AppRouter>();
+export type TrpcClient = typeof trpc;
 
 const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({
@@ -24,11 +25,13 @@ const trpcClient = trpc.createClient({
 });
 
 export function TRPCProvider({ children }: { children: ReactNode }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const TrpcProvider = trpc.Provider as any;
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+    <TrpcProvider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         {children}
       </QueryClientProvider>
-    </trpc.Provider>
+    </TrpcProvider>
   );
 }

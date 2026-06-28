@@ -118,7 +118,7 @@
 10. `trpc` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `CareerMatch AI` --semantically_similar_to--> `CareerMatch AI`  [INFERRED] [semantically similar]
+- `CareerSyncAI` --semantically_similar_to--> `CareerSyncAI`  [INFERRED] [semantically similar]
   index.html → info.md
 - `spawn_agent` --semantically_similar_to--> `Subagent`  [INFERRED] [semantically similar]
   .codex/skills/graphify/SKILL.md → .claude/skills/graphify/SKILL.md
@@ -137,7 +137,7 @@
 - **Query Traversal Modes** — references_query_bfs, references_query_dfs, references_query_vocab_expansion [EXTRACTED 1.00]
 - **graphify Export Formats** — references_exports_wiki, references_exports_neo4j, references_exports_svg, references_exports_graphml, references_exports_mcp [EXTRACTED 1.00]
 - **graphify subcommands** — graphify_skill_graphify_query, graphify_skill_graphify_path, graphify_skill_graphify_explain, references_add_watch_graphify_add, graphify_skill_incremental_update, graphify_skill_cluster_only [INFERRED 0.75]
-- **CareerMatch AI tech stack** — readme_react, readme_typescript, readme_vite, info_tailwind_css, info_shadcn_ui, info_node_js_20 [INFERRED 0.75]
+- **CareerSyncAI tech stack** — readme_react, readme_typescript, readme_vite, info_tailwind_css, info_shadcn_ui, info_node_js_20 [INFERRED 0.75]
 - **graphify extraction pipeline** — graphify_skill_detect_files, graphify_skill_ast_extraction, graphify_skill_semantic_extraction, graphify_skill_video_audio_transcription, references_extraction_spec_extraction_subagent [INFERRED 0.75]
 - **Dashboard UI Components** — public_dashboard_preview_job_matching_dashboard, public_dashboard_preview_sidebar_navigation, public_dashboard_preview_top_navigation, public_dashboard_preview_search_bar, public_dashboard_preview_notifications [INFERRED 0.85]
 - **Job Card Elements** — public_dashboard_preview_job_card, public_dashboard_preview_fit_score, public_dashboard_preview_apply_now, public_dashboard_preview_bookmark [INFERRED 0.85]
@@ -264,7 +264,7 @@ Nodes (16): Checkbox(), HoverCardContent(), InputOTP(), InputOTPGroup(), InputOT
 
 ### Community 30 - "Project Documentation"
 Cohesion: 0.19
-Nodes (12): CareerMatch AI, CareerMatch AI, Node.js 20, shadcn/ui, Tailwind CSS, Vite, Expanding the ESLint configuration, React (+4 more)
+Nodes (12): CareerSyncAI, CareerSyncAI, Node.js 20, shadcn/ui, Tailwind CSS, Vite, Expanding the ESLint configuration, React (+4 more)
 
 ### Community 31 - "Community 31"
 Cohesion: 0.23

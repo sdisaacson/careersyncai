@@ -5,7 +5,7 @@ import { CreditCard, Lock, Sparkles } from "lucide-react";
 import PricingCard from "@/components/PricingCard";
 import { PRICING_PLANS, getPlanById } from "@/lib/pricing";
 import { useAuth } from "@/hooks/useAuth";
-import { trpc } from "@/providers/trpc";
+import { trpc } from "@/lib/trpc.tsx";
 import { Button } from "@/components/ui/button";
 import {
   Card,

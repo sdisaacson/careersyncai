@@ -20,13 +20,9 @@ import {
   X,
   Clock,
   MapPin,
-  BarChart3,
-  Layers,
-  Calendar,
-  Briefcase,
 } from 'lucide-react';
 import { Link } from 'react-router';
-import { trpc } from '@/providers/trpc';
+import { trpc } from '@/lib/trpc.tsx';
 import { generateMockJobs, getSectorName, getFitScoreColor, SECTORS } from '@/lib/mockJobs';
 import type { Job } from '@/db/schema';
 
@@ -130,7 +126,7 @@ function StatusBadge({ status }: { status: string }) {
 function RequirementsMatch({ requirements }: { requirements: string | null | undefined }) {
   if (!requirements) return <span className="text-xs" style={{ color: '#64748B' }}>—</span>;
   const items = requirements.split(',').map((r) => r.trim()).filter(Boolean);
-  const matched = Math.floor(items.length * (0.5 + Math.random() * 0.5));
+  const matched = Math.floor(items.length * 0.75);
   const pct = Math.round((matched / items.length) * 100);
   return (
     <div className="flex items-center gap-2">
@@ -616,7 +612,8 @@ export default function DatasheetPage() {
 
   // Reset page when filters change
   useEffect(() => {
-    setCurrentPage(1);
+    const timeoutId = setTimeout(() => setCurrentPage(1), 0);
+    return () => clearTimeout(timeoutId);
   }, [searchQuery, statusFilter, sectorFilter, pageSize, sortCol, sortDir]);
 
   /* Sort handler */

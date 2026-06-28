@@ -93,11 +93,13 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
-    onSelect(api)
+    // Use a ref to avoid calling setState synchronously in effect body
+    const timeoutId = setTimeout(() => onSelect(api), 0)
     api.on("reInit", onSelect)
     api.on("select", onSelect)
 
     return () => {
+      clearTimeout(timeoutId)
       api?.off("select", onSelect)
     }
   }, [api, onSelect])

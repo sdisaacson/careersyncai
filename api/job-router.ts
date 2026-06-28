@@ -35,11 +35,11 @@ export const jobRouter = createRouter({
     }),
 
   createMany: publicQuery
-    .input(z.array(z.any()))
+    .input(z.array(z.record(z.any())))
     .mutation(async ({ input }) => {
       const db = getDb();
       if (input.length === 0) return { count: 0 };
-      await db.insert(jobs).values(input as any);
+      await db.insert(jobs).values(input as unknown[]);
       return { count: input.length };
     }),
 

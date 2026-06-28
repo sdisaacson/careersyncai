@@ -3,12 +3,10 @@ import { motion } from "framer-motion";
 import {
   Download,
   Eye,
-  Briefcase,
   Check,
 } from "lucide-react";
 import type { MockTailoredResume } from "@/lib/resumeMockData";
 import {
-  getScoreColor,
   getScoreGradient,
   getSectorColor,
 } from "@/lib/resumeUtils";
@@ -36,7 +34,6 @@ export default function ResumeCard({
   const [isHovered, setIsHovered] = useState(false);
   const { job, highlights } = item;
   const score = job.fitScore ?? 0;
-  const scoreColor = getScoreColor(score);
   const scoreGradient = getScoreGradient(score);
   const sectorName =
     [

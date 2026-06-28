@@ -10,7 +10,7 @@ import {
   User,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { trpc } from "@/providers/trpc";
+import { trpc } from "@/lib/trpc.tsx";
 import { Button } from "@/components/ui/button";
 import {
   Card,

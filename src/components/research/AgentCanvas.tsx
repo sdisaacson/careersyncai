@@ -26,9 +26,10 @@ type Particle = {
   angle: number;
   orbitSpeed: number;
   orbitRadius: number;
+  glowIntensity: number;
 };
 
-const PHASE_DURATION = 2000; // 2 seconds per phase
+const PHASE_DURATION = 2500;
 const TOTAL_CYCLE = PHASE_DURATION * 5;
 
 function getPhase(elapsed: number): { phase: ParticlePhase; phaseTime: number } {
@@ -50,6 +51,15 @@ function easeInOut(t: number): number {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
 
+function easeOutCubic(t: number): number {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+const SECTOR_COLORS = [
+  "#00C9FF", "#22C55E", "#F59E0B", "#EF4444",
+  "#8B5CF6", "#64748B", "#EC4899", "#3B82F6",
+];
+
 const AgentCanvas = memo(function AgentCanvas({
   isRunning,
   completedSectors,
@@ -62,17 +72,19 @@ const AgentCanvas = memo(function AgentCanvas({
   const rafRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
   const statsRef = useRef({ completedSectors, jobsFound });
+  const dimensionsRef = useRef({ width: 0, height: 0 });
 
   statsRef.current = { completedSectors, jobsFound };
 
   const initParticles = useCallback((width: number, height: number) => {
     const particles: Particle[] = [];
     const sectorAngles = Array.from({ length: 8 }, (_, i) => (i * Math.PI * 2) / 8);
-    const clusterRadius = Math.min(width, height) * 0.25;
+    const clusterRadius = Math.min(width, height) * 0.22;
     const cx = width / 2;
     const cy = height / 2;
+    const PARTICLE_COUNT = 180;
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
       const clusterIndex = i % 8;
       const angle = sectorAngles[clusterIndex];
       const targetX = cx + Math.cos(angle) * clusterRadius;
@@ -85,16 +97,17 @@ const AgentCanvas = memo(function AgentCanvas({
         baseY: Math.random() * height,
         targetX,
         targetY,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        radius: 2 + Math.random() * 1.5,
-        opacity: 0.3 + Math.random() * 0.5,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: (Math.random() - 0.5) * 0.8,
+        radius: 1.5 + Math.random() * 2.5,
+        opacity: 0.2 + Math.random() * 0.4,
         clusterIndex,
         phase: "spawn",
         phaseTime: 0,
         angle: Math.random() * Math.PI * 2,
-        orbitSpeed: 0.005 + Math.random() * 0.01,
-        orbitRadius: 15 + Math.random() * 20,
+        orbitSpeed: 0.003 + Math.random() * 0.012,
+        orbitRadius: 12 + Math.random() * 25,
+        glowIntensity: 0.5 + Math.random() * 0.5,
       });
     }
 
@@ -116,6 +129,7 @@ const AgentCanvas = memo(function AgentCanvas({
 
     const width = rect.width;
     const height = rect.height;
+    dimensionsRef.current = { width, height };
 
     if (particlesRef.current.length === 0) {
       particlesRef.current = initParticles(width, height);
@@ -143,31 +157,66 @@ const AgentCanvas = memo(function AgentCanvas({
       const particles = particlesRef.current;
       const cx = width / 2;
       const cy = height / 2;
+      const minDim = Math.min(width, height);
 
       ctx.clearRect(0, 0, width, height);
 
-      // Draw subtle radial background glow at center
-      const bgGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(width, height) * 0.4);
-      bgGrad.addColorStop(0, "rgba(0, 201, 255, 0.03)");
+      // Deep radial background glow
+      const bgGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, minDim * 0.45);
+      bgGrad.addColorStop(0, "rgba(0, 201, 255, 0.04)");
+      bgGrad.addColorStop(0.5, "rgba(59, 130, 246, 0.02)");
       bgGrad.addColorStop(1, "rgba(0, 201, 255, 0)");
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // Draw center hub
-      const hubPulse = isRunning ? 1 + Math.sin(now * 0.003) * 0.15 : 1;
-      const hubGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 16 * hubPulse);
-      hubGrad.addColorStop(0, "rgba(0, 201, 255, 0.8)");
-      hubGrad.addColorStop(0.5, "rgba(59, 130, 246, 0.5)");
+      // Draw sector rings for completed sectors
+      const sectorAngles = Array.from({ length: 8 }, (_, i) => (i * Math.PI * 2) / 8);
+      const clusterRadius = minDim * 0.22;
+
+      for (let i = 0; i < 8; i++) {
+        const isActive = i < statsRef.current.completedSectors;
+        const angle = sectorAngles[i];
+        const sx = cx + Math.cos(angle) * clusterRadius;
+        const sy = cy + Math.sin(angle) * clusterRadius;
+
+        // Sector glow
+        if (isActive) {
+          const sectorGlow = ctx.createRadialGradient(sx, sy, 0, sx, sy, 40);
+          sectorGlow.addColorStop(0, `${SECTOR_COLORS[i]}15`);
+          sectorGlow.addColorStop(1, "transparent");
+          ctx.fillStyle = sectorGlow;
+          ctx.fillRect(sx - 40, sy - 40, 80, 80);
+        }
+
+        // Ring around cluster center
+        ctx.beginPath();
+        ctx.arc(sx, sy, isActive ? 22 : 16, 0, Math.PI * 2);
+        ctx.strokeStyle = isActive ? `${SECTOR_COLORS[i]}40` : "#33415530";
+        ctx.lineWidth = isActive ? 1.5 : 0.5;
+        ctx.stroke();
+
+        // Inner dot
+        ctx.beginPath();
+        ctx.arc(sx, sy, isActive ? 5 : 3, 0, Math.PI * 2);
+        ctx.fillStyle = isActive ? SECTOR_COLORS[i] : "#475569";
+        ctx.fill();
+      }
+
+      // Center hub with pulsing effect
+      const hubPulse = isRunning ? 1 + Math.sin(now * 0.002) * 0.2 : 1;
+      const hubGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 20 * hubPulse);
+      hubGrad.addColorStop(0, "rgba(0, 201, 255, 0.9)");
+      hubGrad.addColorStop(0.4, "rgba(59, 130, 246, 0.6)");
       hubGrad.addColorStop(1, "rgba(124, 58, 237, 0)");
       ctx.beginPath();
-      ctx.arc(cx, cy, 16 * hubPulse, 0, Math.PI * 2);
+      ctx.arc(cx, cy, 20 * hubPulse, 0, Math.PI * 2);
       ctx.fillStyle = hubGrad;
       ctx.fill();
 
-      // Draw hub core
+      // Hub core
       ctx.beginPath();
-      ctx.arc(cx, cy, 6, 0, Math.PI * 2);
-      const coreGrad = ctx.createLinearGradient(cx - 6, cy - 6, cx + 6, cy + 6);
+      ctx.arc(cx, cy, 7, 0, Math.PI * 2);
+      const coreGrad = ctx.createLinearGradient(cx - 7, cy - 7, cx + 7, cy + 7);
       coreGrad.addColorStop(0, "#00C9FF");
       coreGrad.addColorStop(0.5, "#3B82F6");
       coreGrad.addColorStop(1, "#7C3AED");
@@ -178,32 +227,33 @@ const AgentCanvas = memo(function AgentCanvas({
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         const eased = easeInOut(phaseTime);
+        const sectorColor = SECTOR_COLORS[p.clusterIndex];
 
-        // Phase-based animation
         switch (phase) {
           case "spawn": {
-            p.opacity = 0.2 + phaseTime * 0.4;
-            p.x += p.vx;
-            p.y += p.vy;
-            // Wrap around
-            if (p.x < 0) p.x = width;
-            if (p.x > width) p.x = 0;
-            if (p.y < 0) p.y = height;
-            if (p.y > height) p.y = 0;
+            p.opacity = 0.15 + phaseTime * 0.5;
+            p.x += p.vx * 0.5;
+            p.y += p.vy * 0.5;
+            if (p.x < -10) p.x = width + 10;
+            if (p.x > width + 10) p.x = -10;
+            if (p.y < -10) p.y = height + 10;
+            if (p.y > height + 10) p.y = -10;
             break;
           }
           case "converge": {
             const tx = p.targetX;
             const ty = p.targetY;
-            p.x += (tx - p.x) * (0.02 + eased * 0.03);
-            p.y += (ty - p.y) * (0.02 + eased * 0.03);
-            p.opacity = 0.5 + eased * 0.3;
+            const speed = 0.015 + eased * 0.04;
+            p.x += (tx - p.x) * speed;
+            p.y += (ty - p.y) * speed;
+            p.opacity = 0.4 + eased * 0.4;
 
-            // Light trail
+            // Trail effect
+            const trailAlpha = (1 - eased) * 0.15;
             ctx.beginPath();
-            ctx.moveTo(p.x - p.vx * 5, p.y - p.vy * 5);
+            ctx.moveTo(p.x - (tx - p.x) * 0.3, p.y - (ty - p.y) * 0.3);
             ctx.lineTo(p.x, p.y);
-            ctx.strokeStyle = `rgba(0, 201, 255, ${0.1 * (1 - eased)})`;
+            ctx.strokeStyle = `${sectorColor}${Math.round(trailAlpha * 255).toString(16).padStart(2, "0")}`;
             ctx.lineWidth = 1;
             ctx.stroke();
             break;
@@ -212,75 +262,78 @@ const AgentCanvas = memo(function AgentCanvas({
             p.angle += p.orbitSpeed;
             const orbitX = p.targetX + Math.cos(p.angle) * p.orbitRadius;
             const orbitY = p.targetY + Math.sin(p.angle) * p.orbitRadius;
-            p.x += (orbitX - p.x) * 0.1;
-            p.y += (orbitY - p.y) * 0.1;
-            p.opacity = 0.7 + Math.sin(now * 0.005 + i) * 0.2;
+            p.x += (orbitX - p.x) * 0.08;
+            p.y += (orbitY - p.y) * 0.08;
+            p.opacity = 0.6 + Math.sin(now * 0.004 + i * 0.5) * 0.25;
             break;
           }
           case "disperse": {
-            const dispAngle = (p.clusterIndex * Math.PI * 2) / 8 + p.angle;
-            const dispDist = eased * Math.min(width, height) * 0.45;
+            const dispAngle = (p.clusterIndex * Math.PI * 2) / 8 + p.angle + now * 0.0005;
+            const dispDist = eased * minDim * 0.42;
             const tx = cx + Math.cos(dispAngle) * dispDist;
             const ty = cy + Math.sin(dispAngle) * dispDist;
-            p.x += (tx - p.x) * 0.03;
-            p.y += (ty - p.y) * 0.03;
-            p.opacity = 0.6 - eased * 0.2;
+            p.x += (tx - p.x) * 0.025;
+            p.y += (ty - p.y) * 0.025;
+            p.opacity = 0.5 - eased * 0.15;
             break;
           }
           case "pulse": {
             const pulsePhase = Math.sin(phaseTime * Math.PI);
-            p.opacity = 0.4 + pulsePhase * 0.5;
-            p.x += p.vx * 0.3;
-            p.y += p.vy * 0.3;
-            if (p.x < 0) p.x = width;
-            if (p.x > width) p.x = 0;
-            if (p.y < 0) p.y = height;
-            if (p.y > height) p.y = 0;
+            p.opacity = 0.35 + pulsePhase * 0.55;
+            p.x += p.vx * 0.2;
+            p.y += p.vy * 0.2;
+            if (p.x < -10) p.x = width + 10;
+            if (p.x > width + 10) p.x = -10;
+            if (p.y < -10) p.y = height + 10;
+            if (p.y > height + 10) p.y = -10;
             break;
           }
         }
 
-        // Mouse interaction - gentle attraction
+        // Mouse interaction
         const mdx = mouseRef.current.x - p.x;
         const mdy = mouseRef.current.y - p.y;
         const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
-        if (mDist < 120 && mDist > 0) {
-          const force = (1 - mDist / 120) * 0.3;
+        if (mDist < 150 && mDist > 0) {
+          const force = (1 - mDist / 150) * 0.4;
           p.x += (mdx / mDist) * force;
           p.y += (mdy / mDist) * force;
+        }
+
+        // Draw glow
+        if (p.opacity > 0.4) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius * 4, 0, Math.PI * 2);
+          ctx.fillStyle = `${sectorColor}${Math.round((p.opacity - 0.4) * 0.12 * 255).toString(16).padStart(2, "0")}`;
+          ctx.fill();
         }
 
         // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 201, 255, ${p.opacity})`;
+        ctx.fillStyle = `${sectorColor}${Math.round(p.opacity * 255).toString(16).padStart(2, "0")}`;
         ctx.fill();
-
-        // Glow effect for pulse phase
-        if (phase === "pulse" && p.opacity > 0.6) {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(0, 201, 255, ${(p.opacity - 0.6) * 0.15})`;
-          ctx.fill();
-        }
       }
 
-      // Draw connections between nearby particles during cluster phase
+      // Connections between nearby particles
       if (phase === "cluster" || phase === "converge") {
-        const connectionThreshold = 60;
-        const maxConnections = 3;
-        for (let i = 0; i < particles.length; i++) {
+        const connectionThreshold = 70;
+        const maxConnections = 2;
+        for (let i = 0; i < particles.length; i += 2) {
           let connections = 0;
-          for (let j = i + 1; j < particles.length && connections < maxConnections; j++) {
+          for (let j = i + 1; j < particles.length && connections < maxConnections; j += 2) {
             const dx = particles[i].x - particles[j].x;
             const dy = particles[i].y - particles[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < connectionThreshold) {
-              const alpha = (1 - dist / connectionThreshold) * 0.2;
+              const alpha = (1 - dist / connectionThreshold) * 0.25;
               ctx.beginPath();
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(0, 201, 255, ${alpha})`;
+              const connColor = particles[i].clusterIndex === particles[j].clusterIndex
+                ? SECTOR_COLORS[particles[i].clusterIndex]
+                : "#00C9FF";
+              ctx.strokeStyle = `${connColor}${Math.round(alpha * 255).toString(16).padStart(2, "0")}`;
               ctx.lineWidth = 0.5;
               ctx.stroke();
               connections++;
@@ -289,11 +342,9 @@ const AgentCanvas = memo(function AgentCanvas({
         }
       }
 
-      // Draw hub-to-cluster connections during pulse phase
+      // Hub-to-cluster connections during pulse
       if (phase === "pulse") {
-        const sectorAngles = Array.from({ length: 8 }, (_, i) => (i * Math.PI * 2) / 8);
-        const clusterRadius = Math.min(width, height) * 0.25;
-        const pulseAlpha = Math.sin(phaseTime * Math.PI) * 0.15;
+        const pulseAlpha = Math.sin(phaseTime * Math.PI) * 0.2;
         for (let i = 0; i < 8; i++) {
           const angle = sectorAngles[i];
           const tx = cx + Math.cos(angle) * clusterRadius;
@@ -301,87 +352,83 @@ const AgentCanvas = memo(function AgentCanvas({
           ctx.beginPath();
           ctx.moveTo(cx, cy);
           ctx.lineTo(tx, ty);
-          ctx.strokeStyle = `rgba(0, 201, 255, ${pulseAlpha})`;
-          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = `${SECTOR_COLORS[i]}${Math.round(pulseAlpha * 255).toString(16).padStart(2, "0")}`;
+          ctx.lineWidth = 0.8;
           ctx.stroke();
         }
       }
 
-      // Draw sector labels
+      // Sector labels
       const sectorNames = [
-        "Technology",
-        "Healthcare",
-        "Finance",
-        "Energy",
-        "Education",
-        "Manufacturing",
-        "Consulting",
-        "Government",
+        "Technology", "Healthcare", "Finance", "Energy",
+        "Education", "Manufacturing", "Consulting", "Government",
       ];
-      const sectorColors = [
-        "#00C9FF", "#22C55E", "#F59E0B", "#EF4444",
-        "#8B5CF6", "#64748B", "#EC4899", "#3B82F6",
-      ];
-      const sectorAngles = Array.from({ length: 8 }, (_, i) => (i * Math.PI * 2) / 8);
-      const labelRadius = Math.min(width, height) * 0.38;
+      const labelRadius = minDim * 0.36;
 
       for (let i = 0; i < 8; i++) {
         const angle = sectorAngles[i];
         const lx = cx + Math.cos(angle) * labelRadius;
         const ly = cy + Math.sin(angle) * labelRadius;
 
-        // Label background
-        ctx.font = '500 11px "Inter", system-ui, sans-serif';
+        const isActive = i < statsRef.current.completedSectors;
+        const bgAlpha = isActive ? 0.3 : 0.12;
+
+        ctx.font = '600 11px "Inter", system-ui, sans-serif';
         const text = sectorNames[i];
         const metrics = ctx.measureText(text);
-        const pad = 8;
+        const pad = 10;
         const labelW = metrics.width + pad * 2;
-        const labelH = 22;
+        const labelH = 24;
 
-        // Highlight active sector
-        const isActive = i < statsRef.current.completedSectors;
-        const bgAlpha = isActive ? 0.25 : 0.1;
-
+        // Label background with rounded rect
         ctx.beginPath();
-        ctx.roundRect(lx - labelW / 2, ly - labelH / 2, labelW, labelH, 11);
-        ctx.fillStyle = `${sectorColors[i]}${Math.round(bgAlpha * 255).toString(16).padStart(2, "0")}`;
+        ctx.roundRect(lx - labelW / 2, ly - labelH / 2, labelW, labelH, 12);
+        ctx.fillStyle = `${SECTOR_COLORS[i]}${Math.round(bgAlpha * 255).toString(16).padStart(2, "0")}`;
         ctx.fill();
 
         if (isActive) {
           ctx.beginPath();
-          ctx.roundRect(lx - labelW / 2, ly - labelH / 2, labelW, labelH, 11);
-          ctx.strokeStyle = `${sectorColors[i]}60`;
-          ctx.lineWidth = 1;
+          ctx.roundRect(lx - labelW / 2, ly - labelH / 2, labelW, labelH, 12);
+          ctx.strokeStyle = `${SECTOR_COLORS[i]}80`;
+          ctx.lineWidth = 1.5;
           ctx.stroke();
         }
 
-        ctx.fillStyle = isActive ? sectorColors[i] : "#94A3B8";
+        ctx.fillStyle = isActive ? SECTOR_COLORS[i] : "#94A3B8";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(text, lx, ly);
       }
 
-      // Overlay stats (top-left)
+      // Stats overlay (top-left)
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
 
-      ctx.font = '500 11px "JetBrains Mono", ui-monospace, monospace';
+      ctx.font = '600 12px "JetBrains Mono", ui-monospace, monospace';
       ctx.fillStyle = "#00C9FF";
-      ctx.fillText(`Agents Active: ${totalSectors}`, 16, 16);
+      ctx.fillText(`Agents Active: ${totalSectors}`, 20, 20);
 
+      ctx.font = '500 11px "JetBrains Mono", ui-monospace, monospace';
       ctx.fillStyle = "#F5F7FA";
-      ctx.fillText(
-        `Jobs Found: ${statsRef.current.jobsFound}`,
-        16,
-        34
-      );
+      ctx.fillText(`Jobs Found: ${statsRef.current.jobsFound}`, 20, 40);
 
       ctx.fillStyle = "#94A3B8";
-      ctx.fillText(
-        `Sectors: ${statsRef.current.completedSectors}/${totalSectors}`,
-        16,
-        52
-      );
+      ctx.fillText(`Sectors: ${statsRef.current.completedSectors}/${totalSectors}`, 20, 58);
+
+      // Animated status indicator
+      if (isRunning) {
+        const dotX = 20;
+        const dotY = 80;
+        const dotRadius = 4 + Math.sin(now * 0.005) * 2;
+        ctx.beginPath();
+        ctx.arc(dotX, dotY, dotRadius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 201, 255, ${0.6 + Math.sin(now * 0.008) * 0.4})`;
+        ctx.fill();
+
+        ctx.font = '500 10px "JetBrains Mono", ui-monospace, monospace';
+        ctx.fillStyle = "#64748B";
+        ctx.fillText("SCANNING", dotX + 14, dotY - 4);
+      }
 
       rafRef.current = requestAnimationFrame(animate);
     };

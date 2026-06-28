@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { trpc } from "@/providers/trpc";
+import { trpc } from "@/lib/trpc.tsx";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -55,7 +55,6 @@ export default function AdminSettingsPage() {
     initialized.current = true;
     const map = new Map(settings.map((s) => [s.key, s.value ?? ""]));
     // Sync form defaults from fetched settings; this runs once after initial load.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setValues({
       [SETTING_KEYS.moonshotApiKey]: map.get(SETTING_KEYS.moonshotApiKey) ?? "",
       [SETTING_KEYS.stripePublishableKey]:

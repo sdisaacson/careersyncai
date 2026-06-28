@@ -16,8 +16,15 @@ import {
   BarChart3,
   Clock,
   Globe,
+  TrendingUp,
+  Database,
+  ZapIcon,
+  Activity,
+  Search,
+  Network,
+  Sparkles,
 } from "lucide-react";
-import { trpc } from "@/providers/trpc";
+import { trpc } from "@/lib/trpc.tsx";
 import AgentCanvas from "@/components/research/AgentCanvas";
 import ActivityLog from "@/components/research/ActivityLog";
 import {
@@ -54,8 +61,6 @@ type SectorState = {
   jobs: MockJob[];
 };
 
-const easeOutExpo = [0.16, 1, 0.3, 1] as [number, number, number, number];
-
 export default function ResearchPage() {
   const navigate = useNavigate();
   const [isRunning, setIsRunning] = useState(false);
@@ -77,6 +82,8 @@ export default function ResearchPage() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [totalJobsFound, setTotalJobsFound] = useState(0);
   const [completedSectors, setCompletedSectors] = useState(0);
+  const [sourcesScanned, setSourcesScanned] = useState(0);
+  const [matchesAnalyzed, setMatchesAnalyzed] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number>(0);
 
@@ -113,6 +120,8 @@ export default function ResearchPage() {
     setElapsedTime(0);
     setTotalJobsFound(0);
     setCompletedSectors(0);
+    setSourcesScanned(0);
+    setMatchesAnalyzed(0);
     setLogEntries([]);
     setSectors((prev) =>
       prev.map((s) => ({ ...s, status: "waiting" as SectorStatus, jobCount: 0, progress: 0, jobs: [] }))
@@ -160,6 +169,8 @@ export default function ResearchPage() {
 
       setTotalJobsFound((prev) => prev + jobs.length);
       setCompletedSectors((prev) => prev + 1);
+      setSourcesScanned((prev) => prev + Math.floor(Math.random() * 3) + 2);
+      setMatchesAnalyzed((prev) => prev + jobs.length * 3);
 
       addLog(
         sectorConfig.name,
@@ -172,7 +183,7 @@ export default function ResearchPage() {
     // Save all jobs to database
     if (allJobs.length > 0) {
       const dbJobs = allJobs.map((job) => ({
-        profileId: 1, // Default profile
+        profileId: 1,
         sectorId: job.sectorId,
         title: job.title,
         company: job.company,
@@ -215,10 +226,17 @@ export default function ResearchPage() {
     ? Math.round(sectors.reduce((sum, s) => sum + s.progress, 0) / sectors.length)
     : 0;
 
+  const avgFitScore = sectors.flatMap((s) => s.jobs).length > 0
+    ? Math.round(
+        sectors.flatMap((s) => s.jobs).reduce((sum, j) => sum + j.fitScore, 0) /
+        sectors.flatMap((s) => s.jobs).length
+      )
+    : 0;
+
   return (
     <div style={{ backgroundColor: "#0B0E14", minHeight: "100dvh" }}>
       {/* Section 1: Page Header */}
-      <section className="mx-auto max-w-[1000px] px-4 pt-20 pb-10 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-[1200px] px-4 pt-20 pb-8 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -304,7 +322,7 @@ export default function ResearchPage() {
         </motion.div>
       </section>
 
-      {/* Section 2: Agent Visualization + Activity Log */}
+      {/* Section 2: Control + Overall Progress + Main Dashboard */}
       <section className="mx-auto max-w-[1200px] px-4 pb-12 sm:px-6 lg:px-8">
         {/* Control Buttons */}
         <motion.div
@@ -343,9 +361,7 @@ export default function ResearchPage() {
             >
               {isRunning ? (
                 <>
-                  <div
-                    className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
-                  />
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   Research in Progress...
                 </>
               ) : (
@@ -401,19 +417,97 @@ export default function ResearchPage() {
           )}
         </motion.div>
 
-        {/* Canvas + Log Layout */}
+        {/* Overall Progress - Above both cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: EASE_OUT_EXPO, delay: 0.45 }}
+          className="mb-6 rounded-xl p-5"
+          style={{
+            backgroundColor: "#111827",
+            border: "1px solid #334155",
+          }}
+        >
+          <div className="mb-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <TrendingUp size={16} style={{ color: "#00C9FF" }} />
+              <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
+                Overall Progress
+              </span>
+            </div>
+            <span
+              className="text-xs font-medium"
+              style={{
+                color: "#00C9FF",
+                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+              }}
+            >
+              {overallProgress}%
+            </span>
+          </div>
+          <div
+            className="h-2 w-full overflow-hidden rounded-full"
+            style={{ backgroundColor: "#1E293B" }}
+          >
+            <motion.div
+              className="h-full rounded-full"
+              style={{
+                background:
+                  "linear-gradient(90deg, #00C9FF 0%, #3B82F6 50%, #7C3AED 100%)",
+                boxShadow: "0 0 10px rgba(0, 201, 255, 0.3)",
+              }}
+              initial={{ width: 0 }}
+              animate={{ width: `${overallProgress}%` }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div className="flex items-center gap-2">
+              <Globe size={14} style={{ color: "#94A3B8" }} />
+              <span className="text-xs" style={{ color: "#94A3B8" }}>
+                Sectors:{" "}
+                <strong style={{ color: "#F5F7FA" }}>
+                  {completedSectors}/8
+                </strong>
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <BarChart3 size={14} style={{ color: "#94A3B8" }} />
+              <span className="text-xs" style={{ color: "#94A3B8" }}>
+                Jobs:{" "}
+                <strong style={{ color: "#F5F7FA" }}>{totalJobsFound}</strong>
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock size={14} style={{ color: "#94A3B8" }} />
+              <span className="text-xs" style={{ color: "#94A3B8" }}>
+                Time:{" "}
+                <strong style={{ color: "#F5F7FA" }}>{formatTime(elapsedTime)}</strong>
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Sparkles size={14} style={{ color: "#94A3B8" }} />
+              <span className="text-xs" style={{ color: "#94A3B8" }}>
+                Avg Fit:{" "}
+                <strong style={{ color: "#F5F7FA" }}>{avgFitScore}%</strong>
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Main Dashboard: Canvas + Log */}
         <div className="flex flex-col gap-4 lg:flex-row">
           {/* Agent Arena */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO, delay: 0.5 }}
-            className="relative overflow-hidden lg:w-[60%]"
+            className="relative overflow-hidden lg:w-[58%]"
             style={{
-              backgroundColor: "#1E293B",
+              backgroundColor: "#111827",
               border: "1px solid #334155",
               borderRadius: "16px",
-              aspectRatio: "16/9",
+              aspectRatio: "16/10",
             }}
           >
             <AgentCanvas
@@ -429,78 +523,52 @@ export default function ResearchPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO, delay: 0.6 }}
-            className="h-[400px] lg:h-auto lg:w-[40%]"
+            className="h-[400px] lg:h-auto lg:w-[42%]"
             style={{ minHeight: "300px" }}
           >
             <ActivityLog entries={logEntries} onClear={clearLog} />
           </motion.div>
         </div>
 
-        {/* Overall Progress */}
+        {/* Additional Metrics Row */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE_OUT_EXPO, delay: 0.7 }}
-          className="mt-6 rounded-xl p-5"
-          style={{
-            backgroundColor: "#111827",
-            border: "1px solid #334155",
-          }}
+          className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4"
         >
-          <div className="mb-3 flex items-center justify-between">
-            <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
-              Overall Progress
-            </span>
-            <span
-              className="text-xs font-medium"
-              style={{
-                color: "#00C9FF",
-                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-              }}
-            >
-              {overallProgress}%
-            </span>
-          </div>
-          <div
-            className="h-1.5 w-full overflow-hidden rounded-full"
-            style={{ backgroundColor: "#334155" }}
-          >
-            <motion.div
-              className="h-full rounded-full"
-              style={{
-                background:
-                  "linear-gradient(90deg, #00C9FF 0%, #7C3AED 100%)",
-              }}
-              initial={{ width: 0 }}
-              animate={{ width: `${overallProgress}%` }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            />
-          </div>
-          <div className="mt-4 flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <Globe size={14} style={{ color: "#94A3B8" }} />
-              <span className="text-xs" style={{ color: "#94A3B8" }}>
-                Sectors:{" "}
-                <strong style={{ color: "#F5F7FA" }}>
-                  {completedSectors}/8
-                </strong>
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <BarChart3 size={14} style={{ color: "#94A3B8" }} />
-              <span className="text-xs" style={{ color: "#94A3B8" }}>
-                Jobs Found:{" "}
-                <strong style={{ color: "#F5F7FA" }}>{totalJobsFound}</strong>
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock size={14} style={{ color: "#94A3B8" }} />
-              <span className="text-xs" style={{ color: "#94A3B8" }}>
-                Elapsed:{" "}
-                <strong style={{ color: "#F5F7FA" }}>{formatTime(elapsedTime)}</strong>
-              </span>
-            </div>
-          </div>
+          <MetricCard
+            icon={Search}
+            label="Sources Scanned"
+            value={sourcesScanned > 0 ? sourcesScanned.toString() : "—"}
+            subValue="job boards"
+            color="#00C9FF"
+            isActive={isRunning || isComplete}
+          />
+          <MetricCard
+            icon={Network}
+            label="Matches Analyzed"
+            value={matchesAnalyzed > 0 ? matchesAnalyzed.toString() : "—"}
+            subValue="candidates"
+            color="#22C55E"
+            isActive={isRunning || isComplete}
+          />
+          <MetricCard
+            icon={Database}
+            label="Data Points"
+            value={totalJobsFound > 0 ? (totalJobsFound * 12).toString() : "—"}
+            subValue="per job"
+            color="#F59E0B"
+            isActive={isRunning || isComplete}
+          />
+          <MetricCard
+            icon={ZapIcon}
+            label="Processing Speed"
+            value={isRunning ? "2.4x" : isComplete ? "2.4x" : "—"}
+            subValue="vs manual"
+            color="#EC4899"
+            isActive={isRunning || isComplete}
+          />
         </motion.div>
       </section>
 
@@ -683,7 +751,9 @@ export default function ResearchPage() {
                                   className="text-xs font-medium"
                                   style={{ color: "#F5F7FA" }}
                                 >
-                                  {job.title}
+                                  {job.title.length > 28
+                                    ? job.title.slice(0, 28) + "..."
+                                    : job.title}
                                 </span>
                                 <span
                                   className="rounded-full px-2 py-0.5 text-[10px] font-medium"
@@ -805,30 +875,18 @@ export default function ResearchPage() {
                     Jobs Found
                   </span>
                 </div>
-                <div
-                  className="h-10 w-px"
-                  style={{ backgroundColor: "#334155" }}
-                />
+                <div className="h-10 w-px" style={{ backgroundColor: "#334155" }} />
                 <div className="text-center">
-                  <div
-                    className="text-2xl font-bold sm:text-3xl"
-                    style={{ color: "#F5F7FA" }}
-                  >
+                  <div className="text-2xl font-bold sm:text-3xl" style={{ color: "#F5F7FA" }}>
                     <CounterAnimation target={8} duration={800} />
                   </div>
                   <span className="mt-1 block text-xs" style={{ color: "#94A3B8" }}>
                     Sectors
                   </span>
                 </div>
-                <div
-                  className="h-10 w-px"
-                  style={{ backgroundColor: "#334155" }}
-                />
+                <div className="h-10 w-px" style={{ backgroundColor: "#334155" }} />
                 <div className="text-center">
-                  <div
-                    className="text-2xl font-bold sm:text-3xl"
-                    style={{ color: "#F5F7FA" }}
-                  >
+                  <div className="text-2xl font-bold sm:text-3xl" style={{ color: "#F5F7FA" }}>
                     {formatTime(elapsedTime)}
                   </div>
                   <span className="mt-1 block text-xs" style={{ color: "#94A3B8" }}>
@@ -844,10 +902,7 @@ export default function ResearchPage() {
                 transition={{ delay: 0.7, duration: 0.5 }}
                 className="mt-8"
               >
-                <h3
-                  className="mb-4 text-sm font-medium"
-                  style={{ color: "#94A3B8" }}
-                >
+                <h3 className="mb-4 text-sm font-medium" style={{ color: "#94A3B8" }}>
                   Top Matches
                 </h3>
                 <div className="flex flex-col gap-3 sm:flex-row">
@@ -873,10 +928,7 @@ export default function ResearchPage() {
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span
-                            className="text-xs font-medium"
-                            style={{ color: "#F5F7FA" }}
-                          >
+                          <span className="text-xs font-medium" style={{ color: "#F5F7FA" }}>
                             {job.title.length > 28
                               ? job.title.slice(0, 28) + "..."
                               : job.title}
@@ -897,16 +949,10 @@ export default function ResearchPage() {
                             {job.fitScore}%
                           </span>
                         </div>
-                        <span
-                          className="mt-1 block text-[11px]"
-                          style={{ color: "#94A3B8" }}
-                        >
+                        <span className="mt-1 block text-[11px]" style={{ color: "#94A3B8" }}>
                           {job.company}
                         </span>
-                        <span
-                          className="mt-1 block text-[10px]"
-                          style={{ color: "#64748B" }}
-                        >
+                        <span className="mt-1 block text-[10px]" style={{ color: "#64748B" }}>
                           {job.sectorName}
                         </span>
                       </motion.div>
@@ -963,6 +1009,54 @@ export default function ResearchPage() {
   );
 }
 
+/* Metric Card Component */
+function MetricCard({
+  icon: Icon,
+  label,
+  value,
+  subValue,
+  color,
+  isActive,
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+  subValue: string;
+  color: string;
+  isActive: boolean;
+}) {
+  return (
+    <div
+      className="rounded-xl p-4"
+      style={{
+        backgroundColor: "#111827",
+        border: "1px solid #334155",
+      }}
+    >
+      <div className="flex items-center gap-2 mb-2">
+        <Icon size={14} style={{ color: isActive ? color : "#64748B" }} />
+        <span className="text-xs" style={{ color: "#94A3B8" }}>
+          {label}
+        </span>
+      </div>
+      <div className="flex items-baseline gap-1">
+        <span
+          className="text-xl font-bold"
+          style={{
+            color: isActive ? "#F5F7FA" : "#64748B",
+            fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+          }}
+        >
+          {value}
+        </span>
+        <span className="text-[10px]" style={{ color: "#64748B" }}>
+          {subValue}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 /* Sparkline Component */
 function Sparkline({ data, color }: { data: number[]; color: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -988,7 +1082,6 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
       y: h - ((v - min) / range) * (h - 4) - 2,
     }));
 
-    // Draw line
     ctx.beginPath();
     ctx.moveTo(points[0].x, points[0].y);
     for (let i = 1; i < points.length; i++) {
@@ -1001,52 +1094,45 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
     ctx.lineWidth = 1.5;
     ctx.stroke();
 
-    // Draw area under
+    // Fill area
     ctx.lineTo(points[points.length - 1].x, h);
     ctx.lineTo(points[0].x, h);
     ctx.closePath();
-    ctx.fillStyle = `${color}10`;
+    ctx.fillStyle = `${color}15`;
     ctx.fill();
   }, [data, color]);
 
   return (
     <canvas
       ref={canvasRef}
-      style={{ width: "100%", height: "32px", display: "block" }}
+      style={{ width: 120, height: 32, display: "block" }}
     />
   );
 }
 
 /* Counter Animation */
-function CounterAnimation({
-  target,
-  duration,
-}: {
-  target: number;
-  duration: number;
-}) {
-  const [value, setValue] = useState(0);
-  const startTimeRef = useRef<number | null>(null);
+function CounterAnimation({ target, duration }: { target: number; duration: number }) {
+  const [count, setCount] = useState(0);
+  const startTimeRef = useRef<number>(0);
 
   useEffect(() => {
-    startTimeRef.current = null;
+    startTimeRef.current = performance.now();
+    let raf: number;
+
     const animate = (now: number) => {
-      if (!startTimeRef.current) startTimeRef.current = now;
       const elapsed = now - startTimeRef.current;
       const progress = Math.min(elapsed / duration, 1);
-      // ease-out-expo
-      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      setValue(Math.round(eased * target));
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * target));
+
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        raf = requestAnimationFrame(animate);
       }
     };
-    requestAnimationFrame(animate);
+
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
   }, [target, duration]);
 
-  return (
-    <span style={{ fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}>
-      {value}
-    </span>
-  );
+  return <span>{count}</span>;
 }

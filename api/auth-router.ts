@@ -51,19 +51,24 @@ export const authRouter = createRouter({
   signup: publicQuery
     .input(authInput)
     .mutation(async ({ input }) => {
-      const existing = await findUserByEmail(input.email);
-      if (existing) {
+      try {
+        const existing = await findUserByEmail(input.email);
+        if (existing) {
+          return { success: true };
+        }
+        const passwordHash = await bcrypt.hash(input.password, 12);
+        const user = await createUser({
+          email: input.email,
+          passwordHash,
+        });
+        const verificationToken = generateToken();
+        await setEmailVerificationToken(user.id, verificationToken);
+        await sendVerificationEmail(input.email, verificationToken);
         return { success: true };
+      } catch (err) {
+        console.error("[signup error]", err);
+        throw new Error(err instanceof Error ? err.message : "Registration failed");
       }
-      const passwordHash = await bcrypt.hash(input.password, 12);
-      const user = await createUser({
-        email: input.email,
-        passwordHash,
-      });
-      const verificationToken = generateToken();
-      await setEmailVerificationToken(user.id, verificationToken);
-      await sendVerificationEmail(input.email, verificationToken);
-      return { success: true };
     }),
 
   login: publicQuery

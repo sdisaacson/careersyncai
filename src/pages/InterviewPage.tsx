@@ -5,7 +5,6 @@ import {
   User,
   Target,
   Zap,
-  SlidersHorizontal,
   Grid3x3,
   ArrowLeft,
   ArrowRight,
@@ -13,11 +12,12 @@ import {
   CheckCircle,
   MapPin,
   Building2,
-  Laptop,
   DollarSign,
   Clock,
+  Compass,
+  Briefcase,
 } from 'lucide-react';
-import { trpc } from '@/providers/trpc';
+import { trpc } from '@/lib/trpc.tsx';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -131,25 +131,33 @@ function BriefcaseIcon() {
 /*  Sidebar profile derived from answers                               */
 /* ------------------------------------------------------------------ */
 
-function buildProfileDisplay(answers: AnswerState) {
-  const profile: Record<string, { label: string; icon: React.ReactNode; values: string[] }> = {};
+/* ------------------------------------------------------------------ */
+/*  Sidebar profile derived from answers                               */
+/* ------------------------------------------------------------------ */
 
-  // Basics
-  profile.basics = {
-    label: 'Basics',
-    icon: <User size={14} />,
-    values: answers[5] ? [answers[5]] : [],
+function buildProfileDisplay(answers: AnswerState) {
+  const profile: Record<
+    string,
+    { label: string; icon: React.ReactNode; values: string[]; style?: 'chips' | 'text' }
+  > = {};
+
+  // 1. Career goals
+  profile.goals = {
+    label: 'Career Goals',
+    icon: <Compass size={14} />,
+    values: answers[1] ? [answers[1]] : [],
+    style: 'text',
   };
 
-  // Target Role
+  // 2. Target roles
   const roles = answers[2];
   profile.targetRole = {
-    label: 'Target Role',
-    icon: <Target size={14} />,
+    label: 'Target Roles',
+    icon: <BriefcaseIcon />,
     values: roles ? roles.split(', ') : [],
   };
 
-  // Skills
+  // 3. Skills
   const skills = answers[3];
   profile.skills = {
     label: 'Skills',
@@ -157,26 +165,43 @@ function buildProfileDisplay(answers: AnswerState) {
     values: skills ? skills.split(', ') : [],
   };
 
-  // Preferences
-  const prefs: string[] = [];
-  if (answers[6]) prefs.push(`Environment: ${answers[6]}`);
-  if (answers[7]) {
-    const val = parseInt(answers[7], 10);
-    prefs.push(`Salary priority: ${val >= 4 ? 'High' : val >= 2 ? 'Medium' : 'Lower'}`);
-  }
-  if (answers[8]) prefs.push(`Level: ${answers[8]}`);
-  profile.preferences = {
-    label: 'Preferences',
-    icon: <SlidersHorizontal size={14} />,
-    values: prefs,
-  };
-
-  // Sectors
+  // 4. Sectors
   const sectors = answers[4];
   profile.sectors = {
     label: 'Sectors',
     icon: <Grid3x3 size={14} />,
     values: sectors ? sectors.split(', ') : [],
+  };
+
+  // 5. Desired location
+  profile.location = {
+    label: 'Desired Location',
+    icon: <MapPin size={14} />,
+    values: answers[5] ? [answers[5]] : [],
+  };
+
+  // 6. Work environment
+  profile.environment = {
+    label: 'Work Environment',
+    icon: <Building2 size={14} />,
+    values: answers[6] ? [answers[6]] : [],
+  };
+
+  // 7. Compensation priority
+  if (answers[7]) {
+    const val = parseInt(answers[7], 10);
+    profile.compensation = {
+      label: 'Compensation Priority',
+      icon: <DollarSign size={14} />,
+      values: [`${val} / 5 — ${val >= 4 ? 'High' : val >= 3 ? 'Medium' : 'Lower'}`],
+    };
+  }
+
+  // 8. Experience level
+  profile.level = {
+    label: 'Experience Level',
+    icon: <Clock size={14} />,
+    values: answers[8] ? [answers[8]] : [],
   };
 
   return profile;
@@ -198,22 +223,57 @@ export default function InterviewPage() {
   const [locationInput, setLocationInput] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  const [interviewId, setInterviewId] = useState<number | null>(null);
+  const [questionRowIds, setQuestionRowIds] = useState<Record<number, number>>({});
+  const [profileId, setProfileId] = useState<number>(1);
+
+  const createInterview = trpc.interview.create.useMutation();
+  const addQuestion = trpc.interview.addQuestion.useMutation();
   const answerMutation = trpc.interview.answerQuestion.useMutation();
   const completeMutation = trpc.interview.complete.useMutation({
     onSuccess: () => {
       setIsComplete(true);
     },
   });
+  const getProfile = trpc.profile.getByUser.useQuery({ userId: 1 });
+  const updateProfile = trpc.profile.update.useMutation();
 
   const currentQuestion = QUESTIONS[currentIndex];
   const progress = ((currentIndex + (isComplete ? 1 : 0)) / TOTAL_QUESTIONS) * 100;
 
-  /* Focus textarea on text questions */
+  /* ---- initialize interview on mount -------------------------------- */
+
   useEffect(() => {
-    if (currentQuestion?.type === 'text' && inputRef.current) {
-      setTimeout(() => inputRef.current?.focus(), 400);
+    if (getProfile.data && !interviewId) {
+      setProfileId(getProfile.data.id);
+      void (async () => {
+        try {
+          const { id: newInterviewId } = await createInterview.mutateAsync({
+            profileId: getProfile.data.id,
+          });
+          setInterviewId(newInterviewId);
+
+          // Add all questions and collect their row IDs
+          const rowIds: Record<number, number> = {};
+          for (let i = 0; i < QUESTIONS.length; i++) {
+            const q = QUESTIONS[i];
+            const result = await addQuestion.mutateAsync({
+              interviewId: newInterviewId,
+              question: q.text,
+              category: q.category,
+              order: i,
+            });
+            if (result.id) {
+              rowIds[q.id] = result.id;
+            }
+          }
+          setQuestionRowIds(rowIds);
+        } catch (err) {
+          console.error('Failed to create interview:', err);
+        }
+      })();
     }
-  }, [currentIndex, currentQuestion?.type]);
+  }, [getProfile.data, interviewId, createInterview, addQuestion]);
 
   /* ---- answer handlers --------------------------------------------- */
 
@@ -253,16 +313,16 @@ export default function InterviewPage() {
 
   const triggerFlash = useCallback((category: string) => {
     const sectionMap: Record<string, string> = {
-      'career-goals': 'preferences',
+      'career-goals': 'goals',
       'preferred-roles': 'targetRole',
       'skills': 'skills',
       'industries': 'sectors',
-      'location': 'basics',
-      'work-type': 'preferences',
-      'salary': 'preferences',
-      'experience-level': 'preferences',
+      'location': 'location',
+      'work-type': 'environment',
+      'salary': 'compensation',
+      'experience-level': 'level',
     };
-    const section = sectionMap[category] || 'preferences';
+    const section = sectionMap[category] || 'goals';
     setFlashSection(section);
     setTimeout(() => setFlashSection(null), 500);
   }, []);
@@ -273,16 +333,39 @@ export default function InterviewPage() {
     const currentAnswer = answers[currentQuestion.id];
     if (!currentAnswer && currentQuestion.type !== 'scale') return;
 
-    // Save answer via tRPC (using question id as the row id for demo)
     setThinking(true);
 
-    try {
-      await answerMutation.mutateAsync({
-        id: currentQuestion.id,
-        answer: currentAnswer || '',
-      });
-    } catch {
-      // Continue even if save fails (demo mode)
+    // Save answer to database using the actual question row ID
+    const questionRowId = questionRowIds[currentQuestion.id];
+    if (questionRowId) {
+      try {
+        await answerMutation.mutateAsync({
+          id: questionRowId,
+          answer: currentAnswer || '',
+        });
+      } catch (err) {
+        console.error('Failed to save answer:', err);
+      }
+    }
+
+    // Also update the profile with aggregated answers as we go
+    if (interviewId && currentIndex === TOTAL_QUESTIONS - 1) {
+      // On last question, update profile with all answers
+      const allAnswers = { ...answers, [currentQuestion.id]: currentAnswer };
+      try {
+        await updateProfile.mutateAsync({
+          id: profileId,
+          preferredRoles: allAnswers[2] || undefined,
+          skills: allAnswers[3] || undefined,
+          preferredIndustries: allAnswers[4] || undefined,
+          targetLocation: allAnswers[5] || undefined,
+          workType: allAnswers[6] || undefined,
+          salaryExpectation: allAnswers[7] || undefined,
+          status: 'interviewing',
+        });
+      } catch (err) {
+        console.error('Failed to update profile:', err);
+      }
     }
 
     // Simulate AI "thinking" between questions
@@ -296,8 +379,12 @@ export default function InterviewPage() {
     } else {
       setTimeout(() => {
         setThinking(false);
-        // Complete the interview
-        void completeMutation.mutateAsync({ id: 1 });
+        // Complete the interview using the actual interview ID
+        if (interviewId) {
+          void completeMutation.mutateAsync({ id: interviewId });
+        } else {
+          setIsComplete(true);
+        }
       }, 800);
     }
   };
@@ -310,6 +397,13 @@ export default function InterviewPage() {
   };
 
   const handleFinish = () => {
+    // Mark profile as completed when user finishes the interview
+    if (profileId) {
+      void updateProfile.mutateAsync({
+        id: profileId,
+        status: 'completed',
+      });
+    }
     navigate('/research');
   };
 
@@ -884,20 +978,29 @@ export default function InterviewPage() {
                       </div>
 
                       {section.values.length > 0 ? (
-                        <div className="flex flex-wrap gap-1.5">
-                          {section.values.map((val, i) => (
-                            <span
-                              key={`${key}-${i}`}
-                              className="rounded-full px-2.5 py-0.5 text-xs font-medium"
-                              style={{
-                                backgroundColor: 'rgba(0, 201, 255, 0.08)',
-                                color: 'var(--electric-blue)',
-                              }}
-                            >
-                              {val}
-                            </span>
-                          ))}
-                        </div>
+                        section.style === 'text' ? (
+                          <p
+                            className="line-clamp-4 text-xs leading-relaxed"
+                            style={{ color: 'var(--ice-white)' }}
+                          >
+                            {section.values[0]}
+                          </p>
+                        ) : (
+                          <div className="flex flex-wrap gap-1.5">
+                            {section.values.map((val, i) => (
+                              <span
+                                key={`${key}-${i}`}
+                                className="rounded-full px-2.5 py-0.5 text-xs font-medium"
+                                style={{
+                                  backgroundColor: 'rgba(0, 201, 255, 0.08)',
+                                  color: 'var(--electric-blue)',
+                                }}
+                              >
+                                {val}
+                              </span>
+                            ))}
+                          </div>
+                        )
                       ) : (
                         <span className="text-xs italic" style={{ color: 'var(--slate-500)' }}>
                           Not specified yet...
@@ -999,9 +1102,19 @@ export default function InterviewPage() {
             </h4>
 
             <div className="space-y-3">
-              {profileDisplay.targetRole.values.length > 0 && (
+              {profileDisplay.goals?.values.length > 0 && (
+                <div className="flex items-start gap-2 text-sm">
+                  <Compass size={14} style={{ color: 'var(--electric-blue)' }} />
+                  <span style={{ color: 'var(--slate-400)' }}>Goals:</span>
+                  <span className="line-clamp-2" style={{ color: 'var(--ice-white)' }}>
+                    {profileDisplay.goals.values[0]}
+                  </span>
+                </div>
+              )}
+
+              {profileDisplay.targetRole?.values.length > 0 && (
                 <div className="flex items-center gap-2 text-sm">
-                  <Target size={14} style={{ color: 'var(--electric-blue)' }} />
+                  <Briefcase size={14} style={{ color: 'var(--electric-blue)' }} />
                   <span style={{ color: 'var(--slate-400)' }}>Target:</span>
                   <span style={{ color: 'var(--ice-white)' }}>
                     {profileDisplay.targetRole.values.join(', ')}
@@ -1009,7 +1122,7 @@ export default function InterviewPage() {
                 </div>
               )}
 
-              {profileDisplay.skills.values.length > 0 && (
+              {profileDisplay.skills?.values.length > 0 && (
                 <div className="flex items-start gap-2 text-sm">
                   <Zap size={14} style={{ color: 'var(--electric-blue)' }} />
                   <span style={{ color: 'var(--slate-400)' }}>Top skills:</span>
@@ -1030,22 +1143,42 @@ export default function InterviewPage() {
                 </div>
               )}
 
-              {profileDisplay.basics.values.length > 0 && (
+              {profileDisplay.location?.values.length > 0 && (
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin size={14} style={{ color: 'var(--electric-blue)' }} />
                   <span style={{ color: 'var(--slate-400)' }}>Location:</span>
                   <span style={{ color: 'var(--ice-white)' }}>
-                    {profileDisplay.basics.values[0]}
+                    {profileDisplay.location.values[0]}
                   </span>
                 </div>
               )}
 
-              {profileDisplay.preferences.values.length > 0 && (
+              {profileDisplay.environment?.values.length > 0 && (
                 <div className="flex items-center gap-2 text-sm">
-                  <SlidersHorizontal size={14} style={{ color: 'var(--electric-blue)' }} />
-                  <span style={{ color: 'var(--slate-400)' }}>Preferences:</span>
+                  <Building2 size={14} style={{ color: 'var(--electric-blue)' }} />
+                  <span style={{ color: 'var(--slate-400)' }}>Environment:</span>
                   <span style={{ color: 'var(--ice-white)' }}>
-                    {profileDisplay.preferences.values.slice(0, 2).join(', ')}
+                    {profileDisplay.environment.values[0]}
+                  </span>
+                </div>
+              )}
+
+              {profileDisplay.compensation?.values.length > 0 && (
+                <div className="flex items-center gap-2 text-sm">
+                  <DollarSign size={14} style={{ color: 'var(--electric-blue)' }} />
+                  <span style={{ color: 'var(--slate-400)' }}>Compensation:</span>
+                  <span style={{ color: 'var(--ice-white)' }}>
+                    {profileDisplay.compensation.values[0]}
+                  </span>
+                </div>
+              )}
+
+              {profileDisplay.level?.values.length > 0 && (
+                <div className="flex items-center gap-2 text-sm">
+                  <Clock size={14} style={{ color: 'var(--electric-blue)' }} />
+                  <span style={{ color: 'var(--slate-400)' }}>Level:</span>
+                  <span style={{ color: 'var(--ice-white)' }}>
+                    {profileDisplay.level.values[0]}
                   </span>
                 </div>
               )}
