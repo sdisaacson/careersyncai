@@ -1,7 +1,7 @@
-import { useEffect, type ReactNode } from 'react';
-import Lenis from 'lenis';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import { useEffect, type ReactNode } from "react";
+import Lenis from "lenis";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 export default function Layout({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -24,11 +24,12 @@ export default function Layout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="flex min-h-[100dvh] flex-col" style={{ backgroundColor: '#0B0E14' }}>
+    <div
+      className="flex min-h-[100dvh] flex-col"
+      style={{ backgroundColor: "#0B0E14" }}
+    >
       <Navbar />
-      <main className="flex-1">
-        {children}
-      </main>
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );

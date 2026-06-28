@@ -1,14 +1,31 @@
-import { useMemo } from 'react';
-import { Link } from 'react-router';
-import { motion } from 'framer-motion';
-import { Download, ArrowLeft, ArrowRight, FileText, Sparkles } from 'lucide-react';
-import { generateBarbaraJobs, generateBarbaraTailoredResumes } from '@/lib/barbaraDemo';
-import type { TailoredResume } from '@/db/schema';
+import { useMemo } from "react";
+import { Link } from "react-router";
+import { motion } from "framer-motion";
+import {
+  Download,
+  ArrowLeft,
+  ArrowRight,
+  FileText,
+  Sparkles,
+} from "lucide-react";
+import {
+  generateBarbaraJobs,
+  generateBarbaraTailoredResumes,
+} from "@/lib/barbaraDemo";
+import type { TailoredResume } from "@/db/schema";
 
 const easeOutExpo = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-function ResumeCard({ resume, index }: { resume: TailoredResume; index: number }) {
-  const highlights = resume.highlights ? resume.highlights.split('\n').filter(Boolean) : [];
+function ResumeCard({
+  resume,
+  index,
+}: {
+  resume: TailoredResume;
+  index: number;
+}) {
+  const highlights = resume.highlights
+    ? resume.highlights.split("\n").filter(Boolean)
+    : [];
 
   return (
     <motion.div
@@ -17,40 +34,43 @@ function ResumeCard({ resume, index }: { resume: TailoredResume; index: number }
       transition={{ duration: 0.5, delay: index * 0.1, ease: easeOutExpo }}
       className="flex flex-col rounded-2xl border p-6 transition-all duration-300"
       style={{
-        backgroundColor: 'var(--midnight)',
-        borderColor: 'var(--slate-700)',
+        backgroundColor: "var(--midnight)",
+        borderColor: "var(--slate-700)",
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(0, 201, 255, 0.3)';
-        e.currentTarget.style.transform = 'translateY(-4px)';
-        e.currentTarget.style.boxShadow = '0 16px 40px rgba(0, 201, 255, 0.06)';
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = "rgba(0, 201, 255, 0.3)";
+        e.currentTarget.style.transform = "translateY(-4px)";
+        e.currentTarget.style.boxShadow = "0 16px 40px rgba(0, 201, 255, 0.06)";
       }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'var(--slate-700)';
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = 'none';
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = "var(--slate-700)";
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "none";
       }}
     >
       <div className="flex items-start gap-3">
         <div
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
-          style={{ backgroundColor: 'rgba(0, 201, 255, 0.1)' }}
+          style={{ backgroundColor: "rgba(0, 201, 255, 0.1)" }}
         >
-          <FileText size={20} style={{ color: 'var(--electric-blue)' }} />
+          <FileText size={20} style={{ color: "var(--electric-blue)" }} />
         </div>
         <div>
-          <h3 className="text-base font-semibold" style={{ color: 'var(--ice-white)' }}>
-            {resume.content.split('\n')[0]}
+          <h3
+            className="text-base font-semibold"
+            style={{ color: "var(--ice-white)" }}
+          >
+            {resume.content.split("\n")[0]}
           </h3>
-          <p className="text-sm" style={{ color: 'var(--slate-400)' }}>
-            {resume.narrativeSummary?.split(' at ')[1]?.split(' by')[0] ?? ''}
+          <p className="text-sm" style={{ color: "var(--slate-400)" }}>
+            {resume.narrativeSummary?.split(" at ")[1]?.split(" by")[0] ?? ""}
           </p>
         </div>
       </div>
 
       <p
         className="mt-4 line-clamp-3 text-sm leading-relaxed"
-        style={{ color: 'var(--slate-400)' }}
+        style={{ color: "var(--slate-400)" }}
       >
         {resume.narrativeSummary}
       </p>
@@ -58,33 +78,41 @@ function ResumeCard({ resume, index }: { resume: TailoredResume; index: number }
       <div className="mt-4 flex-1">
         <p
           className="mb-2 text-xs font-medium uppercase tracking-wider"
-          style={{ color: 'var(--slate-500)' }}
+          style={{ color: "var(--slate-500)" }}
         >
           Highlights
         </p>
         <ul className="space-y-2">
           {highlights.slice(0, 4).map((item, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm" style={{ color: 'var(--slate-400)' }}>
-              <Sparkles size={14} className="mt-0.5 shrink-0" style={{ color: 'var(--electric-blue)' }} />
-              {item.replace(/^- /, '')}
+            <li
+              key={i}
+              className="flex items-start gap-2 text-sm"
+              style={{ color: "var(--slate-400)" }}
+            >
+              <Sparkles
+                size={14}
+                className="mt-0.5 shrink-0"
+                style={{ color: "var(--electric-blue)" }}
+              />
+              {item.replace(/^- /, "")}
             </li>
           ))}
         </ul>
       </div>
 
       <button
-        onClick={() => window.alert('Demo download')}
+        onClick={() => window.alert("Demo download")}
         className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-all duration-200"
         style={{
-          borderColor: 'var(--electric-blue)',
-          color: 'var(--electric-blue)',
-          backgroundColor: 'transparent',
+          borderColor: "var(--electric-blue)",
+          color: "var(--electric-blue)",
+          backgroundColor: "transparent",
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = 'rgba(0, 201, 255, 0.08)';
+        onMouseEnter={e => {
+          e.currentTarget.style.backgroundColor = "rgba(0, 201, 255, 0.08)";
         }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = 'transparent';
+        onMouseLeave={e => {
+          e.currentTarget.style.backgroundColor = "transparent";
         }}
       >
         <Download size={16} />
@@ -103,7 +131,7 @@ export default function DemoResumesPage() {
   return (
     <div
       className="min-h-[100dvh] w-full"
-      style={{ backgroundColor: 'var(--deep-navy)' }}
+      style={{ backgroundColor: "var(--deep-navy)" }}
     >
       <section className="mx-auto max-w-[1200px] px-4 pt-16 pb-12 sm:pt-20">
         <motion.div
@@ -113,19 +141,22 @@ export default function DemoResumesPage() {
         >
           <p
             className="text-xs font-medium tracking-[0.15em]"
-            style={{ color: 'var(--electric-blue)', fontFamily: 'JetBrains Mono, monospace' }}
+            style={{
+              color: "var(--electric-blue)",
+              fontFamily: "JetBrains Mono, monospace",
+            }}
           >
             STEP 5 OF 5
           </p>
           <h1
             className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
-            style={{ color: 'var(--ice-white)' }}
+            style={{ color: "var(--ice-white)" }}
           >
             Tailored Resumes
           </h1>
           <p
             className="mt-3 max-w-[640px] text-lg leading-relaxed"
-            style={{ color: 'var(--slate-400)' }}
+            style={{ color: "var(--slate-400)" }}
           >
             For each top match, CareerSync restructures Barbara&apos;s resume to
             emphasize the skills and experience most relevant to the role.
@@ -153,17 +184,17 @@ export default function DemoResumesPage() {
             to="/demo/results"
             className="flex items-center gap-2 rounded-lg border px-5 py-2.5 text-sm font-medium transition-all duration-200"
             style={{
-              borderColor: 'var(--slate-700)',
-              color: 'var(--slate-400)',
-              backgroundColor: 'transparent',
+              borderColor: "var(--slate-700)",
+              color: "var(--slate-400)",
+              backgroundColor: "transparent",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--electric-blue)';
-              e.currentTarget.style.color = 'var(--electric-blue)';
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = "var(--electric-blue)";
+              e.currentTarget.style.color = "var(--electric-blue)";
             }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--slate-700)';
-              e.currentTarget.style.color = 'var(--slate-400)';
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = "var(--slate-700)";
+              e.currentTarget.style.color = "var(--slate-400)";
             }}
           >
             <ArrowLeft size={16} />
@@ -173,14 +204,16 @@ export default function DemoResumesPage() {
           <Link
             to="/signup"
             className="accent-gradient flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-semibold text-white transition-all duration-200"
-            style={{ boxShadow: '0 0 20px rgba(0, 201, 255, 0.2)' }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.02)';
-              e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 201, 255, 0.35)';
+            style={{ boxShadow: "0 0 20px rgba(0, 201, 255, 0.2)" }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = "scale(1.02)";
+              e.currentTarget.style.boxShadow =
+                "0 0 30px rgba(0, 201, 255, 0.35)";
             }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 201, 255, 0.2)';
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow =
+                "0 0 20px rgba(0, 201, 255, 0.2)";
             }}
           >
             Sign Up Now to Create Your Own

@@ -13,6 +13,7 @@ CareerSync AI is a full-stack AI-powered job matching and resume tailoring platf
 ### Features
 
 #### Authentication & User Management
+
 - Email/password registration with bcrypt hashing
 - JWT session authentication with HTTP-only cookies
 - Email verification flow with Resend
@@ -21,6 +22,7 @@ CareerSync AI is a full-stack AI-powered job matching and resume tailoring platf
 - Admin dashboard with user management
 
 #### Resume Pipeline (5-Step Journey)
+
 - **Step 1 — Upload**: Client-side PDF/DOCX parsing with structured profile extraction
 - **Step 2 — Interview**: 8-question adaptive AI interview with live profile sidebar
 - **Step 3 — Research**: Simulated parallel agent research across 8 economic sectors
@@ -28,6 +30,7 @@ CareerSync AI is a full-stack AI-powered job matching and resume tailoring platf
 - **Step 5 — Resumes**: 100+ individually tailored resumes with download (HTML/ZIP)
 
 #### Job Discovery
+
 - 8 sector agents: Technology, Healthcare, Finance, Energy, Education, Manufacturing, Consulting, Government
 - Fit score calculation (0-100) based on skills, experience, location, work type
 - Job filtering by sector, fit score, status, search text
@@ -36,6 +39,7 @@ CareerSync AI is a full-stack AI-powered job matching and resume tailoring platf
 - Status tracking: discovered → shortlisted → applied → archived
 
 #### Resume Tailoring
+
 - Sector-specific tailoring templates (15 sectors)
 - Narrative summary per job
 - Keyword analysis (matched vs missing)
@@ -44,6 +48,7 @@ CareerSync AI is a full-stack AI-powered job matching and resume tailoring platf
 - Multi-select mode for bulk operations
 
 #### Data Sheet
+
 - Complete 100-role data table
 - Column customization (show/hide)
 - CSV and JSON export
@@ -52,12 +57,14 @@ CareerSync AI is a full-stack AI-powered job matching and resume tailoring platf
 - Summary analytics cards
 
 #### Admin Portal
+
 - Dashboard with user/subscription stats
 - User list with role management
 - Subscription management
 - App settings configuration (API keys, plans)
 
 #### UI/UX
+
 - Dark theme with custom CSS variables
 - Responsive design (mobile, tablet, desktop)
 - Framer Motion animations throughout
@@ -67,6 +74,7 @@ CareerSync AI is a full-stack AI-powered job matching and resume tailoring platf
 - shadcn/ui component library (50+ components)
 
 #### Tech Stack
+
 - React 19 + TypeScript + Vite
 - Hono backend with tRPC
 - PostgreSQL + Drizzle ORM
@@ -74,12 +82,14 @@ CareerSync AI is a full-stack AI-powered job matching and resume tailoring platf
 - Framer Motion + GSAP animations
 
 ### Known Issues
+
 - Demo mode uses mock data for job research (designed for real API integration)
 - Stripe integration is mocked (creates active subscriptions directly)
 - Email sending falls back to console logging without Resend API key
 - Some footer links are placeholder (`href="/"`)
 
 ### Database
+
 - 10 tables: users, profiles, interviews, interviewQuestions, sectors, jobs, tailoredResumes, researchSessions, subscriptions, appSettings
 - 7 enums for status/role fields
 - Full migration history in `db/migrations/`
@@ -89,6 +99,7 @@ CareerSync AI is a full-stack AI-powered job matching and resume tailoring platf
 ## Future Roadmap
 
 ### Planned
+
 - [ ] Live job board API integrations (LinkedIn, Indeed, etc.)
 - [ ] Real Moonshot AI integration for dynamic resume tailoring
 - [ ] Cover letter generation
@@ -99,6 +110,7 @@ CareerSync AI is a full-stack AI-powered job matching and resume tailoring platf
 - [ ] Advanced analytics dashboard
 
 ### Under Consideration
+
 - [ ] OAuth providers (Google, GitHub, LinkedIn)
 - [ ] Resume template marketplace
 - [ ] ATS compatibility checker

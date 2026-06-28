@@ -35,34 +35,34 @@ The app will be available at `http://localhost:3000`.
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Frontend** | React 19 + TypeScript + Vite |
-| **Styling** | Tailwind CSS + shadcn/ui |
-| **Animations** | Framer Motion, GSAP, Lenis |
-| **Backend** | Hono (Node.js) + tRPC |
-| **Database** | PostgreSQL (Supabase) |
-| **ORM** | Drizzle ORM |
-| **Auth** | JWT + bcrypt |
-| **Email** | Resend API |
-| **AI** | Moonshot API (optional) |
+| Layer          | Technology                   |
+| -------------- | ---------------------------- |
+| **Frontend**   | React 19 + TypeScript + Vite |
+| **Styling**    | Tailwind CSS + shadcn/ui     |
+| **Animations** | Framer Motion, GSAP, Lenis   |
+| **Backend**    | Hono (Node.js) + tRPC        |
+| **Database**   | PostgreSQL (Supabase)        |
+| **ORM**        | Drizzle ORM                  |
+| **Auth**       | JWT + bcrypt                 |
+| **Email**      | Resend API                   |
+| **AI**         | Moonshot API (optional)      |
 
 ---
 
 ## Available Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start Vite dev server with Hono backend |
-| `npm run build` | Build frontend + bundle backend for production |
-| `npm run start` | Run production server (`dist/boot.js`) |
-| `npm run check` | TypeScript type check |
-| `npm run lint` | ESLint |
-| `npm run format` | Prettier format |
-| `npm run test` | Vitest |
-| `npm run db:generate` | Generate Drizzle migrations |
-| `npm run db:migrate` | Run Drizzle migrations |
-| `npm run db:push` | Push schema to database |
+| Script                | Description                                    |
+| --------------------- | ---------------------------------------------- |
+| `npm run dev`         | Start Vite dev server with Hono backend        |
+| `npm run build`       | Build frontend + bundle backend for production |
+| `npm run start`       | Run production server (`dist/boot.js`)         |
+| `npm run check`       | TypeScript type check                          |
+| `npm run lint`        | ESLint                                         |
+| `npm run format`      | Prettier format                                |
+| `npm run test`        | Vitest                                         |
+| `npm run db:generate` | Generate Drizzle migrations                    |
+| `npm run db:migrate`  | Run Drizzle migrations                         |
+| `npm run db:push`     | Push schema to database                        |
 
 ---
 

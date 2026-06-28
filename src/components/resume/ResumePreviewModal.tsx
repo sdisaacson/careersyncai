@@ -27,18 +27,19 @@ interface ResumePreviewModalProps {
   onClose: () => void;
 }
 
-const changeIcons: Record<string, { icon: typeof CheckCircle; color: string }> = {
-  Summary: { icon: Pencil, color: "#F59E0B" },
-  Skills: { icon: ArrowUpCircle, color: "#3B82F6" },
-  Experience: { icon: CheckCircle, color: "#10B981" },
-  Project: { icon: CheckCircle, color: "#10B981" },
-  Education: { icon: ArrowUpCircle, color: "#8B5CF6" },
-  Added: { icon: CheckCircle, color: "#10B981" },
-  Default: { icon: Pencil, color: "#F59E0B" },
-  Technical: { icon: ArrowUpCircle, color: "#3B82F6" },
-  Certifications: { icon: CheckCircle, color: "#10B981" },
-  Refine: { icon: Pencil, color: "#F59E0B" },
-};
+const changeIcons: Record<string, { icon: typeof CheckCircle; color: string }> =
+  {
+    Summary: { icon: Pencil, color: "#F59E0B" },
+    Skills: { icon: ArrowUpCircle, color: "#3B82F6" },
+    Experience: { icon: CheckCircle, color: "#10B981" },
+    Project: { icon: CheckCircle, color: "#10B981" },
+    Education: { icon: ArrowUpCircle, color: "#8B5CF6" },
+    Added: { icon: CheckCircle, color: "#10B981" },
+    Default: { icon: Pencil, color: "#F59E0B" },
+    Technical: { icon: ArrowUpCircle, color: "#3B82F6" },
+    Certifications: { icon: CheckCircle, color: "#10B981" },
+    Refine: { icon: Pencil, color: "#F59E0B" },
+  };
 
 function getChangeIcon(text: string) {
   for (const [key, val] of Object.entries(changeIcons)) {
@@ -55,13 +56,20 @@ export default function ResumePreviewModal({
   const [zoom, setZoom] = useState(0.65);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleZoomIn = useCallback(() => setZoom((z) => Math.min(z + 0.1, 1.2)), []);
-  const handleZoomOut = useCallback(() => setZoom((z) => Math.max(z - 0.1, 0.4)), []);
+  const handleZoomIn = useCallback(
+    () => setZoom(z => Math.min(z + 0.1, 1.2)),
+    []
+  );
+  const handleZoomOut = useCallback(
+    () => setZoom(z => Math.max(z - 0.1, 0.4)),
+    []
+  );
   const handleResetZoom = useCallback(() => setZoom(0.65), []);
 
   if (!item) return null;
 
-  const { job, highlights, changesMade, keywordsMatched, keywordsMissing } = item;
+  const { job, highlights, changesMade, keywordsMatched, keywordsMissing } =
+    item;
   const score = job.fitScore ?? 0;
   const scoreGradient = getScoreGradient(score);
   const sectorName =
@@ -113,7 +121,7 @@ export default function ResumePreviewModal({
               maxHeight: "calc(100vh - 64px)",
               boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
             }}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             {/* Header */}
             <div
@@ -176,7 +184,13 @@ export default function ResumePreviewModal({
 
                 {/* Download */}
                 <button
-                  onClick={() => downloadResumeAsHtml(item, document.getElementById("resume-html-preview")?.innerHTML ?? "")}
+                  onClick={() =>
+                    downloadResumeAsHtml(
+                      item,
+                      document.getElementById("resume-html-preview")
+                        ?.innerHTML ?? ""
+                    )
+                  }
                   className="accent-gradient hidden items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-lg sm:flex"
                   style={{ boxShadow: "0 0 15px rgba(0,201,255,0.2)" }}
                 >
@@ -189,13 +203,15 @@ export default function ResumePreviewModal({
                   onClick={onClose}
                   className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors duration-200"
                   style={{ color: "#94A3B8" }}
-                  onMouseEnter={(e) => {
+                  onMouseEnter={e => {
                     (e.currentTarget as HTMLElement).style.color = "#F5F7FA";
-                    (e.currentTarget as HTMLElement).style.backgroundColor = "#1E293B";
+                    (e.currentTarget as HTMLElement).style.backgroundColor =
+                      "#1E293B";
                   }}
-                  onMouseLeave={(e) => {
+                  onMouseLeave={e => {
                     (e.currentTarget as HTMLElement).style.color = "#94A3B8";
-                    (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+                    (e.currentTarget as HTMLElement).style.backgroundColor =
+                      "transparent";
                   }}
                 >
                   <X size={20} />
@@ -204,25 +220,33 @@ export default function ResumePreviewModal({
             </div>
 
             {/* Body */}
-            <div className="flex flex-1 overflow-hidden" style={{ height: "calc(90vh - 140px)" }}>
+            <div
+              className="flex flex-1 overflow-hidden"
+              style={{ height: "calc(90vh - 140px)" }}
+            >
               {/* Left — PDF Preview */}
               <div className="relative flex flex-1 flex-col overflow-hidden">
                 {/* Zoom controls */}
                 <div
                   className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-lg px-2 py-1"
-                  style={{ backgroundColor: "rgba(11,14,20,0.85)", border: "1px solid #334155" }}
+                  style={{
+                    backgroundColor: "rgba(11,14,20,0.85)",
+                    border: "1px solid #334155",
+                  }}
                 >
                   <button
                     onClick={handleZoomOut}
                     className="flex h-7 w-7 items-center justify-center rounded transition-colors duration-150"
                     style={{ color: "#94A3B8" }}
-                    onMouseEnter={(e) => {
+                    onMouseEnter={e => {
                       (e.currentTarget as HTMLElement).style.color = "#F5F7FA";
-                      (e.currentTarget as HTMLElement).style.backgroundColor = "#1E293B";
+                      (e.currentTarget as HTMLElement).style.backgroundColor =
+                        "#1E293B";
                     }}
-                    onMouseLeave={(e) => {
+                    onMouseLeave={e => {
                       (e.currentTarget as HTMLElement).style.color = "#94A3B8";
-                      (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+                      (e.currentTarget as HTMLElement).style.backgroundColor =
+                        "transparent";
                     }}
                   >
                     <ZoomOut size={14} />
@@ -230,7 +254,10 @@ export default function ResumePreviewModal({
                   <button
                     onClick={handleResetZoom}
                     className="px-2 text-[11px] font-medium"
-                    style={{ color: "#94A3B8", fontFamily: '"JetBrains Mono", monospace' }}
+                    style={{
+                      color: "#94A3B8",
+                      fontFamily: '"JetBrains Mono", monospace',
+                    }}
                   >
                     {Math.round(zoom * 100)}%
                   </button>
@@ -238,13 +265,15 @@ export default function ResumePreviewModal({
                     onClick={handleZoomIn}
                     className="flex h-7 w-7 items-center justify-center rounded transition-colors duration-150"
                     style={{ color: "#94A3B8" }}
-                    onMouseEnter={(e) => {
+                    onMouseEnter={e => {
                       (e.currentTarget as HTMLElement).style.color = "#F5F7FA";
-                      (e.currentTarget as HTMLElement).style.backgroundColor = "#1E293B";
+                      (e.currentTarget as HTMLElement).style.backgroundColor =
+                        "#1E293B";
                     }}
-                    onMouseLeave={(e) => {
+                    onMouseLeave={e => {
                       (e.currentTarget as HTMLElement).style.color = "#94A3B8";
-                      (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+                      (e.currentTarget as HTMLElement).style.backgroundColor =
+                        "transparent";
                     }}
                   >
                     <ZoomIn size={14} />

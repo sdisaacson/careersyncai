@@ -1,15 +1,8 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import {
-  Download,
-  Eye,
-  Check,
-} from "lucide-react";
+import { Download, Eye, Check } from "lucide-react";
 import type { MockTailoredResume } from "@/lib/resumeMockData";
-import {
-  getScoreGradient,
-  getSectorColor,
-} from "@/lib/resumeUtils";
+import { getScoreGradient, getSectorColor } from "@/lib/resumeUtils";
 import HtmlResumeRenderer from "./HtmlResumeRenderer";
 
 interface ResumeCardProps {
@@ -81,7 +74,8 @@ export default function ResumeCard({
           : isHovered
             ? "0 8px 24px rgba(0,201,255,0.05)"
             : "none",
-        transition: "border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease",
+        transition:
+          "border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease",
         transform: isHovered ? "translateY(-3px)" : "translateY(0)",
       }}
       onMouseEnter={() => setIsHovered(true)}
@@ -159,7 +153,7 @@ export default function ResumeCard({
             className="absolute inset-0 z-10 flex items-center justify-center"
           >
             <button
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 onPreview();
               }}
@@ -226,43 +220,50 @@ export default function ResumeCard({
         >
           <span
             className="text-[10px] font-medium"
-            style={{ color: "#64748B", fontFamily: '"JetBrains Mono", monospace' }}
+            style={{
+              color: "#64748B",
+              fontFamily: '"JetBrains Mono", monospace',
+            }}
           >
             Due {job.deadline}
           </span>
           <div className="flex items-center gap-1">
             <button
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 onPreview();
               }}
               className="flex h-7 w-7 items-center justify-center rounded-md transition-colors duration-200"
               style={{ color: "#64748B" }}
-              onMouseEnter={(e) => {
+              onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.color = "#00C9FF";
-                (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(0,201,255,0.08)";
+                (e.currentTarget as HTMLElement).style.backgroundColor =
+                  "rgba(0,201,255,0.08)";
               }}
-              onMouseLeave={(e) => {
+              onMouseLeave={e => {
                 (e.currentTarget as HTMLElement).style.color = "#64748B";
-                (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+                (e.currentTarget as HTMLElement).style.backgroundColor =
+                  "transparent";
               }}
             >
               <Eye size={14} />
             </button>
             <button
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 onDownload();
               }}
               className="flex h-7 w-7 items-center justify-center rounded-md transition-colors duration-200"
               style={{ color: "#64748B" }}
-              onMouseEnter={(e) => {
+              onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.color = "#00C9FF";
-                (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(0,201,255,0.08)";
+                (e.currentTarget as HTMLElement).style.backgroundColor =
+                  "rgba(0,201,255,0.08)";
               }}
-              onMouseLeave={(e) => {
+              onMouseLeave={e => {
                 (e.currentTarget as HTMLElement).style.color = "#64748B";
-                (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+                (e.currentTarget as HTMLElement).style.backgroundColor =
+                  "transparent";
               }}
             >
               <Download size={14} />

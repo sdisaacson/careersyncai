@@ -19,7 +19,7 @@ export const env = {
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
   adminEmails: process.env.ADMIN_EMAILS
     ? process.env.ADMIN_EMAILS.split(",")
-        .map((e) => e.trim().toLowerCase())
+        .map(e => e.trim().toLowerCase())
         .filter(Boolean)
     : [],
   resendApiKey: process.env.RESEND_API_KEY ?? "",

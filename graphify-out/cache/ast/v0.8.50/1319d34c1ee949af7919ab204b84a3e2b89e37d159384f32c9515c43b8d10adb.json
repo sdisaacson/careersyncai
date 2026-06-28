@@ -1,0 +1,559 @@
+{
+  "nodes": [
+    {
+      "id": "var_home_sisaacson_downloads_kimi_agent_\u804c\u4e1a\u5339\u914d\u6f14\u793a_1_app_docs_security_md",
+      "label": "SECURITY.md",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_security_security",
+      "label": "Security",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_security_authentication",
+      "label": "Authentication",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "docs_security_jwt_session_tokens",
+      "label": "JWT Session Tokens",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "docs_security_cookie_security",
+      "label": "Cookie Security",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L29"
+    },
+    {
+      "id": "docs_security_session_invalidation",
+      "label": "Session Invalidation",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L44"
+    },
+    {
+      "id": "docs_security_password_security",
+      "label": "Password Security",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L53"
+    },
+    {
+      "id": "docs_security_hashing",
+      "label": "Hashing",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L55"
+    },
+    {
+      "id": "docs_security_password_requirements",
+      "label": "Password Requirements",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L69"
+    },
+    {
+      "id": "docs_security_role_based_access_control_rbac",
+      "label": "Role-Based Access Control (RBAC)",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L76"
+    },
+    {
+      "id": "docs_security_roles",
+      "label": "Roles",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L78"
+    },
+    {
+      "id": "docs_security_middleware_levels",
+      "label": "Middleware Levels",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L85"
+    },
+    {
+      "id": "docs_security_admin_assignment",
+      "label": "Admin Assignment",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L94"
+    },
+    {
+      "id": "docs_security_input_validation",
+      "label": "Input Validation",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L101"
+    },
+    {
+      "id": "docs_security_zod_schemas",
+      "label": "Zod Schemas",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L103"
+    },
+    {
+      "id": "docs_security_validation_coverage",
+      "label": "Validation Coverage",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L115"
+    },
+    {
+      "id": "docs_security_email_security",
+      "label": "Email Security",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L124"
+    },
+    {
+      "id": "docs_security_verification_flow",
+      "label": "Verification Flow",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L126"
+    },
+    {
+      "id": "docs_security_password_reset_flow",
+      "label": "Password Reset Flow",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L134"
+    },
+    {
+      "id": "docs_security_email_sending",
+      "label": "Email Sending",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L141"
+    },
+    {
+      "id": "docs_security_database_security",
+      "label": "Database Security",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L149"
+    },
+    {
+      "id": "docs_security_connection_security",
+      "label": "Connection Security",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L151"
+    },
+    {
+      "id": "docs_security_data_protection",
+      "label": "Data Protection",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L157"
+    },
+    {
+      "id": "docs_security_environment_variable_security",
+      "label": "Environment Variable Security",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L169"
+    },
+    {
+      "id": "docs_security_required_variables",
+      "label": "Required Variables",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L171"
+    },
+    {
+      "id": "docs_security_sensitive_variables",
+      "label": "Sensitive Variables",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L179"
+    },
+    {
+      "id": "docs_security_best_practices",
+      "label": "Best Practices",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L188"
+    },
+    {
+      "id": "docs_security_cors_csrf",
+      "label": "CORS & CSRF",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L197"
+    },
+    {
+      "id": "docs_security_cors_policy",
+      "label": "CORS Policy",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L199"
+    },
+    {
+      "id": "docs_security_csrf_protection",
+      "label": "CSRF Protection",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L213"
+    },
+    {
+      "id": "docs_security_rate_limiting",
+      "label": "Rate Limiting",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L221"
+    },
+    {
+      "id": "docs_security_security_headers",
+      "label": "Security Headers",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L233"
+    },
+    {
+      "id": "docs_security_security_checklist",
+      "label": "Security Checklist",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L249"
+    },
+    {
+      "id": "docs_security_before_production",
+      "label": "Before Production",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L251"
+    },
+    {
+      "id": "docs_security_reporting_security_issues",
+      "label": "Reporting Security Issues",
+      "file_type": "document",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L267"
+    }
+  ],
+  "edges": [
+    {
+      "source": "var_home_sisaacson_downloads_kimi_agent_\u804c\u4e1a\u5339\u914d\u6f14\u793a_1_app_docs_security_md",
+      "target": "docs_security_security",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_authentication",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_authentication",
+      "target": "docs_security_jwt_session_tokens",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_authentication",
+      "target": "docs_security_cookie_security",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_authentication",
+      "target": "docs_security_session_invalidation",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_password_security",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_password_security",
+      "target": "docs_security_hashing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L55",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_password_security",
+      "target": "docs_security_password_requirements",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_role_based_access_control_rbac",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_role_based_access_control_rbac",
+      "target": "docs_security_roles",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_role_based_access_control_rbac",
+      "target": "docs_security_middleware_levels",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_role_based_access_control_rbac",
+      "target": "docs_security_admin_assignment",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_input_validation",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_input_validation",
+      "target": "docs_security_zod_schemas",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_input_validation",
+      "target": "docs_security_validation_coverage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_email_security",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L124",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_email_security",
+      "target": "docs_security_verification_flow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L126",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_email_security",
+      "target": "docs_security_password_reset_flow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L134",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_email_security",
+      "target": "docs_security_email_sending",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L141",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_database_security",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L149",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_database_security",
+      "target": "docs_security_connection_security",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_database_security",
+      "target": "docs_security_data_protection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L157",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_environment_variable_security",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L169",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_environment_variable_security",
+      "target": "docs_security_required_variables",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L171",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_environment_variable_security",
+      "target": "docs_security_sensitive_variables",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L179",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_environment_variable_security",
+      "target": "docs_security_best_practices",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_cors_csrf",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L197",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_cors_csrf",
+      "target": "docs_security_cors_policy",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L199",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_cors_csrf",
+      "target": "docs_security_csrf_protection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L213",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_rate_limiting",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L221",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_security_headers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L233",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_security_checklist",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L249",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security_checklist",
+      "target": "docs_security_before_production",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L251",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_security_security",
+      "target": "docs_security_reporting_security_issues",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/SECURITY.md",
+      "source_location": "L267",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -1,1 +1,206 @@
-{"nodes": [{"id": "public_og_careersync_image", "label": "CareerSync OG Image", "file_type": "image", "source_file": "public/og-careersync.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_og_careersync_careersync_ai", "label": "CareerSync AI", "file_type": "concept", "source_file": "public/og-careersync.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_og_careersync_ai_powered_career_partner", "label": "AI-Powered Career Partner", "file_type": "concept", "source_file": "public/og-careersync.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_og_careersync_unlock_opportunity", "label": "Unlock Opportunity", "file_type": "concept", "source_file": "public/og-careersync.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_og_careersync_elevate_your_path", "label": "Elevate Your Path", "file_type": "concept", "source_file": "public/og-careersync.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_og_careersync_future_of_professional_growth", "label": "Future of Professional Growth", "file_type": "concept", "source_file": "public/og-careersync.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_og_careersync_join_the_network", "label": "Join the Network", "file_type": "concept", "source_file": "public/og-careersync.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_og_careersync_careersync_ai_domain", "label": "careersync.ai", "file_type": "concept", "source_file": "public/og-careersync.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_og_careersync_neural_network_background", "label": "Neural Network Background", "file_type": "concept", "source_file": "public/og-careersync.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}], "edges": [{"source": "public_og_careersync_image", "target": "public_og_careersync_careersync_ai", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/og-careersync.jpg", "source_location": null, "weight": 1.0}, {"source": "public_og_careersync_careersync_ai", "target": "public_og_careersync_ai_powered_career_partner", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/og-careersync.jpg", "source_location": null, "weight": 1.0}, {"source": "public_og_careersync_careersync_ai", "target": "public_og_careersync_unlock_opportunity", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/og-careersync.jpg", "source_location": null, "weight": 1.0}, {"source": "public_og_careersync_careersync_ai", "target": "public_og_careersync_elevate_your_path", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/og-careersync.jpg", "source_location": null, "weight": 1.0}, {"source": "public_og_careersync_careersync_ai", "target": "public_og_careersync_future_of_professional_growth", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/og-careersync.jpg", "source_location": null, "weight": 1.0}, {"source": "public_og_careersync_careersync_ai", "target": "public_og_careersync_join_the_network", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/og-careersync.jpg", "source_location": null, "weight": 1.0}, {"source": "public_og_careersync_careersync_ai", "target": "public_og_careersync_careersync_ai_domain", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/og-careersync.jpg", "source_location": null, "weight": 1.0}, {"source": "public_og_careersync_image", "target": "public_og_careersync_neural_network_background", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/og-careersync.jpg", "source_location": null, "weight": 1.0}, {"source": "public_og_careersync_neural_network_background", "target": "public_og_careersync_ai_powered_career_partner", "relation": "conceptually_related_to", "confidence": "INFERRED", "confidence_score": 0.75, "source_file": "public/og-careersync.jpg", "source_location": null, "weight": 1.0}, {"source": "public_og_careersync_unlock_opportunity", "target": "public_og_careersync_elevate_your_path", "relation": "semantically_similar_to", "confidence": "INFERRED", "confidence_score": 0.75, "source_file": "public/og-careersync.jpg", "source_location": null, "weight": 1.0}], "hyperedges": []}
+{
+  "nodes": [
+    {
+      "id": "public_og_careersync_image",
+      "label": "CareerSync OG Image",
+      "file_type": "image",
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_og_careersync_careersync_ai",
+      "label": "CareerSync AI",
+      "file_type": "concept",
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_og_careersync_ai_powered_career_partner",
+      "label": "AI-Powered Career Partner",
+      "file_type": "concept",
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_og_careersync_unlock_opportunity",
+      "label": "Unlock Opportunity",
+      "file_type": "concept",
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_og_careersync_elevate_your_path",
+      "label": "Elevate Your Path",
+      "file_type": "concept",
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_og_careersync_future_of_professional_growth",
+      "label": "Future of Professional Growth",
+      "file_type": "concept",
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_og_careersync_join_the_network",
+      "label": "Join the Network",
+      "file_type": "concept",
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_og_careersync_careersync_ai_domain",
+      "label": "careersync.ai",
+      "file_type": "concept",
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_og_careersync_neural_network_background",
+      "label": "Neural Network Background",
+      "file_type": "concept",
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "public_og_careersync_image",
+      "target": "public_og_careersync_careersync_ai",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_og_careersync_careersync_ai",
+      "target": "public_og_careersync_ai_powered_career_partner",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_og_careersync_careersync_ai",
+      "target": "public_og_careersync_unlock_opportunity",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_og_careersync_careersync_ai",
+      "target": "public_og_careersync_elevate_your_path",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_og_careersync_careersync_ai",
+      "target": "public_og_careersync_future_of_professional_growth",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_og_careersync_careersync_ai",
+      "target": "public_og_careersync_join_the_network",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_og_careersync_careersync_ai",
+      "target": "public_og_careersync_careersync_ai_domain",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_og_careersync_image",
+      "target": "public_og_careersync_neural_network_background",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_og_careersync_neural_network_background",
+      "target": "public_og_careersync_ai_powered_career_partner",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_og_careersync_unlock_opportunity",
+      "target": "public_og_careersync_elevate_your_path",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "public/og-careersync.jpg",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

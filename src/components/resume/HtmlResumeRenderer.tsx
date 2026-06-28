@@ -6,7 +6,10 @@ interface HtmlResumeRendererProps {
   scale?: number;
 }
 
-export default function HtmlResumeRenderer({ item, scale = 1 }: HtmlResumeRendererProps) {
+export default function HtmlResumeRenderer({
+  item,
+  scale = 1,
+}: HtmlResumeRendererProps) {
   const { job, highlights, keywordsMatched } = item;
   const scoreColor = getScoreColor(job.fitScore ?? 0);
   const sectorColor = getSectorColor(
@@ -107,7 +110,13 @@ export default function HtmlResumeRenderer({ item, scale = 1 }: HtmlResumeRender
             >
               {candidateLocation} | {candidateEmail} | {candidatePhone}
             </p>
-            <p style={{ color: "#94A3B8", fontSize: "12px", margin: "2px 0 0 0" }}>
+            <p
+              style={{
+                color: "#94A3B8",
+                fontSize: "12px",
+                margin: "2px 0 0 0",
+              }}
+            >
               {candidateLinkedIn}
             </p>
           </div>
@@ -125,7 +134,7 @@ export default function HtmlResumeRenderer({ item, scale = 1 }: HtmlResumeRender
                 marginBottom: "6px",
               }}
             >
-              {(job.fitScore ?? 0)}% MATCH
+              {job.fitScore ?? 0}% MATCH
             </div>
             <div style={{ color: "#94A3B8", fontSize: "10px" }}>
               Tailored for {job.company}
@@ -161,10 +170,18 @@ export default function HtmlResumeRenderer({ item, scale = 1 }: HtmlResumeRender
               margin: 0,
             }}
           >
-            Results-driven professional with extensive experience in {sectorName.toLowerCase()}. 
-            {highlights[0]?.replace(/emphasized|highlighted|tailored|reordered|added|refined|featured|showcased/i, "").trim() ?? "Skilled in leading cross-functional teams and delivering impactful results."} 
-            Proven track record of leveraging data-driven insights to optimize processes and drive strategic initiatives. 
-            Seeking to contribute expertise to {job.company}&apos;s {job.title} role.
+            Results-driven professional with extensive experience in{" "}
+            {sectorName.toLowerCase()}.
+            {highlights[0]
+              ?.replace(
+                /emphasized|highlighted|tailored|reordered|added|refined|featured|showcased/i,
+                ""
+              )
+              .trim() ??
+              "Skilled in leading cross-functional teams and delivering impactful results."}
+            Proven track record of leveraging data-driven insights to optimize
+            processes and drive strategic initiatives. Seeking to contribute
+            expertise to {job.company}&apos;s {job.title} role.
           </p>
         </div>
 
@@ -202,7 +219,8 @@ export default function HtmlResumeRenderer({ item, scale = 1 }: HtmlResumeRender
                   borderRadius: "4px",
                   fontSize: "11.5px",
                   fontWeight: 500,
-                  border: i < 4 ? `1px solid ${sectorColor}30` : "1px solid #E5E7EB",
+                  border:
+                    i < 4 ? `1px solid ${sectorColor}30` : "1px solid #E5E7EB",
                 }}
               >
                 {skill}
@@ -236,17 +254,23 @@ export default function HtmlResumeRenderer({ item, scale = 1 }: HtmlResumeRender
               period: "2022 - Present",
               bullets: [
                 `Led ${sectorName.toLowerCase()} initiatives that improved operational efficiency by 35% through data-driven optimization`,
-                highlights[0]?.replace(/^\w/, (c) => c.toUpperCase()) ?? "Developed predictive models that reduced costs by $2.3M annually",
+                highlights[0]?.replace(/^\w/, c => c.toUpperCase()) ??
+                  "Developed predictive models that reduced costs by $2.3M annually",
                 `Collaborated with cross-functional teams to implement new ${sectorName.toLowerCase()} workflows adopted across 12 departments`,
                 `Mentored 4 junior team members and established best practices for ${topSkills[0]?.toLowerCase() ?? "data analysis"}`,
               ],
             },
             {
-              role: job.title.includes("Engineer") ? "Engineer II" : job.title.includes("Scientist") ? "Data Scientist" : "Analyst",
+              role: job.title.includes("Engineer")
+                ? "Engineer II"
+                : job.title.includes("Scientist")
+                  ? "Data Scientist"
+                  : "Analyst",
               company: "Earlier Organization Ltd.",
               period: "2019 - 2022",
               bullets: [
-                highlights[1]?.replace(/^\w/, (c) => c.toUpperCase()) ?? "Designed and deployed analytics dashboards used by 200+ stakeholders",
+                highlights[1]?.replace(/^\w/, c => c.toUpperCase()) ??
+                  "Designed and deployed analytics dashboards used by 200+ stakeholders",
                 `Built automated pipelines processing 10M+ records daily using ${topSkills[0] ?? "Python"} and ${topSkills[1] ?? "SQL"}`,
                 `Conducted comprehensive analysis that informed ${sectorName.toLowerCase()} strategic planning for 3 consecutive years`,
               ],
@@ -363,7 +387,13 @@ export default function HtmlResumeRenderer({ item, scale = 1 }: HtmlResumeRender
                 2015 - 2017
               </span>
             </div>
-            <p style={{ color: "#4B5563", fontSize: "12px", margin: "2px 0 0 0" }}>
+            <p
+              style={{
+                color: "#4B5563",
+                fontSize: "12px",
+                margin: "2px 0 0 0",
+              }}
+            >
               Stanford University — GPA 3.8/4.0
             </p>
           </div>
@@ -395,7 +425,13 @@ export default function HtmlResumeRenderer({ item, scale = 1 }: HtmlResumeRender
                 2011 - 2015
               </span>
             </div>
-            <p style={{ color: "#4B5563", fontSize: "12px", margin: "2px 0 0 0" }}>
+            <p
+              style={{
+                color: "#4B5563",
+                fontSize: "12px",
+                margin: "2px 0 0 0",
+              }}
+            >
               University of California, Berkeley — Magna Cum Laude
             </p>
           </div>
@@ -430,8 +466,11 @@ export default function HtmlResumeRenderer({ item, scale = 1 }: HtmlResumeRender
               margin: 0,
             }}
           >
-            {highlights[2]?.replace(/^\w/, (c) => c.toUpperCase()) ?? `Conducted research on ${sectorName.toLowerCase()} optimization techniques, resulting in a published paper and 2 conference presentations.`} 
-            {" "}Completed a competitive internship at a leading {sectorName.toLowerCase()} organization, contributing to a project that was later adopted at scale.
+            {highlights[2]?.replace(/^\w/, c => c.toUpperCase()) ??
+              `Conducted research on ${sectorName.toLowerCase()} optimization techniques, resulting in a published paper and 2 conference presentations.`}{" "}
+            Completed a competitive internship at a leading{" "}
+            {sectorName.toLowerCase()} organization, contributing to a project
+            that was later adopted at scale.
           </p>
         </div>
 

@@ -30,13 +30,13 @@ When you upload your resume (PDF or DOCX), the system extracts your professional
 
 ### What Gets Extracted
 
-| Field | Source | How It's Used |
-|-------|--------|---------------|
-| **Full Name** | Resume header | Profile identification, tailored resume header |
-| **Skills** | Skills section + experience bullets | Job matching algorithm, keyword optimization |
-| **Education** | Education section | Qualification filtering, role-level matching |
-| **Experience** | Work history | Fit score calculation, resume tailoring context |
-| **Resume Text** | Full document | AI analysis, semantic matching, tailoring source material |
+| Field           | Source                              | How It's Used                                             |
+| --------------- | ----------------------------------- | --------------------------------------------------------- |
+| **Full Name**   | Resume header                       | Profile identification, tailored resume header            |
+| **Skills**      | Skills section + experience bullets | Job matching algorithm, keyword optimization              |
+| **Education**   | Education section                   | Qualification filtering, role-level matching              |
+| **Experience**  | Work history                        | Fit score calculation, resume tailoring context           |
+| **Resume Text** | Full document                       | AI analysis, semantic matching, tailoring source material |
 
 ### Data Flow
 
@@ -57,6 +57,7 @@ flowchart TD
 ```
 
 **Database Storage:** Your parsed resume is stored in the `profiles` table with fields including:
+
 - `fullName`, `skills`, `education`, `experience`
 - `resumeText` (the full extracted text)
 - `resumeUrl` (original filename)
@@ -70,16 +71,16 @@ After uploading your resume, CareerSync AI conducts a structured interview to un
 
 ### The 8 Interview Questions
 
-| # | Question | Category | Answer Type | Stored In |
-|---|----------|----------|-------------|-----------|
-| 1 | Career goals (short & long term) | `career-goals` | Free text | `interviewQuestions` table + `profiles.summary` |
-| 2 | Target roles | `preferred-roles` | Multi-select | `profiles.preferredRoles` |
-| 3 | Key skills to use | `skills` | Multi-select | `profiles.skills` (merged with resume) |
-| 4 | Preferred industries | `preferred-industries` | Multi-select | `profiles.preferredIndustries` |
-| 5 | Desired location | `location` | Text input | `profiles.targetLocation` |
-| 6 | Work environment preference | `work-type` | Single-select | `profiles.workType` |
-| 7 | Compensation priority (1-5 scale) | `salary` | Scale | `profiles.salaryExpectation` |
-| 8 | Experience level target | `experience-level` | Single-select | Used for job filtering |
+| #   | Question                          | Category               | Answer Type   | Stored In                                       |
+| --- | --------------------------------- | ---------------------- | ------------- | ----------------------------------------------- |
+| 1   | Career goals (short & long term)  | `career-goals`         | Free text     | `interviewQuestions` table + `profiles.summary` |
+| 2   | Target roles                      | `preferred-roles`      | Multi-select  | `profiles.preferredRoles`                       |
+| 3   | Key skills to use                 | `skills`               | Multi-select  | `profiles.skills` (merged with resume)          |
+| 4   | Preferred industries              | `preferred-industries` | Multi-select  | `profiles.preferredIndustries`                  |
+| 5   | Desired location                  | `location`             | Text input    | `profiles.targetLocation`                       |
+| 6   | Work environment preference       | `work-type`            | Single-select | `profiles.workType`                             |
+| 7   | Compensation priority (1-5 scale) | `salary`               | Scale         | `profiles.salaryExpectation`                    |
+| 8   | Experience level target           | `experience-level`     | Single-select | Used for job filtering                          |
 
 ### How Interview Answers Are Stored
 
@@ -100,6 +101,7 @@ flowchart TD
 ```
 
 **Database Tables:**
+
 - `interviews` — tracks the interview session (status, progress, completion)
 - `interviewQuestions` — stores each question and your answer with timestamps
 - `profiles` — aggregated data from both resume + interview (updated on completion)
@@ -142,7 +144,7 @@ This is where CareerSync AI searches for jobs matching your profile. The system 
 ```mermaid
 flowchart LR
     subgraph "Research Agents"
-        A1[💻 Technology] 
+        A1[💻 Technology]
         A2[🏥 Healthcare]
         A3[💰 Finance]
         A4[⚡ Energy]
@@ -205,17 +207,18 @@ flowchart TD
 
 The fit score (0-100%) is calculated based on:
 
-| Factor | Weight | How It's Computed |
-|--------|--------|-------------------|
-| **Skills Match** | ~35% | Overlap between your skills and job requirements |
-| **Experience Level** | ~25% | Alignment between your target level and job seniority |
-| **Sector Preference** | ~20% | Match with your preferred industries |
-| **Location** | ~15% | Match with your desired location (or Remote) |
-| **Work Type** | ~5% | Alignment with your environment preference |
+| Factor                | Weight | How It's Computed                                     |
+| --------------------- | ------ | ----------------------------------------------------- |
+| **Skills Match**      | ~35%   | Overlap between your skills and job requirements      |
+| **Experience Level**  | ~25%   | Alignment between your target level and job seniority |
+| **Sector Preference** | ~20%   | Match with your preferred industries                  |
+| **Location**          | ~15%   | Match with your desired location (or Remote)          |
+| **Work Type**         | ~5%    | Alignment with your environment preference            |
 
 ### Job Sources Scanned
 
 The research agents scan multiple job sources:
+
 - LinkedIn Jobs
 - Indeed
 - Glassdoor
@@ -230,6 +233,7 @@ The research agents scan multiple job sources:
 ### Database Storage
 
 All discovered jobs are stored in the `jobs` table with:
+
 - `title`, `company`, `location`, `salaryRange`
 - `jobDescription`, `requirements`, `responsibilities`
 - `fitScore` (calculated match percentage)
@@ -256,41 +260,44 @@ Admin Panel: /admin/settings (for runtime key management)
 
 #### Current Implementation Status
 
-| Feature | Status | Description |
-|---------|--------|-------------|
-| Resume Text Extraction | ✅ Active | Client-side PDF/DOCX parsing |
-| Structured Profile Parsing | 🟡 Template-based | Uses regex patterns + heuristics |
-| AI-Powered Profile Parsing | 🔵 Configurable | Moonshot API can be enabled for enhanced parsing |
-| Job Discovery | ✅ Active | Sector-based agent simulation |
-| Live Job Board Search | 🔵 Configurable | Requires API keys for job board integrations |
-| Resume Tailoring | ✅ Active | Template-based with sector-specific narratives |
-| AI Resume Tailoring | 🔵 Configurable | Moonshot API for dynamic, personalized tailoring |
+| Feature                    | Status            | Description                                      |
+| -------------------------- | ----------------- | ------------------------------------------------ |
+| Resume Text Extraction     | ✅ Active         | Client-side PDF/DOCX parsing                     |
+| Structured Profile Parsing | 🟡 Template-based | Uses regex patterns + heuristics                 |
+| AI-Powered Profile Parsing | 🔵 Configurable   | Moonshot API can be enabled for enhanced parsing |
+| Job Discovery              | ✅ Active         | Sector-based agent simulation                    |
+| Live Job Board Search      | 🔵 Configurable   | Requires API keys for job board integrations     |
+| Resume Tailoring           | ✅ Active         | Template-based with sector-specific narratives   |
+| AI Resume Tailoring        | 🔵 Configurable   | Moonshot API for dynamic, personalized tailoring |
 
 #### How Moonshot API Would Be Used (Production)
 
 When `MOONSHOT_API_KEY` is configured, the system can:
 
 1. **Enhanced Resume Parsing**
+
    ```
    Input: Raw resume text
-   Moonshot Prompt: "Extract structured profile: name, skills (comma-separated), 
+   Moonshot Prompt: "Extract structured profile: name, skills (comma-separated),
                       education summary, experience summary, key achievements"
    Output: Structured JSON for profile creation
    ```
 
 2. **Dynamic Job Matching**
+
    ```
    Input: User profile + job description
-   Moonshot Prompt: "Analyze fit between this candidate and job. 
+   Moonshot Prompt: "Analyze fit between this candidate and job.
                       Return: fitScore (0-100), matchReasons, skillGaps"
    Output: Detailed match analysis
    ```
 
 3. **Personalized Resume Tailoring**
+
    ```
    Input: Original resume + target job description
    Moonshot Prompt: "Rewrite this resume to optimize for the target job.
-                      Highlight relevant experience, reorder skills, 
+                      Highlight relevant experience, reorder skills,
                       add missing keywords, quantify achievements."
    Output: Fully tailored resume text
    ```
@@ -298,7 +305,7 @@ When `MOONSHOT_API_KEY` is configured, the system can:
 4. **Interview Question Generation**
    ```
    Input: User profile + career goals
-   Moonshot Prompt: "Generate personalized interview questions 
+   Moonshot Prompt: "Generate personalized interview questions
                       based on this candidate's background and goals."
    Output: Custom question set
    ```
@@ -419,11 +426,11 @@ For each job, the system generates:
 
 1. **Narrative Summary**
    - Explains how the resume was tailored for this specific role
-   - Example: *"This resume has been optimized for a Software Engineer role at Google. The professional summary now opens with a focus on system architecture and technical leadership, reflecting the company's emphasis on scalable infrastructure."*
+   - Example: _"This resume has been optimized for a Software Engineer role at Google. The professional summary now opens with a focus on system architecture and technical leadership, reflecting the company's emphasis on scalable infrastructure."_
 
 2. **Highlights** (3-4 bullet points)
    - Specific changes made to the resume
-   - Example: *"Reordered skills to prioritize cloud infrastructure and distributed systems"*
+   - Example: _"Reordered skills to prioritize cloud infrastructure and distributed systems"_
 
 3. **Changes Made** (5-8 detailed changes)
    - Detailed list of modifications
@@ -441,27 +448,28 @@ For each job, the system generates:
 
 Each of the 15 economic sectors has specialized tailoring templates:
 
-| Sector | Tailoring Focus |
-|--------|-----------------|
-| **Technology** | System design, scalability, CI/CD, microservices |
-| **Healthcare** | Clinical data, HIPAA compliance, patient outcomes |
-| **Finance** | Risk modeling, quantitative analysis, regulatory compliance |
-| **Energy** | Renewable energy, sustainability, power systems |
-| **Education** | Learning science, instructional design, EdTech |
-| **Manufacturing** | Lean/Six Sigma, automation, Industry 4.0 |
-| **Consulting** | Client impact, frameworks, executive communication |
-| **Government** | Policy analysis, security clearance, public service |
-| **Media** | Content strategy, audience analytics, streaming |
-| **Aerospace** | Systems engineering, mission design, MBSE |
-| **Pharmaceuticals** | GMP, clinical trials, regulatory strategy |
-| **Biotechnology** | Gene therapy, cell culture, bioinformatics |
-| **Automotive** | EV technology, ADAS, functional safety |
-| **Telecommunications** | 5G, network virtualization, cloud-native |
-| **Retail** | Demand forecasting, personalization, omnichannel |
+| Sector                 | Tailoring Focus                                             |
+| ---------------------- | ----------------------------------------------------------- |
+| **Technology**         | System design, scalability, CI/CD, microservices            |
+| **Healthcare**         | Clinical data, HIPAA compliance, patient outcomes           |
+| **Finance**            | Risk modeling, quantitative analysis, regulatory compliance |
+| **Energy**             | Renewable energy, sustainability, power systems             |
+| **Education**          | Learning science, instructional design, EdTech              |
+| **Manufacturing**      | Lean/Six Sigma, automation, Industry 4.0                    |
+| **Consulting**         | Client impact, frameworks, executive communication          |
+| **Government**         | Policy analysis, security clearance, public service         |
+| **Media**              | Content strategy, audience analytics, streaming             |
+| **Aerospace**          | Systems engineering, mission design, MBSE                   |
+| **Pharmaceuticals**    | GMP, clinical trials, regulatory strategy                   |
+| **Biotechnology**      | Gene therapy, cell culture, bioinformatics                  |
+| **Automotive**         | EV technology, ADAS, functional safety                      |
+| **Telecommunications** | 5G, network virtualization, cloud-native                    |
+| **Retail**             | Demand forecasting, personalization, omnichannel            |
 
 ### Database Storage
 
 Tailored resumes are stored in the `tailoredResumes` table:
+
 - `content` — the full tailored resume text
 - `highlights` — key changes made (bullet points)
 - `changesMade` — detailed modification list
@@ -555,19 +563,19 @@ flowchart TD
 
 ## Technology Stack
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| **Frontend** | React 18 + TypeScript | UI components, state management |
-| **Styling** | Tailwind CSS + shadcn/ui | Responsive, dark-themed design |
-| **Animations** | Framer Motion | Page transitions, interactive effects |
-| **Build Tool** | Vite | Fast development, optimized production builds |
-| **Backend** | Hono (Node.js) | Lightweight, fast HTTP framework |
-| **API** | tRPC + Zod | Type-safe APIs with validation |
-| **Database** | PostgreSQL (Supabase) | Relational data storage |
-| **ORM** | Drizzle | Type-safe database queries |
-| **Auth** | JWT + bcrypt | Secure session management |
-| **Email** | Resend API | Transactional emails (verification, password reset) |
-| **AI** | Moonshot API (optional) | LLM-powered resume analysis and tailoring |
+| Layer          | Technology               | Purpose                                             |
+| -------------- | ------------------------ | --------------------------------------------------- |
+| **Frontend**   | React 18 + TypeScript    | UI components, state management                     |
+| **Styling**    | Tailwind CSS + shadcn/ui | Responsive, dark-themed design                      |
+| **Animations** | Framer Motion            | Page transitions, interactive effects               |
+| **Build Tool** | Vite                     | Fast development, optimized production builds       |
+| **Backend**    | Hono (Node.js)           | Lightweight, fast HTTP framework                    |
+| **API**        | tRPC + Zod               | Type-safe APIs with validation                      |
+| **Database**   | PostgreSQL (Supabase)    | Relational data storage                             |
+| **ORM**        | Drizzle                  | Type-safe database queries                          |
+| **Auth**       | JWT + bcrypt             | Secure session management                           |
+| **Email**      | Resend API               | Transactional emails (verification, password reset) |
+| **AI**         | Moonshot API (optional)  | LLM-powered resume analysis and tailoring           |
 
 ---
 
@@ -575,14 +583,14 @@ flowchart TD
 
 ### What Data Is Stored
 
-| Data Type | Storage | Retention |
-|-----------|---------|-----------|
-| Resume text | Database (encrypted) | Until account deletion |
-| Interview answers | Database | Until account deletion |
-| Job matches | Database | 90 days |
-| Tailored resumes | Database | Until account deletion |
-| Profile info | Database | Until account deletion |
-| Auth credentials | Database (bcrypt hashed) | Until account deletion |
+| Data Type         | Storage                  | Retention              |
+| ----------------- | ------------------------ | ---------------------- |
+| Resume text       | Database (encrypted)     | Until account deletion |
+| Interview answers | Database                 | Until account deletion |
+| Job matches       | Database                 | 90 days                |
+| Tailored resumes  | Database                 | Until account deletion |
+| Profile info      | Database                 | Until account deletion |
+| Auth credentials  | Database (bcrypt hashed) | Until account deletion |
 
 ### What Data Is NOT Stored
 
@@ -594,11 +602,13 @@ flowchart TD
 ### Data Usage
 
 Your data is used **only** for:
+
 1. Job matching within the CareerSync AI platform
 2. Resume tailoring for your job applications
 3. Improving match algorithms (anonymized)
 
 Your data is **never**:
+
 - Sold to third parties
 - Used for advertising
 - Shared with employers without your consent
@@ -618,4 +628,4 @@ For a demo of the full experience without creating an account, visit `/demo`.
 
 ---
 
-*Built with ❤️ by CareerSync AI. Questions? Contact us through the footer links.*
+_Built with ❤️ by CareerSync AI. Questions? Contact us through the footer links._

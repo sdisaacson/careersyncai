@@ -94,7 +94,8 @@ export default function AdminLayout() {
             asChild
             className="mt-6"
             style={{
-              background: "linear-gradient(135deg, #00C9FF 0%, #3B82F6 50%, #7C3AED 100%)",
+              background:
+                "linear-gradient(135deg, #00C9FF 0%, #3B82F6 50%, #7C3AED 100%)",
             }}
           >
             <Link to="/" className="inline-flex items-center gap-2">
@@ -108,7 +109,7 @@ export default function AdminLayout() {
   }
 
   const activeLabel =
-    navItems.find((item) => item.path === location.pathname)?.label ??
+    navItems.find(item => item.path === location.pathname)?.label ??
     "Dashboard";
 
   const sidebarContent = (
@@ -117,7 +118,8 @@ export default function AdminLayout() {
         <div
           className="flex h-9 w-9 items-center justify-center rounded-lg font-bold text-sm"
           style={{
-            background: "linear-gradient(135deg, #00C9FF 0%, #3B82F6 50%, #7C3AED 100%)",
+            background:
+              "linear-gradient(135deg, #00C9FF 0%, #3B82F6 50%, #7C3AED 100%)",
             color: "#fff",
           }}
         >
@@ -133,7 +135,7 @@ export default function AdminLayout() {
 
       <nav className="flex-1 overflow-auto px-3 py-4">
         <ul className="space-y-1">
-          {navItems.map((item) => {
+          {navItems.map(item => {
             const isActive = location.pathname === item.path;
             return (
               <li key={item.path}>
@@ -160,10 +162,7 @@ export default function AdminLayout() {
         </ul>
       </nav>
 
-      <div
-        className="border-t p-4"
-        style={{ borderColor: sidebarBorder }}
-      >
+      <div className="border-t p-4" style={{ borderColor: sidebarBorder }}>
         <div className="flex items-center gap-3 rounded-lg px-3 py-2.5">
           <div
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold"
@@ -191,7 +190,10 @@ export default function AdminLayout() {
   );
 
   return (
-    <div className="flex min-h-full w-full" style={{ backgroundColor: "var(--deep-navy)" }}>
+    <div
+      className="flex min-h-full w-full"
+      style={{ backgroundColor: "var(--deep-navy)" }}
+    >
       {/* Desktop sidebar */}
       <aside
         className="hidden min-h-full w-64 shrink-0 border-r lg:block"
@@ -212,10 +214,7 @@ export default function AdminLayout() {
             borderColor: sidebarBorder,
           }}
         >
-          <span
-            className="text-sm font-semibold"
-            style={{ color: iceWhite }}
-          >
+          <span className="text-sm font-semibold" style={{ color: iceWhite }}>
             {activeLabel}
           </span>
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>

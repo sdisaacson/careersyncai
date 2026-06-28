@@ -31,16 +31,16 @@ cp .env.example .env
 
 Edit `.env` with your values:
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | ✅ | PostgreSQL connection string |
-| `APP_SECRET` | ✅ | JWT signing secret (min 32 chars) |
-| `BASE_URL` | ✅ | Base URL for email links (e.g. `http://localhost:3000`) |
-| `RESEND_API_KEY` | ❌ | Resend API key for transactional emails |
-| `FROM_EMAIL` | ❌ | Sender email address |
-| `MOONSHOT_API_KEY` | ❌ | Moonshot AI API key for LLM features |
-| `ADMIN_EMAILS` | ❌ | Comma-separated admin emails |
-| `STRIPE_*` | ❌ | Stripe keys for payment integration |
+| Variable           | Required | Description                                             |
+| ------------------ | -------- | ------------------------------------------------------- |
+| `DATABASE_URL`     | ✅       | PostgreSQL connection string                            |
+| `APP_SECRET`       | ✅       | JWT signing secret (min 32 chars)                       |
+| `BASE_URL`         | ✅       | Base URL for email links (e.g. `http://localhost:3000`) |
+| `RESEND_API_KEY`   | ❌       | Resend API key for transactional emails                 |
+| `FROM_EMAIL`       | ❌       | Sender email address                                    |
+| `MOONSHOT_API_KEY` | ❌       | Moonshot AI API key for LLM features                    |
+| `ADMIN_EMAILS`     | ❌       | Comma-separated admin emails                            |
+| `STRIPE_*`         | ❌       | Stripe keys for payment integration                     |
 
 ### 3. Database Setup
 
@@ -70,6 +70,7 @@ npm run dev
 ```
 
 This starts:
+
 - **Vite dev server** on port 3000 (frontend + HMR)
 - **Hono backend** integrated via `@hono/vite-dev-server`
 - **tRPC API** at `/api/trpc/*`
@@ -149,6 +150,7 @@ Same process — Drizzle Kit will generate `ALTER` statements.
 ### Add a New tRPC Router
 
 1. Create `api/my-router.ts`:
+
 ```ts
 import { createRouter, publicQuery } from "./middleware";
 
@@ -158,6 +160,7 @@ export const myRouter = createRouter({
 ```
 
 2. Register in `api/router.ts`:
+
 ```ts
 import { myRouter } from "./my-router";
 
@@ -168,6 +171,7 @@ export const appRouter = createRouter({
 ```
 
 3. Use in frontend:
+
 ```ts
 const { data } = trpc.my.hello.useQuery();
 ```
@@ -176,10 +180,11 @@ const { data } = trpc.my.hello.useQuery();
 
 1. Create `src/pages/MyPage.tsx`
 2. Add route in `src/App.tsx`:
+
 ```tsx
 import MyPage from "./pages/MyPage";
 
-<Route path="/my-page" element={<MyPage />} />
+<Route path="/my-page" element={<MyPage />} />;
 ```
 
 ### Add a shadcn/ui Component
@@ -194,12 +199,12 @@ Components are installed to `src/components/ui/`.
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| `DATABASE_URL not found` | Ensure `.env` is present and `DATABASE_URL` is set |
-| `tRPC client errors` | Check that backend is running on same port |
-| `Migration failures` | Verify PostgreSQL is accessible and credentials are correct |
-| `Type errors in build` | Run `npm run check` to see all TypeScript errors |
+| Issue                      | Solution                                                    |
+| -------------------------- | ----------------------------------------------------------- |
+| `DATABASE_URL not found`   | Ensure `.env` is present and `DATABASE_URL` is set          |
+| `tRPC client errors`       | Check that backend is running on same port                  |
+| `Migration failures`       | Verify PostgreSQL is accessible and credentials are correct |
+| `Type errors in build`     | Run `npm run check` to see all TypeScript errors            |
 | `Email not sending in dev` | Without `RESEND_API_KEY`, email links are logged to console |
 
 ---

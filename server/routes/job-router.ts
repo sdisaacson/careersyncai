@@ -30,7 +30,10 @@ export const jobRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      const [{ id }] = await db.insert(jobs).values(input).returning({ id: jobs.id });
+      const [{ id }] = await db
+        .insert(jobs)
+        .values(input)
+        .returning({ id: jobs.id });
       return { id };
     }),
 
@@ -88,14 +91,26 @@ export const jobRouter = createRouter({
         profileId: z.number(),
         sectorId: z.number().optional(),
         minFitScore: z.number().optional(),
-        status: z.enum(["discovered", "shortlisted", "applied", "archived"]).optional(),
+        status: z
+          .enum(["discovered", "shortlisted", "applied", "archived"])
+          .optional(),
         search: z.string().optional(),
-        sortBy: z.enum(["fitScore", "createdAt", "title", "company"]).optional(),
+        sortBy: z
+          .enum(["fitScore", "createdAt", "title", "company"])
+          .optional(),
         sortOrder: z.enum(["asc", "desc"]).optional(),
       })
     )
     .query(async ({ input }) => {
-      const { profileId, sectorId, minFitScore, status, search, sortBy, sortOrder } = input;
+      const {
+        profileId,
+        sectorId,
+        minFitScore,
+        status,
+        search,
+        sortBy,
+        sortOrder,
+      } = input;
       const db = getDb();
       const conditions = [eq(jobs.profileId, profileId)];
 
@@ -135,14 +150,22 @@ export const jobRouter = createRouter({
 
       return {
         total: all.length,
-        bySector: all.reduce((acc, job) => {
-          const sector = job.sectorId?.toString() ?? "unknown";
-          acc[sector] = (acc[sector] || 0) + 1;
-          return acc;
-        }, {} as Record<string, number>),
-        avgFitScore: all.length > 0 ? Math.round(all.reduce((s, j) => s + (j.fitScore ?? 0), 0) / all.length) : 0,
-        shortlisted: all.filter((j) => j.status === "shortlisted").length,
-        applied: all.filter((j) => j.status === "applied").length,
+        bySector: all.reduce(
+          (acc, job) => {
+            const sector = job.sectorId?.toString() ?? "unknown";
+            acc[sector] = (acc[sector] || 0) + 1;
+            return acc;
+          },
+          {} as Record<string, number>
+        ),
+        avgFitScore:
+          all.length > 0
+            ? Math.round(
+                all.reduce((s, j) => s + (j.fitScore ?? 0), 0) / all.length
+              )
+            : 0,
+        shortlisted: all.filter(j => j.status === "shortlisted").length,
+        applied: all.filter(j => j.status === "applied").length,
       };
     }),
 

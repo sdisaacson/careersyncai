@@ -1,31 +1,31 @@
-import { Routes, Route } from 'react-router'
-import Layout from './components/Layout'
-import Home from './pages/Home'
-import UploadPage from './pages/UploadPage'
-import InterviewPage from './pages/InterviewPage'
-import ResearchPage from './pages/ResearchPage'
-import DashboardPage from './pages/DashboardPage'
-import ResumesPage from './pages/ResumesPage'
-import DatasheetPage from './pages/DatasheetPage'
-import Login from "./pages/Login"
-import NotFound from "./pages/NotFound"
-import SignupPage from "./pages/SignupPage"
-import RegisterPage from "./pages/RegisterPage"
-import VerifyEmail from "./pages/VerifyEmail"
-import ForgotPassword from "./pages/ForgotPassword"
-import ResetPassword from "./pages/ResetPassword"
-import AccountPage from "./pages/AccountPage"
-import DemoPage from "./pages/DemoPage"
-import DemoUploadPage from "./pages/DemoUploadPage"
-import DemoInterviewPage from "./pages/DemoInterviewPage"
-import DemoResearchPage from "./pages/DemoResearchPage"
-import DemoResultsPage from "./pages/DemoResultsPage"
-import DemoResumesPage from "./pages/DemoResumesPage"
-import AdminLayout from "./components/AdminLayout"
-import AdminDashboardPage from "./pages/admin/AdminDashboardPage"
-import AdminUsersPage from "./pages/admin/AdminUsersPage"
-import AdminSubscriptionsPage from "./pages/admin/AdminSubscriptionsPage"
-import AdminSettingsPage from "./pages/admin/AdminSettingsPage"
+import { Routes, Route } from "react-router";
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
+import UploadPage from "./pages/UploadPage";
+import InterviewPage from "./pages/InterviewPage";
+import ResearchPage from "./pages/ResearchPage";
+import DashboardPage from "./pages/DashboardPage";
+import ResumesPage from "./pages/ResumesPage";
+import DatasheetPage from "./pages/DatasheetPage";
+import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
+import SignupPage from "./pages/SignupPage";
+import RegisterPage from "./pages/RegisterPage";
+import VerifyEmail from "./pages/VerifyEmail";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import AccountPage from "./pages/AccountPage";
+import DemoPage from "./pages/DemoPage";
+import DemoUploadPage from "./pages/DemoUploadPage";
+import DemoInterviewPage from "./pages/DemoInterviewPage";
+import DemoResearchPage from "./pages/DemoResearchPage";
+import DemoResultsPage from "./pages/DemoResultsPage";
+import DemoResumesPage from "./pages/DemoResumesPage";
+import AdminLayout from "./components/AdminLayout";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminUsersPage from "./pages/admin/AdminUsersPage";
+import AdminSubscriptionsPage from "./pages/admin/AdminSubscriptionsPage";
+import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
 
 export default function App() {
   return (
@@ -60,5 +60,5 @@ export default function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>
-  )
+  );
 }

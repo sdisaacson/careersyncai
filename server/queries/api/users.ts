@@ -7,10 +7,13 @@ import { hashToken } from "../auth/token";
 
 function getAdminEmails(): string[] {
   const env = getCurrentCloudflareEnv();
-  const raw = env?.ADMIN_EMAILS || (typeof process !== "undefined" ? process.env?.ADMIN_EMAILS : undefined);
+  const raw =
+    env?.ADMIN_EMAILS ||
+    (typeof process !== "undefined" ? process.env?.ADMIN_EMAILS : undefined);
   if (!raw) return [];
-  return raw.split(",")
-    .map((e) => e.trim().toLowerCase())
+  return raw
+    .split(",")
+    .map(e => e.trim().toLowerCase())
     .filter(Boolean);
 }
 
@@ -82,10 +85,7 @@ export async function markEmailVerified(userId: number) {
     .where(eq(schema.users.id, userId));
 }
 
-export async function setEmailVerificationToken(
-  userId: number,
-  token: string,
-) {
+export async function setEmailVerificationToken(userId: number, token: string) {
   const hashed = hashToken(token);
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
   await getDb()
@@ -100,7 +100,7 @@ export async function setEmailVerificationToken(
 export async function setPasswordResetToken(
   userId: number,
   token: string,
-  expiresAt: Date,
+  expiresAt: Date
 ) {
   const hashed = hashToken(token);
   await getDb()

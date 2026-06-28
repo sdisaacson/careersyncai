@@ -26,10 +26,9 @@ export default function SignupPage() {
 
   const selectedPlan = getPlanById(selectedPlanId);
 
-  const checkoutMutation =
-    trpc.subscription.createCheckoutSession.useMutation({
-      onSuccess: () => navigate("/account"),
-    });
+  const checkoutMutation = trpc.subscription.createCheckoutSession.useMutation({
+    onSuccess: () => navigate("/account"),
+  });
 
   const handleActivate = () => {
     if (!selectedPlan) return;
@@ -139,9 +138,7 @@ export default function SignupPage() {
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span style={{ color: "var(--slate-400)" }}>
-                  Trial period
-                </span>
+                <span style={{ color: "var(--slate-400)" }}>Trial period</span>
                 <span style={{ color: "var(--ice-white)" }}>7 days free</span>
               </div>
               <div
@@ -179,7 +176,10 @@ export default function SignupPage() {
                 className="flex items-center gap-2"
                 style={{ color: "var(--ice-white)" }}
               >
-                <CreditCard size={20} style={{ color: "var(--electric-blue)" }} />
+                <CreditCard
+                  size={20}
+                  style={{ color: "var(--electric-blue)" }}
+                />
                 Payment Details
               </CardTitle>
               <CardDescription style={{ color: "var(--slate-400)" }}>
@@ -188,7 +188,10 @@ export default function SignupPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="card-number" style={{ color: "var(--slate-400)" }}>
+                <Label
+                  htmlFor="card-number"
+                  style={{ color: "var(--slate-400)" }}
+                >
                   Card number
                 </Label>
                 <Input
@@ -280,25 +283,17 @@ export default function SignupPage() {
               }}
               asChild
             >
-              <Link to="/register">
-                Create account
-              </Link>
+              <Link to="/register">Create account</Link>
             </Button>
           )}
 
-          <p
-            className="mt-3 text-sm"
-            style={{ color: "var(--slate-500)" }}
-          >
+          <p className="mt-3 text-sm" style={{ color: "var(--slate-500)" }}>
             {isAuthenticated
               ? "Signing up creates your subscription and activates the selected plan."
               : "After verifying your email and signing in, return here to activate your plan."}
           </p>
 
-          <p
-            className="mt-4 text-xs"
-            style={{ color: "var(--slate-600)" }}
-          >
+          <p className="mt-4 text-xs" style={{ color: "var(--slate-600)" }}>
             7-day free trial. Cancel anytime. Sample pricing only — no real
             charges are processed in this demo.
           </p>

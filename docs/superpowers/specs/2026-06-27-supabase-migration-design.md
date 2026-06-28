@@ -15,13 +15,13 @@ The project currently uses:
 
 ## Decision Log
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| ORM / client | Keep Drizzle ORM + `postgres-js` driver | Smallest refactor; existing query code remains valid. |
-| Data migration | None (fresh Supabase DB) | Explicitly scoped out by user. |
-| PK strategy | Keep `serial` auto-increment integers | Minimal change; avoids rewriting FK relationships. |
-| MySQL `bigint unsigned` FKs | Map to `integer` | Postgres `integer` is sufficient for expected table sizes and avoids `bigint` JSON serialization issues. |
-| MySQL `tinyint` | Map to `boolean` | Postgres native boolean type. |
+| Decision                    | Choice                                  | Rationale                                                                                                |
+| --------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| ORM / client                | Keep Drizzle ORM + `postgres-js` driver | Smallest refactor; existing query code remains valid.                                                    |
+| Data migration              | None (fresh Supabase DB)                | Explicitly scoped out by user.                                                                           |
+| PK strategy                 | Keep `serial` auto-increment integers   | Minimal change; avoids rewriting FK relationships.                                                       |
+| MySQL `bigint unsigned` FKs | Map to `integer`                        | Postgres `integer` is sufficient for expected table sizes and avoids `bigint` JSON serialization issues. |
+| MySQL `tinyint`             | Map to `boolean`                        | Postgres native boolean type.                                                                            |
 
 ## Schema Changes (`db/schema.ts`)
 

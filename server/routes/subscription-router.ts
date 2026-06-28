@@ -5,7 +5,10 @@ import { subscriptions } from "@db/schema";
 import { eq } from "drizzle-orm";
 import { addMonths } from "date-fns";
 
-const PLANS: Record<string, { name: string; priceCents: number; interval: "month" | "year" }> = {
+const PLANS: Record<
+  string,
+  { name: string; priceCents: number; interval: "month" | "year" }
+> = {
   starter: { name: "Starter", priceCents: 900, interval: "month" },
   pro: { name: "Pro", priceCents: 1900, interval: "month" },
   premium: { name: "Premium", priceCents: 4900, interval: "month" },
@@ -52,7 +55,10 @@ export const subscriptionRouter = createRouter({
       };
 
       if (existing[0]) {
-        await db.update(subscriptions).set(values).where(eq(subscriptions.id, existing[0].id));
+        await db
+          .update(subscriptions)
+          .set(values)
+          .where(eq(subscriptions.id, existing[0].id));
       } else {
         await db.insert(subscriptions).values(values);
       }
@@ -97,7 +103,11 @@ export const subscriptionRouter = createRouter({
 
     await db
       .update(subscriptions)
-      .set({ status: "active", cancelAtPeriodEnd: false, currentPeriodEnd: addMonths(new Date(), 1) })
+      .set({
+        status: "active",
+        cancelAtPeriodEnd: false,
+        currentPeriodEnd: addMonths(new Date(), 1),
+      })
       .where(eq(subscriptions.id, existing[0].id));
 
     return { success: true };

@@ -16,7 +16,10 @@ import {
 } from "lucide-react";
 import { trpc } from "@/lib/trpc.tsx";
 import { useAuth } from "@/hooks/useAuth";
-import { generateMockResumes, type MockTailoredResume } from "@/lib/resumeMockData";
+import {
+  generateMockResumes,
+  type MockTailoredResume,
+} from "@/lib/resumeMockData";
 import {
   filterResumes,
   sortResumes,
@@ -74,10 +77,12 @@ export default function ResumesPage() {
       // Map server data to MockTailoredResume format
       const serverData: MockTailoredResume[] = [];
       for (const resume of resumesQuery.data) {
-        const job = jobsQuery.data?.find((j) => j.id === resume.jobId);
+        const job = jobsQuery.data?.find(j => j.id === resume.jobId);
         if (job) {
           const highlights = JSON.parse(resume.highlights ?? "[]") as string[];
-          const changesMade = JSON.parse(resume.changesMade ?? "[]") as string[];
+          const changesMade = JSON.parse(
+            resume.changesMade ?? "[]"
+          ) as string[];
           serverData.push({
             job,
             resume,
@@ -89,7 +94,9 @@ export default function ResumesPage() {
           });
         }
       }
-      return serverData.length > 0 ? serverData : generateMockResumes(profileId, 100);
+      return serverData.length > 0
+        ? serverData
+        : generateMockResumes(profileId, 100);
     }
     return generateMockResumes(profileId, 100);
   }, [resumesQuery.data, jobsQuery.data]);
@@ -98,12 +105,16 @@ export default function ResumesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
   const [sectorFilter, setSectorFilter] = useState("");
-  const [minScoreFilter, setMinScoreFilter] = useState<number | undefined>(undefined);
+  const [minScoreFilter, setMinScoreFilter] = useState<number | undefined>(
+    undefined
+  );
   const [sortBy, setSortBy] = useState("fitScore");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
-  const [previewItem, setPreviewItem] = useState<MockTailoredResume | null>(null);
+  const [previewItem, setPreviewItem] = useState<MockTailoredResume | null>(
+    null
+  );
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDownloadingZip, setIsDownloadingZip] = useState(false);
 
@@ -119,7 +130,7 @@ export default function ResumesPage() {
 
   // Selection handlers
   const toggleSelection = useCallback((id: number) => {
-    setSelectedIds((prev) => {
+    setSelectedIds(prev => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
@@ -134,7 +145,7 @@ export default function ResumesPage() {
     if (selectedIds.size === filteredData.length) {
       setSelectedIds(new Set());
     } else {
-      setSelectedIds(new Set(filteredData.map((d) => d.resume.id)));
+      setSelectedIds(new Set(filteredData.map(d => d.resume.id)));
     }
   }, [filteredData, selectedIds.size]);
 
@@ -162,16 +173,13 @@ export default function ResumesPage() {
     }
   }, []);
 
-  const getHtmlContent = useCallback(
-    (item: MockTailoredResume) => {
-      const el = document.getElementById(`resume-html-${item.resume.id}`);
-      return el?.innerHTML ?? "";
-    },
-    []
-  );
+  const getHtmlContent = useCallback((item: MockTailoredResume) => {
+    const el = document.getElementById(`resume-html-${item.resume.id}`);
+    return el?.innerHTML ?? "";
+  }, []);
 
   const handleDownloadSelected = useCallback(async () => {
-    const selected = filteredData.filter((d) => selectedIds.has(d.resume.id));
+    const selected = filteredData.filter(d => selectedIds.has(d.resume.id));
     if (selected.length === 0) return;
     setIsDownloadingZip(true);
     try {
@@ -221,7 +229,10 @@ export default function ResumesPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+          transition={{
+            duration: 0.6,
+            ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+          }}
         >
           {/* Eyebrow */}
           <p
@@ -251,18 +262,23 @@ export default function ResumesPage() {
             className="mt-3 max-w-[640px] text-base sm:text-lg"
             style={{ color: "#94A3B8", lineHeight: 1.6 }}
           >
-            Each resume has been restructured to highlight the skills, experience,
-            and keywords most relevant to the target role. Every application tells
-            a cohesive story.
+            Each resume has been restructured to highlight the skills,
+            experience, and keywords most relevant to the target role. Every
+            application tells a cohesive story.
           </p>
 
           {/* Count */}
           <p
             className="mt-3 text-sm font-medium"
-            style={{ color: "#64748B", fontFamily: '"JetBrains Mono", monospace' }}
+            style={{
+              color: "#64748B",
+              fontFamily: '"JetBrains Mono", monospace',
+            }}
           >
-            {filteredData.length} resume{filteredData.length !== 1 ? "s" : ""} generated
-            {filteredData.length < mockData.length && ` (filtered from ${mockData.length})`}
+            {filteredData.length} resume{filteredData.length !== 1 ? "s" : ""}{" "}
+            generated
+            {filteredData.length < mockData.length &&
+              ` (filtered from ${mockData.length})`}
           </p>
         </motion.div>
 
@@ -300,11 +316,13 @@ export default function ResumesPage() {
               borderColor: "#00C9FF",
               backgroundColor: "transparent",
             }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(0,201,255,0.08)";
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.backgroundColor =
+                "rgba(0,201,255,0.08)";
             }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.backgroundColor =
+                "transparent";
             }}
           >
             <Star size={16} />
@@ -313,7 +331,7 @@ export default function ResumesPage() {
 
           <button
             onClick={() => {
-              setIsMultiSelectMode((prev) => !prev);
+              setIsMultiSelectMode(prev => !prev);
               if (isMultiSelectMode) {
                 setSelectedIds(new Set());
               }
@@ -321,15 +339,17 @@ export default function ResumesPage() {
             className="flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200"
             style={{
               color: isMultiSelectMode ? "#00C9FF" : "#94A3B8",
-              backgroundColor: isMultiSelectMode ? "rgba(0,201,255,0.08)" : "transparent",
+              backgroundColor: isMultiSelectMode
+                ? "rgba(0,201,255,0.08)"
+                : "transparent",
               border: `1px solid ${isMultiSelectMode ? "#00C9FF" : "transparent"}`,
             }}
-            onMouseEnter={(e) => {
+            onMouseEnter={e => {
               if (!isMultiSelectMode) {
                 (e.currentTarget as HTMLElement).style.color = "#F5F7FA";
               }
             }}
-            onMouseLeave={(e) => {
+            onMouseLeave={e => {
               if (!isMultiSelectMode) {
                 (e.currentTarget as HTMLElement).style.color = "#94A3B8";
               }
@@ -374,7 +394,10 @@ export default function ResumesPage() {
       >
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center gap-3 px-4 sm:px-6 lg:px-8">
           {/* Search */}
-          <div className="relative flex min-w-0 flex-1 items-center" style={{ maxWidth: "280px" }}>
+          <div
+            className="relative flex min-w-0 flex-1 items-center"
+            style={{ maxWidth: "280px" }}
+          >
             <Search
               size={15}
               className="pointer-events-none absolute left-3"
@@ -384,7 +407,7 @@ export default function ResumesPage() {
               type="text"
               placeholder="Search job title or company..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="w-full rounded-lg border py-2 pl-9 pr-4 text-sm outline-none transition-colors duration-200 focus:border-[#00C9FF]"
               style={{
                 backgroundColor: "#1E293B",
@@ -407,7 +430,7 @@ export default function ResumesPage() {
           <div className="relative">
             <select
               value={sectorFilter}
-              onChange={(e) => setSectorFilter(e.target.value)}
+              onChange={e => setSectorFilter(e.target.value)}
               className="appearance-none rounded-lg border py-2 pl-3 pr-8 text-sm outline-none transition-colors duration-200 focus:border-[#00C9FF]"
               style={{
                 backgroundColor: "#1E293B",
@@ -417,7 +440,7 @@ export default function ResumesPage() {
               }}
             >
               <option value="">All Sectors</option>
-              {SECTORS.map((s) => (
+              {SECTORS.map(s => (
                 <option key={s} value={s}>
                   {s}
                 </option>
@@ -434,8 +457,10 @@ export default function ResumesPage() {
           <div className="relative">
             <select
               value={minScoreFilter ?? ""}
-              onChange={(e) =>
-                setMinScoreFilter(e.target.value ? Number(e.target.value) : undefined)
+              onChange={e =>
+                setMinScoreFilter(
+                  e.target.value ? Number(e.target.value) : undefined
+                )
               }
               className="appearance-none rounded-lg border py-2 pl-3 pr-8 text-sm outline-none transition-colors duration-200 focus:border-[#00C9FF]"
               style={{
@@ -460,13 +485,16 @@ export default function ResumesPage() {
 
           {/* Sort */}
           <div className="flex items-center gap-2">
-            <span className="hidden text-xs sm:inline" style={{ color: "#64748B" }}>
+            <span
+              className="hidden text-xs sm:inline"
+              style={{ color: "#64748B" }}
+            >
               Sort:
             </span>
             <div className="relative">
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={e => setSortBy(e.target.value)}
                 className="appearance-none rounded-lg border py-2 pl-3 pr-8 text-sm outline-none transition-colors duration-200 focus:border-[#00C9FF]"
                 style={{
                   backgroundColor: "#1E293B",
@@ -475,7 +503,7 @@ export default function ResumesPage() {
                   fontSize: "13px",
                 }}
               >
-                {SORT_OPTIONS.map((o) => (
+                {SORT_OPTIONS.map(o => (
                   <option key={o.value} value={o.value}>
                     {o.label}
                   </option>
@@ -488,7 +516,7 @@ export default function ResumesPage() {
               />
             </div>
             <button
-              onClick={() => setSortOrder((o) => (o === "asc" ? "desc" : "asc"))}
+              onClick={() => setSortOrder(o => (o === "asc" ? "desc" : "asc"))}
               className="flex h-8 w-8 items-center justify-center rounded-lg border text-xs transition-colors duration-200"
               style={{
                 borderColor: "#334155",
@@ -513,7 +541,8 @@ export default function ResumesPage() {
               onClick={() => setViewMode("grid")}
               className="flex h-8 w-8 items-center justify-center rounded-md transition-all duration-200"
               style={{
-                backgroundColor: viewMode === "grid" ? "#334155" : "transparent",
+                backgroundColor:
+                  viewMode === "grid" ? "#334155" : "transparent",
                 color: viewMode === "grid" ? "#F5F7FA" : "#64748B",
               }}
             >
@@ -523,7 +552,8 @@ export default function ResumesPage() {
               onClick={() => setViewMode("list")}
               className="flex h-8 w-8 items-center justify-center rounded-md transition-all duration-200"
               style={{
-                backgroundColor: viewMode === "list" ? "#334155" : "transparent",
+                backgroundColor:
+                  viewMode === "list" ? "#334155" : "transparent",
                 color: viewMode === "list" ? "#F5F7FA" : "#64748B",
               }}
             >
@@ -561,10 +591,7 @@ export default function ResumesPage() {
             {selectedCount > 0 && (
               <>
                 <span style={{ color: "#334155" }}>|</span>
-                <span
-                  className="text-sm"
-                  style={{ color: "#94A3B8" }}
-                >
+                <span className="text-sm" style={{ color: "#94A3B8" }}>
                   {selectedCount} selected
                 </span>
               </>
@@ -608,7 +635,9 @@ export default function ResumesPage() {
               <div className="hidden w-28 shrink-0 sm:block">Sector</div>
               <div className="hidden min-w-0 flex-1 lg:block">Highlights</div>
               <div className="hidden w-32 shrink-0 md:block">Location</div>
-              <div className="hidden w-24 shrink-0 text-right sm:block">Due</div>
+              <div className="hidden w-24 shrink-0 text-right sm:block">
+                Due
+              </div>
               <div className="w-16 shrink-0" />
             </div>
             {filteredData.map((item, index) => (
@@ -630,7 +659,10 @@ export default function ResumesPage() {
         {filteredData.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20">
             <Search size={48} style={{ color: "#334155" }} />
-            <p className="mt-4 text-lg font-medium" style={{ color: "#94A3B8" }}>
+            <p
+              className="mt-4 text-lg font-medium"
+              style={{ color: "#94A3B8" }}
+            >
               No resumes match your filters
             </p>
             <p className="mt-1 text-sm" style={{ color: "#64748B" }}>
@@ -648,11 +680,13 @@ export default function ResumesPage() {
                 borderColor: "#00C9FF",
                 backgroundColor: "transparent",
               }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(0,201,255,0.08)";
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.backgroundColor =
+                  "rgba(0,201,255,0.08)";
               }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.backgroundColor =
+                  "transparent";
               }}
             >
               <X size={14} />
@@ -677,7 +711,10 @@ export default function ResumesPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+            transition={{
+              duration: 0.6,
+              ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+            }}
             className="text-2xl font-bold sm:text-3xl"
             style={{ color: "#F5F7FA", letterSpacing: "-0.01em" }}
           >
@@ -743,15 +780,19 @@ export default function ResumesPage() {
                   backgroundColor: "#111827",
                   borderColor: "#334155",
                 }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,201,255,0.3)";
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    "rgba(0,201,255,0.3)";
+                  (e.currentTarget as HTMLElement).style.transform =
+                    "translateY(-4px)";
                   (e.currentTarget as HTMLElement).style.boxShadow =
                     "0 20px 40px rgba(0,201,255,0.08)";
                 }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "#334155";
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    "#334155";
+                  (e.currentTarget as HTMLElement).style.transform =
+                    "translateY(0)";
                   (e.currentTarget as HTMLElement).style.boxShadow = "none";
                 }}
               >
@@ -785,12 +826,13 @@ export default function ResumesPage() {
                       border: "1px solid #00C9FF",
                       backgroundColor: "transparent",
                     }}
-                    onMouseEnter={(e) => {
+                    onMouseEnter={e => {
                       (e.currentTarget as HTMLElement).style.backgroundColor =
                         "rgba(0,201,255,0.08)";
                     }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLElement).style.backgroundColor =
+                        "transparent";
                     }}
                   >
                     {card.action}
@@ -831,10 +873,7 @@ export default function ResumesPage() {
               boxShadow: "0 8px 32px rgba(0,201,255,0.15)",
             }}
           >
-            <span
-              className="text-sm font-medium"
-              style={{ color: "#F5F7FA" }}
-            >
+            <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
               {selectedCount} selected
             </span>
             <button
@@ -854,10 +893,10 @@ export default function ResumesPage() {
               onClick={clearSelection}
               className="text-sm font-medium transition-colors duration-200"
               style={{ color: "#94A3B8" }}
-              onMouseEnter={(e) => {
+              onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.color = "#F5F7FA";
               }}
-              onMouseLeave={(e) => {
+              onMouseLeave={e => {
                 (e.currentTarget as HTMLElement).style.color = "#94A3B8";
               }}
             >
@@ -869,7 +908,7 @@ export default function ResumesPage() {
 
       {/* ── Hidden resume HTML containers for download ── */}
       <div className="sr-only" aria-hidden="true">
-        {mockData.map((item) => (
+        {mockData.map(item => (
           <div key={item.resume.id} id={`resume-html-${item.resume.id}`}>
             <HtmlResumeRenderer item={item} scale={1} />
           </div>

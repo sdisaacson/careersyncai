@@ -12,45 +12,48 @@
 
 ## File Structure
 
-| File | Responsibility | Action |
-|------|----------------|--------|
-| `package.json` | Dependencies | Add `bcryptjs` and `resend` |
-| `db/schema.ts` | User schema | Add password/auth columns; make `email` required+unique |
-| `api/lib/env.ts` | Env validation | Add `adminEmails`, `resendApiKey`, `fromEmail` |
-| `api/lib/email.ts` | Email service | New module: send verification/reset emails via Resend or console |
-| `api/auth/session.ts` | JWT signing/verification | Moved from `api/kimi/session.ts`; new payload shape |
-| `api/auth/authenticate.ts` | Cookie → user | New module: parse cookie, verify JWT, load user |
-| `api/queries/users.ts` | User DB helpers | Add find/create/update helpers for email/password auth |
-| `api/auth-router.ts` | Auth tRPC routes | Add signup/login/verify/resend/forgot/reset mutations |
-| `api/context.ts` | tRPC context | Import new `authenticateRequest` |
-| `api/boot.ts` | Hono app bootstrap | Remove OAuth callback route; ensure auth router is mounted |
-| `api/kimi/*` | OAuth-specific code | Delete if no longer used |
-| `src/pages/Login.tsx` | Login UI | Replace OAuth button with email/password form |
-| `src/pages/RegisterPage.tsx` | Signup UI | New email/password registration form |
-| `src/pages/VerifyEmail.tsx` | Email verification UI | New: call verify mutation from URL token |
-| `src/pages/ForgotPassword.tsx` | Password reset request UI | New |
-| `src/pages/ResetPassword.tsx` | Password reset confirmation UI | New |
-| `src/App.tsx` | Routes | Add `/register`, `/verify-email`, `/forgot-password`, `/reset-password` |
-| `src/pages/SignupPage.tsx` | Pricing/signup landing | Update CTA link to `/register` |
-| `.env.example` | Env template | Add `ADMIN_EMAILS`, `RESEND_API_KEY`, `FROM_EMAIL` |
-| `.env` | Local env | Add placeholder comments |
+| File                           | Responsibility                 | Action                                                                  |
+| ------------------------------ | ------------------------------ | ----------------------------------------------------------------------- |
+| `package.json`                 | Dependencies                   | Add `bcryptjs` and `resend`                                             |
+| `db/schema.ts`                 | User schema                    | Add password/auth columns; make `email` required+unique                 |
+| `api/lib/env.ts`               | Env validation                 | Add `adminEmails`, `resendApiKey`, `fromEmail`                          |
+| `api/lib/email.ts`             | Email service                  | New module: send verification/reset emails via Resend or console        |
+| `api/auth/session.ts`          | JWT signing/verification       | Moved from `api/kimi/session.ts`; new payload shape                     |
+| `api/auth/authenticate.ts`     | Cookie → user                  | New module: parse cookie, verify JWT, load user                         |
+| `api/queries/users.ts`         | User DB helpers                | Add find/create/update helpers for email/password auth                  |
+| `api/auth-router.ts`           | Auth tRPC routes               | Add signup/login/verify/resend/forgot/reset mutations                   |
+| `api/context.ts`               | tRPC context                   | Import new `authenticateRequest`                                        |
+| `api/boot.ts`                  | Hono app bootstrap             | Remove OAuth callback route; ensure auth router is mounted              |
+| `api/kimi/*`                   | OAuth-specific code            | Delete if no longer used                                                |
+| `src/pages/Login.tsx`          | Login UI                       | Replace OAuth button with email/password form                           |
+| `src/pages/RegisterPage.tsx`   | Signup UI                      | New email/password registration form                                    |
+| `src/pages/VerifyEmail.tsx`    | Email verification UI          | New: call verify mutation from URL token                                |
+| `src/pages/ForgotPassword.tsx` | Password reset request UI      | New                                                                     |
+| `src/pages/ResetPassword.tsx`  | Password reset confirmation UI | New                                                                     |
+| `src/App.tsx`                  | Routes                         | Add `/register`, `/verify-email`, `/forgot-password`, `/reset-password` |
+| `src/pages/SignupPage.tsx`     | Pricing/signup landing         | Update CTA link to `/register`                                          |
+| `.env.example`                 | Env template                   | Add `ADMIN_EMAILS`, `RESEND_API_KEY`, `FROM_EMAIL`                      |
+| `.env`                         | Local env                      | Add placeholder comments                                                |
 
 ---
 
 ### Task 1: Add dependencies
 
 **Files:**
+
 - Modify: `package.json`
 
 - [ ] **Step 1: Add `bcryptjs` and `resend`**
 
   Add to `dependencies`:
+
   ```json
   "bcryptjs": "^2.4.3",
   "resend": "^3.2.0"
   ```
 
   Add to `devDependencies`:
+
   ```json
   "@types/bcryptjs": "^2.4.6"
   ```
@@ -71,11 +74,13 @@
 ### Task 2: Update users schema
 
 **Files:**
+
 - Modify: `db/schema.ts`
 
 - [ ] **Step 1: Update `users` table**
 
   Replace the `users` table definition with:
+
   ```ts
   export const users = pgTable("users", {
     id: serial("id").primaryKey(),
@@ -116,6 +121,7 @@
 ### Task 3: Add environment variables
 
 **Files:**
+
 - Modify: `api/lib/env.ts`
 - Modify: `.env.example`
 - Modify: `.env`
@@ -123,6 +129,7 @@
 - [ ] **Step 1: Update `api/lib/env.ts`**
 
   Add to the `env` object:
+
   ```ts
   adminEmails: process.env.ADMIN_EMAILS?.split(",").map((e) => e.trim()) ?? [],
   resendApiKey: process.env.RESEND_API_KEY ?? "",
@@ -132,11 +139,13 @@
 - [ ] **Step 2: Update `.env.example`**
 
   Add under Admin Role:
+
   ```bash
   ADMIN_EMAILS=             # Comma-separated list of emails that get admin role on signup
   ```
 
   Add a new Email section:
+
   ```bash
   # ── Email (Resend) ──────────────────────────────────────────────
   RESEND_API_KEY=           # Resend API key (optional in dev; logs link if omitted)
@@ -159,6 +168,7 @@
 ### Task 4: Create email service
 
 **Files:**
+
 - Create: `api/lib/email.ts`
 
 - [ ] **Step 1: Implement `api/lib/email.ts`**
@@ -219,6 +229,7 @@
 ### Task 5: Move and adapt session layer
 
 **Files:**
+
 - Create: `api/auth/session.ts`
 - Delete: `api/kimi/session.ts` (after creating new file)
 
@@ -236,7 +247,7 @@
   const JWT_ALG = "HS256";
 
   export async function signSessionToken(
-    payload: SessionPayload,
+    payload: SessionPayload
   ): Promise<string> {
     const secret = new TextEncoder().encode(env.appSecret);
     return new jose.SignJWT(payload)
@@ -247,7 +258,7 @@
   }
 
   export async function verifySessionToken(
-    token: string,
+    token: string
   ): Promise<SessionPayload | null> {
     if (!token) {
       return null;
@@ -286,6 +297,7 @@
 ### Task 6: Create request authenticator
 
 **Files:**
+
 - Create: `api/auth/authenticate.ts`
 - Delete: `api/kimi/auth.ts` (after creating new file and updating references)
 
@@ -319,10 +331,13 @@
 - [ ] **Step 2: Update `api/context.ts`**
 
   Replace:
+
   ```ts
   import { authenticateRequest } from "./kimi/auth";
   ```
+
   with:
+
   ```ts
   import { authenticateRequest } from "./auth/authenticate";
   ```
@@ -345,6 +360,7 @@
 ### Task 7: Update user queries
 
 **Files:**
+
 - Modify: `api/queries/users.ts`
 
 - [ ] **Step 1: Replace file content**
@@ -421,7 +437,7 @@
   export async function setPasswordResetToken(
     userId: number,
     token: string,
-    expiresAt: Date,
+    expiresAt: Date
   ) {
     await getDb()
       .update(schema.users)
@@ -445,7 +461,7 @@
 
   export async function setEmailVerificationToken(
     userId: number,
-    token: string,
+    token: string
   ) {
     await getDb()
       .update(schema.users)
@@ -466,6 +482,7 @@
 ### Task 8: Extend auth router
 
 **Files:**
+
 - Modify: `api/auth-router.ts`
 
 - [ ] **Step 1: Replace `api/auth-router.ts` with full implementation**
@@ -490,10 +507,7 @@
     updatePasswordHash,
     setEmailVerificationToken,
   } from "./queries/users";
-  import {
-    sendVerificationEmail,
-    sendPasswordResetEmail,
-  } from "./lib/email";
+  import { sendVerificationEmail, sendPasswordResetEmail } from "./lib/email";
 
   function generateToken() {
     return crypto.randomBytes(32).toString("hex");
@@ -505,7 +519,7 @@
   });
 
   export const authRouter = createRouter({
-    me: authedQuery.query((opts) => opts.ctx.user),
+    me: authedQuery.query(opts => opts.ctx.user),
 
     logout: authedQuery.mutation(async ({ ctx }) => {
       const opts = getSessionCookieOptions(ctx.req.headers);
@@ -517,60 +531,56 @@
           sameSite: opts.sameSite?.toLowerCase() as "lax" | "none",
           secure: opts.secure,
           maxAge: 0,
-        }),
+        })
       );
       return { success: true };
     }),
 
-    signup: publicQuery
-      .input(authInput)
-      .mutation(async ({ input }) => {
-        const existing = await findUserByEmail(input.email);
-        if (existing) {
-          return { success: true };
-        }
-        const passwordHash = await bcrypt.hash(input.password, 12);
-        const verificationToken = generateToken();
-        const user = await createUser({
-          email: input.email,
-          passwordHash,
-          emailVerificationToken: verificationToken,
-        });
-        await sendVerificationEmail(input.email, verificationToken);
-        return { success: true, userId: user.id };
-      }),
-
-    login: publicQuery
-      .input(authInput)
-      .mutation(async ({ input, ctx }) => {
-        const user = await findUserByEmail(input.email);
-        if (!user || !user.passwordHash) {
-          throw new Error("Invalid email or password.");
-        }
-        const valid = await bcrypt.compare(input.password, user.passwordHash);
-        if (!valid) {
-          throw new Error("Invalid email or password.");
-        }
-        if (!user.emailVerified) {
-          throw new Error("Please verify your email before logging in.");
-        }
-        const token = await signSessionToken({
-          userId: user.id,
-          email: user.email,
-        });
-        const cookieOpts = getSessionCookieOptions(ctx.req.headers);
-        ctx.resHeaders.append(
-          "set-cookie",
-          cookie.serialize(Session.cookieName, token, {
-            httpOnly: cookieOpts.httpOnly,
-            path: cookieOpts.path,
-            sameSite: cookieOpts.sameSite?.toLowerCase() as "lax" | "none",
-            secure: cookieOpts.secure,
-            maxAge: Session.maxAgeMs / 1000,
-          }),
-        );
+    signup: publicQuery.input(authInput).mutation(async ({ input }) => {
+      const existing = await findUserByEmail(input.email);
+      if (existing) {
         return { success: true };
-      }),
+      }
+      const passwordHash = await bcrypt.hash(input.password, 12);
+      const verificationToken = generateToken();
+      const user = await createUser({
+        email: input.email,
+        passwordHash,
+        emailVerificationToken: verificationToken,
+      });
+      await sendVerificationEmail(input.email, verificationToken);
+      return { success: true, userId: user.id };
+    }),
+
+    login: publicQuery.input(authInput).mutation(async ({ input, ctx }) => {
+      const user = await findUserByEmail(input.email);
+      if (!user || !user.passwordHash) {
+        throw new Error("Invalid email or password.");
+      }
+      const valid = await bcrypt.compare(input.password, user.passwordHash);
+      if (!valid) {
+        throw new Error("Invalid email or password.");
+      }
+      if (!user.emailVerified) {
+        throw new Error("Please verify your email before logging in.");
+      }
+      const token = await signSessionToken({
+        userId: user.id,
+        email: user.email,
+      });
+      const cookieOpts = getSessionCookieOptions(ctx.req.headers);
+      ctx.resHeaders.append(
+        "set-cookie",
+        cookie.serialize(Session.cookieName, token, {
+          httpOnly: cookieOpts.httpOnly,
+          path: cookieOpts.path,
+          sameSite: cookieOpts.sameSite?.toLowerCase() as "lax" | "none",
+          secure: cookieOpts.secure,
+          maxAge: Session.maxAgeMs / 1000,
+        })
+      );
+      return { success: true };
+    }),
 
     verifyEmail: publicQuery
       .input(z.object({ token: z.string() }))
@@ -613,7 +623,7 @@
         z.object({
           token: z.string(),
           password: z.string().min(8),
-        }),
+        })
       )
       .mutation(async ({ input }) => {
         const user = await findUserByResetToken(input.token);
@@ -642,6 +652,7 @@
 ### Task 9: Remove Kimi OAuth code
 
 **Files:**
+
 - Delete: `api/kimi/platform.ts`
 - Delete: `api/kimi/types.ts`
 - Modify: `api/boot.ts`
@@ -675,6 +686,7 @@
 ### Task 10: Create frontend auth pages
 
 **Files:**
+
 - Modify: `src/pages/Login.tsx`
 - Create: `src/pages/RegisterPage.tsx`
 - Create: `src/pages/VerifyEmail.tsx`
@@ -686,7 +698,12 @@
   ```tsx
   import { useState } from "react";
   import { Link, useNavigate } from "react-router";
-  import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+  import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+  } from "@/components/ui/card";
   import { Button } from "@/components/ui/button";
   import { Input } from "@/components/ui/input";
   import { Label } from "@/components/ui/label";
@@ -700,7 +717,7 @@
 
     const login = trpc.auth.login.useMutation({
       onSuccess: () => navigate("/"),
-      onError: (err) => setError(err.message),
+      onError: err => setError(err.message),
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -723,7 +740,7 @@
                   id="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -733,12 +750,16 @@
                   id="password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   required
                 />
               </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={login.isPending}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={login.isPending}
+              >
                 {login.isPending ? "Signing in..." : "Sign in"}
               </Button>
             </form>
@@ -769,7 +790,12 @@
   ```tsx
   import { useState } from "react";
   import { Link } from "react-router";
-  import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+  import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+  } from "@/components/ui/card";
   import { Button } from "@/components/ui/button";
   import { Input } from "@/components/ui/input";
   import { Label } from "@/components/ui/label";
@@ -784,7 +810,7 @@
 
     const signup = trpc.auth.signup.useMutation({
       onSuccess: () => setSent(true),
-      onError: (err) => setError(err.message),
+      onError: err => setError(err.message),
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -828,7 +854,7 @@
                   id="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -838,7 +864,7 @@
                   id="password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   required
                   minLength={8}
                 />
@@ -849,13 +875,17 @@
                   id="confirm"
                   type="password"
                   value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
+                  onChange={e => setConfirm(e.target.value)}
                   required
                   minLength={8}
                 />
               </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={signup.isPending}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={signup.isPending}
+              >
                 {signup.isPending ? "Creating..." : "Create account"}
               </Button>
             </form>
@@ -877,7 +907,12 @@
   ```tsx
   import { useEffect, useState } from "react";
   import { useSearchParams, Link } from "react-router";
-  import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+  import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+  } from "@/components/ui/card";
   import { Button } from "@/components/ui/button";
   import { trpc } from "@/providers/trpc";
 
@@ -885,7 +920,7 @@
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
     const [status, setStatus] = useState<"loading" | "success" | "error">(
-      "loading",
+      "loading"
     );
 
     const verify = trpc.auth.verifyEmail.useMutation({
@@ -934,7 +969,12 @@
   ```tsx
   import { useState } from "react";
   import { Link } from "react-router";
-  import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+  import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+  } from "@/components/ui/card";
   import { Button } from "@/components/ui/button";
   import { Input } from "@/components/ui/input";
   import { Label } from "@/components/ui/label";
@@ -984,11 +1024,15 @@
                   id="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   required
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={forgot.isPending}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={forgot.isPending}
+              >
                 {forgot.isPending ? "Sending..." : "Send reset link"}
               </Button>
             </form>
@@ -1009,7 +1053,12 @@
   ```tsx
   import { useState } from "react";
   import { useSearchParams, Link } from "react-router";
-  import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+  import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+  } from "@/components/ui/card";
   import { Button } from "@/components/ui/button";
   import { Input } from "@/components/ui/input";
   import { Label } from "@/components/ui/label";
@@ -1025,7 +1074,7 @@
 
     const reset = trpc.auth.resetPassword.useMutation({
       onSuccess: () => setDone(true),
-      onError: (err) => setError(err.message),
+      onError: err => setError(err.message),
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -1074,7 +1123,7 @@
                   id="password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   required
                   minLength={8}
                 />
@@ -1085,13 +1134,17 @@
                   id="confirm"
                   type="password"
                   value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
+                  onChange={e => setConfirm(e.target.value)}
                   required
                   minLength={8}
                 />
               </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={reset.isPending}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={reset.isPending}
+              >
                 {reset.isPending ? "Updating..." : "Update password"}
               </Button>
             </form>
@@ -1114,20 +1167,23 @@
 ### Task 11: Wire up routes and update signup CTA
 
 **Files:**
+
 - Modify: `src/App.tsx`
 - Modify: `src/pages/SignupPage.tsx`
 
 - [ ] **Step 1: Update `src/App.tsx`**
 
   Add imports:
+
   ```tsx
-  import RegisterPage from "./pages/RegisterPage"
-  import VerifyEmail from "./pages/VerifyEmail"
-  import ForgotPassword from "./pages/ForgotPassword"
-  import ResetPassword from "./pages/ResetPassword"
+  import RegisterPage from "./pages/RegisterPage";
+  import VerifyEmail from "./pages/VerifyEmail";
+  import ForgotPassword from "./pages/ForgotPassword";
+  import ResetPassword from "./pages/ResetPassword";
   ```
 
   Add routes:
+
   ```tsx
   <Route path="/register" element={<RegisterPage />} />
   <Route path="/verify-email" element={<VerifyEmail />} />
@@ -1138,12 +1194,15 @@
 - [ ] **Step 2: Update signup CTA in `src/pages/SignupPage.tsx`**
 
   Find the link:
+
   ```tsx
   <Link to="/login" state={{ from: "/signup" }}>
     Continue with Kimi
   </Link>
   ```
+
   and replace with:
+
   ```tsx
   <Link to="/register" state={{ from: "/signup" }}>
     Create account
@@ -1164,11 +1223,13 @@
 ### Task 12: Generate migration and verify
 
 **Files:**
+
 - Modify: `db/migrations/` (generated)
 
 - [ ] **Step 1: Generate migration**
 
   Ensure `DATABASE_URL` is set in `.env`, then run:
+
   ```bash
   npm run db:generate
   ```
@@ -1191,6 +1252,7 @@
 ### Task 13: Manual smoke test
 
 **Files:**
+
 - None (verification only)
 
 - [ ] **Step 1: Start dev server**

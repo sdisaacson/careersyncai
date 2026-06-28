@@ -70,14 +70,20 @@ export default function AdminDashboardPage() {
                 style={{ backgroundColor: midnight }}
               >
                 <CardHeader className="pb-2">
-                  <Skeleton className="h-4 w-24" style={{ backgroundColor: slate700 }} />
+                  <Skeleton
+                    className="h-4 w-24"
+                    style={{ backgroundColor: slate700 }}
+                  />
                 </CardHeader>
                 <CardContent>
-                  <Skeleton className="h-10 w-20" style={{ backgroundColor: slate700 }} />
+                  <Skeleton
+                    className="h-10 w-20"
+                    style={{ backgroundColor: slate700 }}
+                  />
                 </CardContent>
               </Card>
             ))
-          : stats.map((stat) => (
+          : stats.map(stat => (
               <motion.div
                 key={stat.label}
                 variants={{
@@ -147,10 +153,7 @@ export default function AdminDashboardPage() {
             <TrendingUp className="h-5 w-5" style={{ color: "#00C9FF" }} />
           </div>
           <div>
-            <h2
-              className="text-lg font-semibold"
-              style={{ color: iceWhite }}
-            >
+            <h2 className="text-lg font-semibold" style={{ color: iceWhite }}>
               Platform Overview
             </h2>
             <p className="text-sm" style={{ color: slate400 }}>

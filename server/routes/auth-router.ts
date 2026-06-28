@@ -16,10 +16,7 @@ import {
   updatePasswordHash,
   setEmailVerificationToken,
 } from "../queries/api/users";
-import {
-  sendVerificationEmail,
-  sendPasswordResetEmail,
-} from "../lib/email";
+import { sendVerificationEmail, sendPasswordResetEmail } from "../lib/email";
 
 function generateToken() {
   return crypto.randomBytes(32).toString("hex");
@@ -31,7 +28,7 @@ const authInput = z.object({
 });
 
 export const authRouter = createRouter({
-  me: authedQuery.query((opts) => opts.ctx.user),
+  me: authedQuery.query(opts => opts.ctx.user),
 
   logout: authedQuery.mutation(async ({ ctx }) => {
     const opts = getSessionCookieOptions(ctx.req.headers);
@@ -43,66 +40,64 @@ export const authRouter = createRouter({
         sameSite: opts.sameSite?.toLowerCase() as "lax" | "none",
         secure: opts.secure,
         maxAge: 0,
-      }),
+      })
     );
     return { success: true };
   }),
 
-  signup: publicQuery
-    .input(authInput)
-    .mutation(async ({ input }) => {
-      try {
-        const existing = await findUserByEmail(input.email);
-        if (existing) {
-          return { success: true };
-        }
-        const passwordHash = await bcrypt.hash(input.password, 12);
-        const user = await createUser({
-          email: input.email,
-          passwordHash,
-        });
-        const verificationToken = generateToken();
-        await setEmailVerificationToken(user.id, verificationToken);
-        await sendVerificationEmail(input.email, verificationToken);
+  signup: publicQuery.input(authInput).mutation(async ({ input }) => {
+    try {
+      const existing = await findUserByEmail(input.email);
+      if (existing) {
         return { success: true };
-      } catch (err) {
-        console.error("[signup error]", err);
-        throw new Error(err instanceof Error ? err.message : "Registration failed");
       }
-    }),
-
-  login: publicQuery
-    .input(authInput)
-    .mutation(async ({ input, ctx }) => {
-      const user = await findUserByEmail(input.email);
-      if (!user || !user.passwordHash) {
-        throw new Error("Invalid email or password.");
-      }
-      const valid = await bcrypt.compare(input.password, user.passwordHash);
-      if (!valid) {
-        throw new Error("Invalid email or password.");
-      }
-      if (!user.emailVerified) {
-        throw new Error("Invalid email or password.");
-      }
-      const token = await signSessionToken({
-        userId: user.id,
-        email: user.email,
-        sessionVersion: user.sessionVersion,
+      const passwordHash = await bcrypt.hash(input.password, 12);
+      const user = await createUser({
+        email: input.email,
+        passwordHash,
       });
-      const cookieOpts = getSessionCookieOptions(ctx.req.headers);
-      ctx.resHeaders.append(
-        "set-cookie",
-        cookie.serialize(Session.cookieName, token, {
-          httpOnly: cookieOpts.httpOnly,
-          path: cookieOpts.path,
-          sameSite: cookieOpts.sameSite?.toLowerCase() as "lax" | "none",
-          secure: cookieOpts.secure,
-          maxAge: Session.maxAgeMs / 1000,
-        }),
-      );
+      const verificationToken = generateToken();
+      await setEmailVerificationToken(user.id, verificationToken);
+      await sendVerificationEmail(input.email, verificationToken);
       return { success: true };
-    }),
+    } catch (err) {
+      console.error("[signup error]", err);
+      throw new Error(
+        err instanceof Error ? err.message : "Registration failed"
+      );
+    }
+  }),
+
+  login: publicQuery.input(authInput).mutation(async ({ input, ctx }) => {
+    const user = await findUserByEmail(input.email);
+    if (!user || !user.passwordHash) {
+      throw new Error("Invalid email or password.");
+    }
+    const valid = await bcrypt.compare(input.password, user.passwordHash);
+    if (!valid) {
+      throw new Error("Invalid email or password.");
+    }
+    if (!user.emailVerified) {
+      throw new Error("Invalid email or password.");
+    }
+    const token = await signSessionToken({
+      userId: user.id,
+      email: user.email,
+      sessionVersion: user.sessionVersion,
+    });
+    const cookieOpts = getSessionCookieOptions(ctx.req.headers);
+    ctx.resHeaders.append(
+      "set-cookie",
+      cookie.serialize(Session.cookieName, token, {
+        httpOnly: cookieOpts.httpOnly,
+        path: cookieOpts.path,
+        sameSite: cookieOpts.sameSite?.toLowerCase() as "lax" | "none",
+        secure: cookieOpts.secure,
+        maxAge: Session.maxAgeMs / 1000,
+      })
+    );
+    return { success: true };
+  }),
 
   verifyEmail: publicQuery
     .input(z.object({ token: z.string() }))
@@ -149,7 +144,7 @@ export const authRouter = createRouter({
       z.object({
         token: z.string(),
         password: z.string().min(8),
-      }),
+      })
     )
     .mutation(async ({ input }) => {
       const user = await findUserByResetToken(input.token);

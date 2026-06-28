@@ -105,10 +105,15 @@ export default function AdminUsersPage() {
         ) : !users || users.length === 0 ? (
           <Empty className="py-20" style={{ borderColor: slate700 }}>
             <EmptyHeader>
-              <EmptyMedia variant="icon" style={{ backgroundColor: "rgba(0, 201, 255, 0.12)" }}>
+              <EmptyMedia
+                variant="icon"
+                style={{ backgroundColor: "rgba(0, 201, 255, 0.12)" }}
+              >
                 <Users className="h-6 w-6" style={{ color: "#00C9FF" }} />
               </EmptyMedia>
-              <EmptyTitle style={{ color: iceWhite }}>No users found</EmptyTitle>
+              <EmptyTitle style={{ color: iceWhite }}>
+                No users found
+              </EmptyTitle>
               <EmptyDescription>
                 There are no registered users in the system yet.
               </EmptyDescription>
@@ -123,14 +128,16 @@ export default function AdminUsersPage() {
                   <TableHead style={{ color: slate400 }}>Email</TableHead>
                   <TableHead style={{ color: slate400 }}>Role</TableHead>
                   <TableHead style={{ color: slate400 }}>Created At</TableHead>
-                  <TableHead style={{ color: slate400 }}>Last Sign In</TableHead>
+                  <TableHead style={{ color: slate400 }}>
+                    Last Sign In
+                  </TableHead>
                   <TableHead style={{ color: slate400 }} className="text-right">
                     Action
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {users.map((user) => {
+                {users.map(user => {
                   const isAdmin = user.role === "admin";
                   const nextRole = isAdmin ? "user" : "admin";
 

@@ -53,7 +53,7 @@ export async function downloadSelectedAsZip(
   const folder = zip.folder("Tailored_Resumes");
   if (!folder) return;
 
-  items.forEach((item) => {
+  items.forEach(item => {
     const filename = `Resume_${escapeFilename(item.job.title)}_${escapeFilename(
       item.job.company
     )}.html`;
@@ -177,7 +177,7 @@ export function filterResumes(
     search?: string;
   }
 ): MockTailoredResume[] {
-  return items.filter((item) => {
+  return items.filter(item => {
     if (filters.sector && item.job.sectorId) {
       const sectorName =
         [
@@ -199,14 +199,22 @@ export function filterResumes(
         ][(item.job.sectorId ?? 1) - 1] ?? "";
       if (sectorName !== filters.sector) return false;
     }
-    if (filters.minScore !== undefined && (item.job.fitScore ?? 0) < filters.minScore)
+    if (
+      filters.minScore !== undefined &&
+      (item.job.fitScore ?? 0) < filters.minScore
+    )
       return false;
-    if (filters.maxScore !== undefined && (item.job.fitScore ?? 0) > filters.maxScore)
+    if (
+      filters.maxScore !== undefined &&
+      (item.job.fitScore ?? 0) > filters.maxScore
+    )
       return false;
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
       const matchesTitle = item.job.title.toLowerCase().includes(searchLower);
-      const matchesCompany = item.job.company.toLowerCase().includes(searchLower);
+      const matchesCompany = item.job.company
+        .toLowerCase()
+        .includes(searchLower);
       if (!matchesTitle && !matchesCompany) return false;
     }
     return true;

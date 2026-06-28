@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { trpc } from "@/lib/trpc.tsx";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,7 +21,7 @@ export default function ForgotPassword() {
     onSuccess: () => {
       setSuccess(true);
     },
-    onError: (err) => {
+    onError: err => {
       setError(err.message ?? "Request failed. Please try again.");
     },
   });
@@ -33,7 +39,8 @@ export default function ForgotPassword() {
           <CardHeader className="text-center">
             <CardTitle>Check your email</CardTitle>
             <CardDescription>
-              If an account exists for <strong>{email}</strong>, we sent password reset instructions.
+              If an account exists for <strong>{email}</strong>, we sent
+              password reset instructions.
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center text-sm">
@@ -51,7 +58,9 @@ export default function ForgotPassword() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle>Reset password</CardTitle>
-          <CardDescription>Enter your email and we’ll send you reset instructions</CardDescription>
+          <CardDescription>
+            Enter your email and we’ll send you reset instructions
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -63,12 +72,14 @@ export default function ForgotPassword() {
                 autoComplete="email"
                 placeholder="you@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 required
               />
             </div>
             {error && (
-              <p role="alert" className="text-sm text-destructive">{error}</p>
+              <p role="alert" className="text-sm text-destructive">
+                {error}
+              </p>
             )}
             <Button
               type="submit"

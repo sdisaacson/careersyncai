@@ -1,16 +1,8 @@
 import { useCallback } from "react";
 import { motion } from "framer-motion";
-import {
-  Download,
-  Eye,
-  Check,
-  Building2,
-} from "lucide-react";
+import { Download, Eye, Check, Building2 } from "lucide-react";
 import type { MockTailoredResume } from "@/lib/resumeMockData";
-import {
-  getScoreGradient,
-  getSectorColor,
-} from "@/lib/resumeUtils";
+import { getScoreGradient, getSectorColor } from "@/lib/resumeUtils";
 
 interface ResumeListRowProps {
   item: MockTailoredResume;
@@ -156,7 +148,10 @@ export default function ResumeListRow({
       </div>
 
       {/* Location */}
-      <div className="hidden w-32 shrink-0 text-xs md:block" style={{ color: "#94A3B8" }}>
+      <div
+        className="hidden w-32 shrink-0 text-xs md:block"
+        style={{ color: "#94A3B8" }}
+      >
         <div className="flex items-center gap-1">
           <Building2 size={11} />
           <span className="truncate">{job.location}</span>
@@ -174,38 +169,42 @@ export default function ResumeListRow({
       {/* Actions */}
       <div className="flex shrink-0 items-center gap-1">
         <button
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation();
             onPreview();
           }}
           className="flex h-8 w-8 items-center justify-center rounded-md transition-colors duration-200"
           style={{ color: "#64748B" }}
-          onMouseEnter={(e) => {
+          onMouseEnter={e => {
             (e.currentTarget as HTMLElement).style.color = "#00C9FF";
-            (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(0,201,255,0.08)";
+            (e.currentTarget as HTMLElement).style.backgroundColor =
+              "rgba(0,201,255,0.08)";
           }}
-          onMouseLeave={(e) => {
+          onMouseLeave={e => {
             (e.currentTarget as HTMLElement).style.color = "#64748B";
-            (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+            (e.currentTarget as HTMLElement).style.backgroundColor =
+              "transparent";
           }}
           title="Preview"
         >
           <Eye size={15} />
         </button>
         <button
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation();
             onDownload();
           }}
           className="flex h-8 w-8 items-center justify-center rounded-md transition-colors duration-200"
           style={{ color: "#64748B" }}
-          onMouseEnter={(e) => {
+          onMouseEnter={e => {
             (e.currentTarget as HTMLElement).style.color = "#00C9FF";
-            (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(0,201,255,0.08)";
+            (e.currentTarget as HTMLElement).style.backgroundColor =
+              "rgba(0,201,255,0.08)";
           }}
-          onMouseLeave={(e) => {
+          onMouseLeave={e => {
             (e.currentTarget as HTMLElement).style.color = "#64748B";
-            (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+            (e.currentTarget as HTMLElement).style.backgroundColor =
+              "transparent";
           }}
           title="Download PDF"
         >

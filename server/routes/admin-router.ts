@@ -44,7 +44,10 @@ export const adminRouter = createRouter({
       .input(z.object({ id: z.number(), role: z.enum(["user", "admin"]) }))
       .mutation(async ({ input }) => {
         const db = getDb();
-        await db.update(users).set({ role: input.role }).where(eq(users.id, input.id));
+        await db
+          .update(users)
+          .set({ role: input.role })
+          .where(eq(users.id, input.id));
         return { success: true };
       }),
   }),

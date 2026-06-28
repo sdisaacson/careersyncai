@@ -1,1 +1,210 @@
-{"nodes": [{"id": "info", "label": "info.md", "file_type": "document", "source_file": "info.md", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "info_careermatch_ai", "label": "CareerSyncAI", "file_type": "concept", "source_file": "info.md", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "info_tailwind_css", "label": "Tailwind CSS", "file_type": "concept", "source_file": "info.md", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "info_node_js_20", "label": "Node.js 20", "file_type": "concept", "source_file": "info.md", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "info_shadcn_ui", "label": "shadcn/ui", "file_type": "concept", "source_file": "info.md", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "info_vite", "label": "Vite", "file_type": "concept", "source_file": "info.md", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}], "edges": [{"source": "info", "target": "info_careermatch_ai", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "info", "target": "info_tailwind_css", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "info", "target": "info_node_js_20", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "info", "target": "info_shadcn_ui", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "info", "target": "info_vite", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "info_vite", "target": "readme_vite", "relation": "semantically_similar_to", "confidence": "INFERRED", "confidence_score": 0.95, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "readme_react", "target": "info_careermatch_ai", "relation": "conceptually_related_to", "confidence": "INFERRED", "confidence_score": 0.75, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "readme_typescript", "target": "info_careermatch_ai", "relation": "conceptually_related_to", "confidence": "INFERRED", "confidence_score": 0.75, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "readme_vite", "target": "info_careermatch_ai", "relation": "conceptually_related_to", "confidence": "INFERRED", "confidence_score": 0.75, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "info_tailwind_css", "target": "info_careermatch_ai", "relation": "conceptually_related_to", "confidence": "INFERRED", "confidence_score": 0.75, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "info_shadcn_ui", "target": "info_careermatch_ai", "relation": "conceptually_related_to", "confidence": "INFERRED", "confidence_score": 0.75, "source_file": "info.md", "source_location": null, "weight": 1.0}, {"source": "info_node_js_20", "target": "info_careermatch_ai", "relation": "conceptually_related_to", "confidence": "INFERRED", "confidence_score": 0.75, "source_file": "info.md", "source_location": null, "weight": 1.0}], "hyperedges": [{"id": "careermatch_ai_tech_stack", "label": "CareerSyncAI tech stack", "nodes": ["readme_react", "readme_typescript", "readme_vite", "info_tailwind_css", "info_shadcn_ui", "info_node_js_20"], "relation": "form", "confidence": "INFERRED", "confidence_score": 0.75, "source_file": "info.md"}]}
+{
+  "nodes": [
+    {
+      "id": "info",
+      "label": "info.md",
+      "file_type": "document",
+      "source_file": "info.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "info_careermatch_ai",
+      "label": "CareerSyncAI",
+      "file_type": "concept",
+      "source_file": "info.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "info_tailwind_css",
+      "label": "Tailwind CSS",
+      "file_type": "concept",
+      "source_file": "info.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "info_node_js_20",
+      "label": "Node.js 20",
+      "file_type": "concept",
+      "source_file": "info.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "info_shadcn_ui",
+      "label": "shadcn/ui",
+      "file_type": "concept",
+      "source_file": "info.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "info_vite",
+      "label": "Vite",
+      "file_type": "concept",
+      "source_file": "info.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "info",
+      "target": "info_careermatch_ai",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "info",
+      "target": "info_tailwind_css",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "info",
+      "target": "info_node_js_20",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "info",
+      "target": "info_shadcn_ui",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "info",
+      "target": "info_vite",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "info_vite",
+      "target": "readme_vite",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_react",
+      "target": "info_careermatch_ai",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_typescript",
+      "target": "info_careermatch_ai",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_vite",
+      "target": "info_careermatch_ai",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "info_tailwind_css",
+      "target": "info_careermatch_ai",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "info_shadcn_ui",
+      "target": "info_careermatch_ai",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "info_node_js_20",
+      "target": "info_careermatch_ai",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "info.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "careermatch_ai_tech_stack",
+      "label": "CareerSyncAI tech stack",
+      "nodes": [
+        "readme_react",
+        "readme_typescript",
+        "readme_vite",
+        "info_tailwind_css",
+        "info_shadcn_ui",
+        "info_node_js_20"
+      ],
+      "relation": "form",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "info.md"
+    }
+  ]
+}

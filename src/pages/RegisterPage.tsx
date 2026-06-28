@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { trpc } from "@/lib/trpc.tsx";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +23,7 @@ export default function RegisterPage() {
     onSuccess: () => {
       setSuccess(true);
     },
-    onError: (err) => {
+    onError: err => {
       setError(err.message ?? "Registration failed. Please try again.");
     },
   });
@@ -76,7 +82,7 @@ export default function RegisterPage() {
                 autoComplete="email"
                 placeholder="you@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -88,10 +94,12 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 placeholder="••••••••"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 required
               />
-              <p className="text-xs text-muted-foreground">Must be at least 8 characters</p>
+              <p className="text-xs text-muted-foreground">
+                Must be at least 8 characters
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirm-password">Confirm password</Label>
@@ -101,12 +109,14 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 placeholder="••••••••"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={e => setConfirmPassword(e.target.value)}
                 required
               />
             </div>
             {error && (
-              <p role="alert" className="text-sm text-destructive">{error}</p>
+              <p role="alert" className="text-sm text-destructive">
+                {error}
+              </p>
             )}
             <Button
               type="submit"
@@ -114,7 +124,9 @@ export default function RegisterPage() {
               size="lg"
               disabled={signupMutation.isPending}
             >
-              {signupMutation.isPending ? "Creating account..." : "Create account"}
+              {signupMutation.isPending
+                ? "Creating account..."
+                : "Create account"}
             </Button>
           </form>
           <p className="mt-6 text-center text-sm">

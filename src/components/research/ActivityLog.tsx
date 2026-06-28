@@ -7,7 +7,10 @@ export type ActivityLogProps = {
   onClear: () => void;
 };
 
-const ActivityLog = memo(function ActivityLog({ entries, onClear }: ActivityLogProps) {
+const ActivityLog = memo(function ActivityLog({
+  entries,
+  onClear,
+}: ActivityLogProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,7 +37,10 @@ const ActivityLog = memo(function ActivityLog({ entries, onClear }: ActivityLogP
           <Activity size={16} style={{ color: "#00C9FF" }} />
           <h4
             className="text-sm font-semibold"
-            style={{ color: "#F5F7FA", fontFamily: '"Inter", system-ui, sans-serif' }}
+            style={{
+              color: "#F5F7FA",
+              fontFamily: '"Inter", system-ui, sans-serif',
+            }}
           >
             Activity Log
           </h4>
@@ -67,7 +73,7 @@ const ActivityLog = memo(function ActivityLog({ entries, onClear }: ActivityLogP
         style={{ scrollBehavior: "smooth" }}
       >
         <div className="flex flex-col gap-2.5">
-          {entries.map((entry) => (
+          {entries.map(entry => (
             <div
               key={entry.id}
               className="flex items-start gap-3"
@@ -91,7 +97,11 @@ const ActivityLog = memo(function ActivityLog({ entries, onClear }: ActivityLogP
               {/* Status icon */}
               <div className="mt-0.5 shrink-0">
                 {entry.status === "active" && (
-                  <Loader2 size={12} className="animate-spin" style={{ color: "#00C9FF" }} />
+                  <Loader2
+                    size={12}
+                    className="animate-spin"
+                    style={{ color: "#00C9FF" }}
+                  />
                 )}
                 {entry.status === "complete" && (
                   <CheckCircle2 size={12} style={{ color: "#22C55E" }} />

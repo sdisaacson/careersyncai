@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 
 interface AnimatedCounterProps {
   target: number;
@@ -12,15 +12,15 @@ interface AnimatedCounterProps {
 
 export default function AnimatedCounter({
   target,
-  suffix = '',
-  prefix = '',
+  suffix = "",
+  prefix = "",
   duration = 1.2,
   className,
   style,
 }: AnimatedCounterProps) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-15% 0px' });
+  const isInView = useInView(ref, { once: true, margin: "-15% 0px" });
   const hasAnimated = useRef(false);
 
   useEffect(() => {
@@ -52,9 +52,14 @@ export default function AnimatedCounter({
       style={style}
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+      transition={{
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+      }}
     >
-      {prefix}{count}{suffix}
+      {prefix}
+      {count}
+      {suffix}
     </motion.span>
   );
 }

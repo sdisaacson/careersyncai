@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
 import { trpc } from "@/lib/trpc.tsx";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,8 +24,11 @@ export default function ResetPassword() {
     onSuccess: () => {
       setSuccess(true);
     },
-    onError: (err) => {
-      setError(err.message ?? "Password reset failed. The link may be expired or invalid.");
+    onError: err => {
+      setError(
+        err.message ??
+          "Password reset failed. The link may be expired or invalid."
+      );
     },
   });
 
@@ -60,7 +69,8 @@ export default function ResetPassword() {
           <CardHeader className="text-center">
             <CardTitle>Password updated</CardTitle>
             <CardDescription>
-              Your password has been reset. You can now sign in with your new password.
+              Your password has been reset. You can now sign in with your new
+              password.
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
@@ -78,7 +88,9 @@ export default function ResetPassword() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle>New password</CardTitle>
-          <CardDescription>Enter a new password for your account</CardDescription>
+          <CardDescription>
+            Enter a new password for your account
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -90,10 +102,12 @@ export default function ResetPassword() {
                 autoComplete="new-password"
                 placeholder="••••••••"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 required
               />
-              <p className="text-xs text-muted-foreground">Must be at least 8 characters</p>
+              <p className="text-xs text-muted-foreground">
+                Must be at least 8 characters
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirm-password">Confirm new password</Label>
@@ -103,13 +117,17 @@ export default function ResetPassword() {
                 autoComplete="new-password"
                 placeholder="••••••••"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={e => setConfirmPassword(e.target.value)}
                 required
               />
-              <p className="text-xs text-muted-foreground">Must be at least 8 characters</p>
+              <p className="text-xs text-muted-foreground">
+                Must be at least 8 characters
+              </p>
             </div>
             {error && (
-              <p role="alert" className="text-sm text-destructive">{error}</p>
+              <p role="alert" className="text-sm text-destructive">
+                {error}
+              </p>
             )}
             <Button
               type="submit"

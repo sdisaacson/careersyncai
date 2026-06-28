@@ -1,1 +1,175 @@
-{"nodes": [{"id": "var_home_sisaacson_downloads_kimi_agent_\u804c\u4e1a\u5339\u914d\u6f14\u793a_1_app_docs_superpowers_plans_2026_06_27_supabase_migration_md", "label": "2026-06-27-supabase-migration.md", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L1"}, {"id": "plans_2026_06_27_supabase_migration_supabase_postgresql_migration_implementation_plan", "label": "Supabase (PostgreSQL) Migration Implementation Plan", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L1"}, {"id": "plans_2026_06_27_supabase_migration_file_structure", "label": "File Structure", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L13"}, {"id": "plans_2026_06_27_supabase_migration_task_1_swap_database_dependencies", "label": "Task 1: Swap database dependencies", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L29"}, {"id": "plans_2026_06_27_supabase_migration_task_2_update_drizzle_kit_configuration", "label": "Task 2: Update Drizzle Kit configuration", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L62"}, {"id": "plans_2026_06_27_supabase_migration_task_3_convert_schema_from_mysql_to_postgresql", "label": "Task 3: Convert schema from MySQL to PostgreSQL", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L108"}, {"id": "plans_2026_06_27_supabase_migration_task_4_switch_database_connection_driver", "label": "Task 4: Switch database connection driver", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L357"}, {"id": "plans_2026_06_27_supabase_migration_task_5_update_environment_documentation", "label": "Task 5: Update environment documentation", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L404"}, {"id": "plans_2026_06_27_supabase_migration_task_6_update_seed_script_comment", "label": "Task 6: Update seed script comment", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L434"}, {"id": "plans_2026_06_27_supabase_migration_task_7_verify_against_a_real_supabase_database", "label": "Task 7: Verify against a real Supabase database", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L459"}, {"id": "plans_2026_06_27_supabase_migration_self_review_checklist", "label": "Self-Review Checklist", "file_type": "document", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L512"}], "edges": [{"source": "var_home_sisaacson_downloads_kimi_agent_\u804c\u4e1a\u5339\u914d\u6f14\u793a_1_app_docs_superpowers_plans_2026_06_27_supabase_migration_md", "target": "plans_2026_06_27_supabase_migration_supabase_postgresql_migration_implementation_plan", "relation": "contains", "confidence": "EXTRACTED", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L1", "weight": 1.0}, {"source": "plans_2026_06_27_supabase_migration_supabase_postgresql_migration_implementation_plan", "target": "plans_2026_06_27_supabase_migration_file_structure", "relation": "contains", "confidence": "EXTRACTED", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L13", "weight": 1.0}, {"source": "plans_2026_06_27_supabase_migration_file_structure", "target": "plans_2026_06_27_supabase_migration_task_1_swap_database_dependencies", "relation": "contains", "confidence": "EXTRACTED", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L29", "weight": 1.0}, {"source": "plans_2026_06_27_supabase_migration_file_structure", "target": "plans_2026_06_27_supabase_migration_task_2_update_drizzle_kit_configuration", "relation": "contains", "confidence": "EXTRACTED", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L62", "weight": 1.0}, {"source": "plans_2026_06_27_supabase_migration_file_structure", "target": "plans_2026_06_27_supabase_migration_task_3_convert_schema_from_mysql_to_postgresql", "relation": "contains", "confidence": "EXTRACTED", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L108", "weight": 1.0}, {"source": "plans_2026_06_27_supabase_migration_file_structure", "target": "plans_2026_06_27_supabase_migration_task_4_switch_database_connection_driver", "relation": "contains", "confidence": "EXTRACTED", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L357", "weight": 1.0}, {"source": "plans_2026_06_27_supabase_migration_file_structure", "target": "plans_2026_06_27_supabase_migration_task_5_update_environment_documentation", "relation": "contains", "confidence": "EXTRACTED", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L404", "weight": 1.0}, {"source": "plans_2026_06_27_supabase_migration_file_structure", "target": "plans_2026_06_27_supabase_migration_task_6_update_seed_script_comment", "relation": "contains", "confidence": "EXTRACTED", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L434", "weight": 1.0}, {"source": "plans_2026_06_27_supabase_migration_file_structure", "target": "plans_2026_06_27_supabase_migration_task_7_verify_against_a_real_supabase_database", "relation": "contains", "confidence": "EXTRACTED", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L459", "weight": 1.0}, {"source": "plans_2026_06_27_supabase_migration_supabase_postgresql_migration_implementation_plan", "target": "plans_2026_06_27_supabase_migration_self_review_checklist", "relation": "contains", "confidence": "EXTRACTED", "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md", "source_location": "L512", "weight": 1.0}], "input_tokens": 0, "output_tokens": 0}
+{
+  "nodes": [
+    {
+      "id": "var_home_sisaacson_downloads_kimi_agent_\u804c\u4e1a\u5339\u914d\u6f14\u793a_1_app_docs_superpowers_plans_2026_06_27_supabase_migration_md",
+      "label": "2026-06-27-supabase-migration.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_27_supabase_migration_supabase_postgresql_migration_implementation_plan",
+      "label": "Supabase (PostgreSQL) Migration Implementation Plan",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "plans_2026_06_27_supabase_migration_file_structure",
+      "label": "File Structure",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "plans_2026_06_27_supabase_migration_task_1_swap_database_dependencies",
+      "label": "Task 1: Swap database dependencies",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L29"
+    },
+    {
+      "id": "plans_2026_06_27_supabase_migration_task_2_update_drizzle_kit_configuration",
+      "label": "Task 2: Update Drizzle Kit configuration",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L62"
+    },
+    {
+      "id": "plans_2026_06_27_supabase_migration_task_3_convert_schema_from_mysql_to_postgresql",
+      "label": "Task 3: Convert schema from MySQL to PostgreSQL",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L108"
+    },
+    {
+      "id": "plans_2026_06_27_supabase_migration_task_4_switch_database_connection_driver",
+      "label": "Task 4: Switch database connection driver",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L357"
+    },
+    {
+      "id": "plans_2026_06_27_supabase_migration_task_5_update_environment_documentation",
+      "label": "Task 5: Update environment documentation",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L404"
+    },
+    {
+      "id": "plans_2026_06_27_supabase_migration_task_6_update_seed_script_comment",
+      "label": "Task 6: Update seed script comment",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L434"
+    },
+    {
+      "id": "plans_2026_06_27_supabase_migration_task_7_verify_against_a_real_supabase_database",
+      "label": "Task 7: Verify against a real Supabase database",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L459"
+    },
+    {
+      "id": "plans_2026_06_27_supabase_migration_self_review_checklist",
+      "label": "Self-Review Checklist",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L512"
+    }
+  ],
+  "edges": [
+    {
+      "source": "var_home_sisaacson_downloads_kimi_agent_\u804c\u4e1a\u5339\u914d\u6f14\u793a_1_app_docs_superpowers_plans_2026_06_27_supabase_migration_md",
+      "target": "plans_2026_06_27_supabase_migration_supabase_postgresql_migration_implementation_plan",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_27_supabase_migration_supabase_postgresql_migration_implementation_plan",
+      "target": "plans_2026_06_27_supabase_migration_file_structure",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_27_supabase_migration_file_structure",
+      "target": "plans_2026_06_27_supabase_migration_task_1_swap_database_dependencies",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_27_supabase_migration_file_structure",
+      "target": "plans_2026_06_27_supabase_migration_task_2_update_drizzle_kit_configuration",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_27_supabase_migration_file_structure",
+      "target": "plans_2026_06_27_supabase_migration_task_3_convert_schema_from_mysql_to_postgresql",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L108",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_27_supabase_migration_file_structure",
+      "target": "plans_2026_06_27_supabase_migration_task_4_switch_database_connection_driver",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L357",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_27_supabase_migration_file_structure",
+      "target": "plans_2026_06_27_supabase_migration_task_5_update_environment_documentation",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L404",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_27_supabase_migration_file_structure",
+      "target": "plans_2026_06_27_supabase_migration_task_6_update_seed_script_comment",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L434",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_27_supabase_migration_file_structure",
+      "target": "plans_2026_06_27_supabase_migration_task_7_verify_against_a_real_supabase_database",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L459",
+      "weight": 1.0
+    },
+    {
+      "source": "plans_2026_06_27_supabase_migration_supabase_postgresql_migration_implementation_plan",
+      "target": "plans_2026_06_27_supabase_migration_self_review_checklist",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-06-27-supabase-migration.md",
+      "source_location": "L512",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -54,7 +54,9 @@ export const users = pgTable("users", {
     withTimezone: true,
   }),
   passwordResetToken: varchar("passwordResetToken", { length: 255 }),
-  passwordResetExpires: timestamp("passwordResetExpires", { withTimezone: true }),
+  passwordResetExpires: timestamp("passwordResetExpires", {
+    withTimezone: true,
+  }),
   role: userRoleEnum("role").default("user").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt")

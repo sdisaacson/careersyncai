@@ -30,14 +30,16 @@ app.use("/api/*", async (c, next) => {
     throw err;
   }
   const duration = Date.now() - start;
-  console.log(`[${new Date().toISOString()}] ${c.req.method} ${c.req.url} - ${c.res.status} (${duration}ms)`);
+  console.log(
+    `[${new Date().toISOString()}] ${c.req.method} ${c.req.url} - ${c.res.status} (${duration}ms)`
+  );
 });
 
 // Health check
-app.get("/api/health", (c) => c.json({ ok: true, ts: Date.now() }));
+app.get("/api/health", c => c.json({ ok: true, ts: Date.now() }));
 
 // tRPC handler
-app.use("/api/trpc/*", async (c) => {
+app.use("/api/trpc/*", async c => {
   try {
     const response = await fetchRequestHandler({
       endpoint: "/api/trpc",
@@ -48,11 +50,17 @@ app.use("/api/trpc/*", async (c) => {
     return response;
   } catch (err) {
     console.error("[tRPC ERROR]", err);
-    return c.json({ error: "Internal Server Error", message: err instanceof Error ? err.message : "Unknown error" }, 500);
+    return c.json(
+      {
+        error: "Internal Server Error",
+        message: err instanceof Error ? err.message : "Unknown error",
+      },
+      500
+    );
   }
 });
 
 // Catch-all for unmatched API routes
-app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
+app.all("/api/*", c => c.json({ error: "Not Found" }, 404));
 
 export default app;

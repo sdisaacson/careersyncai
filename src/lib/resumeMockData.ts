@@ -1260,24 +1260,29 @@ export function generateMockResumes(
       matchReasons: `Strong match based on skills alignment, experience level, and career trajectory.`,
       skillGaps: `Minor gaps in domain-specific tooling that can be addressed through onboarding.`,
       status: "discovered",
-      createdAt: new Date(baseDate.getTime() - createdOffset * 24 * 60 * 60 * 1000),
+      createdAt: new Date(
+        baseDate.getTime() - createdOffset * 24 * 60 * 60 * 1000
+      ),
     };
 
-    const sectorHighlights = HIGHLIGHT_TEMPLATES[sector] ?? HIGHLIGHT_TEMPLATES["Technology"];
+    const sectorHighlights =
+      HIGHLIGHT_TEMPLATES[sector] ?? HIGHLIGHT_TEMPLATES["Technology"];
     const highlights = getRandomItems(sectorHighlights, 3);
 
-    const sectorChanges = CHANGE_TEMPLATES[sector] ?? CHANGE_TEMPLATES["Technology"];
+    const sectorChanges =
+      CHANGE_TEMPLATES[sector] ?? CHANGE_TEMPLATES["Technology"];
     const changesMade = getRandomItems(sectorChanges, 5);
 
     const sectorKeywords = KEYWORDS[sector] ?? KEYWORDS["Technology"];
     const matchedCount = Math.floor(Math.random() * 5) + 8;
     const keywordsMatched = getRandomItems(sectorKeywords, matchedCount);
     const keywordsMissing = getRandomItems(
-      sectorKeywords.filter((k) => !keywordsMatched.includes(k)),
+      sectorKeywords.filter(k => !keywordsMatched.includes(k)),
       Math.min(3, sectorKeywords.length - matchedCount)
     );
 
-    const sectorNarratives = NARRATIVE_TEMPLATES[sector] ?? NARRATIVE_TEMPLATES["Technology"];
+    const sectorNarratives =
+      NARRATIVE_TEMPLATES[sector] ?? NARRATIVE_TEMPLATES["Technology"];
     const narrativeTemplate = sectorNarratives[i % sectorNarratives.length];
     const narrativeSummary = narrativeTemplate
       .replace(/{title}/g, title)

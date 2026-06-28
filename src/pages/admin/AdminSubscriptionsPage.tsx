@@ -44,9 +44,10 @@ function formatPrice(cents: number | null | undefined): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
-function statusColor(
-  status: string | null | undefined
-): { bg: string; text: string } {
+function statusColor(status: string | null | undefined): {
+  bg: string;
+  text: string;
+} {
   switch (status) {
     case "active":
       return { bg: "rgba(34, 197, 94, 0.15)", text: "#22C55E" };
@@ -160,7 +161,7 @@ export default function AdminSubscriptionsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {subscriptions.map((sub) => {
+                {subscriptions.map(sub => {
                   const colors = statusColor(sub.status);
                   return (
                     <TableRow

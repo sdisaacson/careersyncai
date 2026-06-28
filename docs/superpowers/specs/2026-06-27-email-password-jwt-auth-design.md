@@ -19,15 +19,15 @@ The database migration to Supabase (PostgreSQL) is complete, and the `users` tab
 
 ## Decision Log
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Migration approach | Minimal migration | Reuse existing JWT session plumbing and user table shape; add password/auth columns. |
-| External identity key (`unionId`) | Keep nullable | Backwards compatibility; other tables/code still reference it indirectly. |
-| Password hashing | bcrypt | Widely supported, simpler than Argon2id in Node.js, sufficient for this threat model. |
-| Email provider | Resend | Simple API; falls back to console logging in development. |
-| Admin designation | `ADMIN_EMAILS` env var | Matches the previous `OWNER_UNION_ID` pattern but uses email. |
-| Session payload | `{ userId, email }` | Decouples session from OAuth `unionId`/`clientId`. |
-| Verification/reset tokens | Crypto random 32-byte hex | Simple and secure; reset tokens expire in 1 hour. |
+| Decision                          | Choice                    | Rationale                                                                             |
+| --------------------------------- | ------------------------- | ------------------------------------------------------------------------------------- |
+| Migration approach                | Minimal migration         | Reuse existing JWT session plumbing and user table shape; add password/auth columns.  |
+| External identity key (`unionId`) | Keep nullable             | Backwards compatibility; other tables/code still reference it indirectly.             |
+| Password hashing                  | bcrypt                    | Widely supported, simpler than Argon2id in Node.js, sufficient for this threat model. |
+| Email provider                    | Resend                    | Simple API; falls back to console logging in development.                             |
+| Admin designation                 | `ADMIN_EMAILS` env var    | Matches the previous `OWNER_UNION_ID` pattern but uses email.                         |
+| Session payload                   | `{ userId, email }`       | Decouples session from OAuth `unionId`/`clientId`.                                    |
+| Verification/reset tokens         | Crypto random 32-byte hex | Simple and secure; reset tokens expire in 1 hour.                                     |
 
 ## Schema Changes (`db/schema.ts`)
 

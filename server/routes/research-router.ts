@@ -6,16 +6,21 @@ import { eq, desc } from "drizzle-orm";
 
 export const researchRouter = createRouter({
   create: publicQuery
-    .input(z.object({ profileId: z.number(), totalSectors: z.number().default(8) }))
+    .input(
+      z.object({ profileId: z.number(), totalSectors: z.number().default(8) })
+    )
     .mutation(async ({ input }) => {
       const db = getDb();
-      const [{ id }] = await db.insert(researchSessions).values({
-        profileId: input.profileId,
-        totalSectors: input.totalSectors,
-        completedSectors: 0,
-        totalJobsFound: 0,
-        status: "running",
-      }).returning({ id: researchSessions.id });
+      const [{ id }] = await db
+        .insert(researchSessions)
+        .values({
+          profileId: input.profileId,
+          totalSectors: input.totalSectors,
+          completedSectors: 0,
+          totalJobsFound: 0,
+          status: "running",
+        })
+        .returning({ id: researchSessions.id });
       return { id };
     }),
 
@@ -44,7 +49,10 @@ export const researchRouter = createRouter({
     .mutation(async ({ input }) => {
       const { id, ...data } = input;
       const db = getDb();
-      await db.update(researchSessions).set(data).where(eq(researchSessions.id, id));
+      await db
+        .update(researchSessions)
+        .set(data)
+        .where(eq(researchSessions.id, id));
       return { success: true };
     }),
 

@@ -49,7 +49,8 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "premium",
     name: "Premium",
-    description: "For career switchers and executives who want white-glove results.",
+    description:
+      "For career switchers and executives who want white-glove results.",
     priceCents: 4900,
     interval: "month",
     displayPrice: "$49",
@@ -64,5 +65,5 @@ export const PRICING_PLANS: PricingPlan[] = [
 ];
 
 export function getPlanById(id: string): PricingPlan | undefined {
-  return PRICING_PLANS.find((p) => p.id === id);
+  return PRICING_PLANS.find(p => p.id === id);
 }

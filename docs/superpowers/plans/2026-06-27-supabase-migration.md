@@ -12,23 +12,24 @@
 
 ## File Structure
 
-| File | Responsibility | Action |
-|------|----------------|--------|
-| `package.json` | Dependency manifest | Remove `mysql2`, add `postgres` |
-| `drizzle.config.ts` | Drizzle Kit configuration | Change dialect to `postgresql` |
-| `db/schema.ts` | Database schema definitions | Convert MySQL types to PostgreSQL types |
-| `db/relations.ts` | Drizzle relations | No changes required |
-| `api/queries/connection.ts` | Singleton database client | Switch to `postgres-js` driver |
-| `api/lib/env.ts` | Environment validation | No changes required |
-| `.env.example` | Env template | Update `DATABASE_URL` comment |
-| `.env` | Local env file | Update `DATABASE_URL` comment only |
-| `db/seed.ts` | Seed script entry point | Update comment about connection close |
+| File                        | Responsibility              | Action                                  |
+| --------------------------- | --------------------------- | --------------------------------------- |
+| `package.json`              | Dependency manifest         | Remove `mysql2`, add `postgres`         |
+| `drizzle.config.ts`         | Drizzle Kit configuration   | Change dialect to `postgresql`          |
+| `db/schema.ts`              | Database schema definitions | Convert MySQL types to PostgreSQL types |
+| `db/relations.ts`           | Drizzle relations           | No changes required                     |
+| `api/queries/connection.ts` | Singleton database client   | Switch to `postgres-js` driver          |
+| `api/lib/env.ts`            | Environment validation      | No changes required                     |
+| `.env.example`              | Env template                | Update `DATABASE_URL` comment           |
+| `.env`                      | Local env file              | Update `DATABASE_URL` comment only      |
+| `db/seed.ts`                | Seed script entry point     | Update comment about connection close   |
 
 ---
 
 ### Task 1: Swap database dependencies
 
 **Files:**
+
 - Modify: `package.json`
 
 - [ ] **Step 1: Remove `mysql2` and add `postgres`**
@@ -44,6 +45,7 @@
 - [ ] **Step 2: Install dependencies**
 
   Run:
+
   ```bash
   npm install
   ```
@@ -62,15 +64,19 @@
 ### Task 2: Update Drizzle Kit configuration
 
 **Files:**
+
 - Modify: `drizzle.config.ts`
 
 - [ ] **Step 1: Change dialect to `postgresql`**
 
   Replace:
+
   ```ts
   dialect: "mysql",
   ```
+
   with:
+
   ```ts
   dialect: "postgresql",
   ```
@@ -108,6 +114,7 @@
 ### Task 3: Convert schema from MySQL to PostgreSQL
 
 **Files:**
+
 - Modify: `db/schema.ts`
 
 - [ ] **Step 1: Replace the entire schema file**
@@ -200,7 +207,10 @@
     resumeUrl: text("resumeUrl"),
     status: profileStatusEnum("status").default("uploaded"),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().notNull().$onUpdate(() => new Date()),
+    updatedAt: timestamp("updatedAt")
+      .defaultNow()
+      .notNull()
+      .$onUpdate(() => new Date()),
   });
 
   export type Profile = typeof profiles.$inferSelect;
@@ -318,7 +328,10 @@
     stripeCustomerId: varchar("stripeCustomerId", { length: 255 }),
     stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().notNull().$onUpdate(() => new Date()),
+    updatedAt: timestamp("updatedAt")
+      .defaultNow()
+      .notNull()
+      .$onUpdate(() => new Date()),
   });
 
   export type Subscription = typeof subscriptions.$inferSelect;
@@ -329,7 +342,10 @@
     id: serial("id").primaryKey(),
     key: varchar("key", { length: 255 }).notNull().unique(),
     value: text("value"),
-    updatedAt: timestamp("updatedAt").defaultNow().notNull().$onUpdate(() => new Date()),
+    updatedAt: timestamp("updatedAt")
+      .defaultNow()
+      .notNull()
+      .$onUpdate(() => new Date()),
   });
 
   export type AppSetting = typeof appSettings.$inferSelect;
@@ -339,6 +355,7 @@
 - [ ] **Step 2: Run TypeScript check**
 
   Run:
+
   ```bash
   npm run check
   ```
@@ -357,6 +374,7 @@
 ### Task 4: Switch database connection driver
 
 **Files:**
+
 - Modify: `api/queries/connection.ts`
 
 - [ ] **Step 1: Replace connection implementation**
@@ -386,6 +404,7 @@
 - [ ] **Step 2: Run TypeScript check**
 
   Run:
+
   ```bash
   npm run check
   ```
@@ -404,16 +423,20 @@
 ### Task 5: Update environment documentation
 
 **Files:**
+
 - Modify: `.env.example`
 - Modify: `.env`
 
 - [ ] **Step 1: Update `.env.example`**
 
   Change the database comment from:
+
   ```bash
   DATABASE_URL=             # MySQL connection string (mysql://user:pass@host:port/db)
   ```
+
   to:
+
   ```bash
   DATABASE_URL=             # Supabase Postgres connection string (postgresql://postgres:[password]@db.[ref].supabase.co:5432/postgres)
   ```
@@ -434,15 +457,19 @@
 ### Task 6: Update seed script comment
 
 **Files:**
+
 - Modify: `db/seed.ts`
 
 - [ ] **Step 1: Update comment**
 
   Change:
+
   ```ts
   process.exit(0); // close MySQL connection pool
   ```
+
   to:
+
   ```ts
   process.exit(0); // close Postgres connection
   ```
@@ -459,11 +486,13 @@
 ### Task 7: Verify against a real Supabase database
 
 **Files:**
+
 - None (verification only)
 
 - [ ] **Step 1: Obtain Supabase connection string**
 
   From the Supabase dashboard, copy the connection string for the `postgres` user in "Transaction" mode (or session mode). It looks like:
+
   ```
   postgresql://postgres:[password]@db.[ref].supabase.co:5432/postgres
   ```
@@ -475,6 +504,7 @@
 - [ ] **Step 3: Push schema to Supabase**
 
   Run:
+
   ```bash
   npm run db:push
   ```
@@ -484,6 +514,7 @@
 - [ ] **Step 4: Run full type check and lint**
 
   Run:
+
   ```bash
   npm run check
   npm run lint
@@ -494,6 +525,7 @@
 - [ ] **Step 5: Start dev server and smoke test**
 
   Run:
+
   ```bash
   npm run dev
   ```

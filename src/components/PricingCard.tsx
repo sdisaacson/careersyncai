@@ -104,7 +104,7 @@ export default function PricingCard({
 
         <CardContent className="relative z-10 flex flex-1 flex-col">
           <ul className="mb-6 flex flex-col gap-3">
-            {plan.features.map((feature) => (
+            {plan.features.map(feature => (
               <li
                 key={feature}
                 className="flex items-start gap-3 text-sm"

@@ -53,7 +53,7 @@ export default function AdminSettingsPage() {
   useEffect(() => {
     if (!settings || initialized.current) return;
     initialized.current = true;
-    const map = new Map(settings.map((s) => [s.key, s.value ?? ""]));
+    const map = new Map(settings.map(s => [s.key, s.value ?? ""]));
     // Sync form defaults from fetched settings; this runs once after initial load.
     setValues({
       [SETTING_KEYS.moonshotApiKey]: map.get(SETTING_KEYS.moonshotApiKey) ?? "",
@@ -76,7 +76,7 @@ export default function AdminSettingsPage() {
   });
 
   const handleChange = (key: string, value: string) => {
-    setValues((prev) => ({ ...prev, [key]: value }));
+    setValues(prev => ({ ...prev, [key]: value }));
     if (saved) setSaved(false);
   };
 
@@ -168,7 +168,7 @@ export default function AdminSettingsPage() {
                     type="password"
                     placeholder="sk-..."
                     value={values[SETTING_KEYS.moonshotApiKey]}
-                    onChange={(e) =>
+                    onChange={e =>
                       handleChange(SETTING_KEYS.moonshotApiKey, e.target.value)
                     }
                     className="border-[var(--slate-700)] bg-transparent text-[var(--ice-white)] placeholder:text-[var(--slate-500)] focus-visible:border-[#00C9FF]"
@@ -190,7 +190,7 @@ export default function AdminSettingsPage() {
                     type="text"
                     placeholder="pk_live_..."
                     value={values[SETTING_KEYS.stripePublishableKey]}
-                    onChange={(e) =>
+                    onChange={e =>
                       handleChange(
                         SETTING_KEYS.stripePublishableKey,
                         e.target.value
@@ -212,7 +212,7 @@ export default function AdminSettingsPage() {
                     type="password"
                     placeholder="sk_live_..."
                     value={values[SETTING_KEYS.stripeSecretKey]}
-                    onChange={(e) =>
+                    onChange={e =>
                       handleChange(SETTING_KEYS.stripeSecretKey, e.target.value)
                     }
                     className="border-[var(--slate-700)] bg-transparent text-[var(--ice-white)] placeholder:text-[var(--slate-500)] focus-visible:border-[#00C9FF]"
@@ -225,7 +225,7 @@ export default function AdminSettingsPage() {
                   </Label>
                   <Select
                     value={values[SETTING_KEYS.defaultPlanId]}
-                    onValueChange={(value) =>
+                    onValueChange={value =>
                       handleChange(SETTING_KEYS.defaultPlanId, value)
                     }
                   >
@@ -239,7 +239,7 @@ export default function AdminSettingsPage() {
                       className="border-[var(--slate-700)]"
                       style={{ backgroundColor: midnight }}
                     >
-                      {PLAN_OPTIONS.map((plan) => (
+                      {PLAN_OPTIONS.map(plan => (
                         <SelectItem
                           key={plan.value}
                           value={plan.value}

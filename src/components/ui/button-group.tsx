@@ -1,9 +1,9 @@
-import { Slot } from "@radix-ui/react-slot"
-import { type VariantProps } from "class-variance-authority"
+import { Slot } from "@radix-ui/react-slot";
+import { type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
-import { Separator } from "@/components/ui/separator"
-import { buttonGroupVariants } from "@/components/ui/button-group-variants"
+import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import { buttonGroupVariants } from "@/components/ui/button-group-variants";
 
 function ButtonGroup({
   className,
@@ -18,7 +18,7 @@ function ButtonGroup({
       className={cn(buttonGroupVariants({ orientation }), className)}
       {...props}
     />
-  )
+  );
 }
 
 function ButtonGroupText({
@@ -26,9 +26,9 @@ function ButtonGroupText({
   asChild = false,
   ...props
 }: React.ComponentProps<"div"> & {
-  asChild?: boolean
+  asChild?: boolean;
 }) {
-  const Comp = asChild ? Slot : "div"
+  const Comp = asChild ? Slot : "div";
 
   return (
     <Comp
@@ -38,7 +38,7 @@ function ButtonGroupText({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function ButtonGroupSeparator({
@@ -56,11 +56,7 @@ function ButtonGroupSeparator({
       )}
       {...props}
     />
-  )
+  );
 }
 
-export {
-  ButtonGroup,
-  ButtonGroupSeparator,
-  ButtonGroupText,
-}
+export { ButtonGroup, ButtonGroupSeparator, ButtonGroupText };

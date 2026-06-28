@@ -1,7 +1,13 @@
 import { useRef, useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
 import { trpc } from "@/lib/trpc.tsx";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,8 +25,11 @@ export default function VerifyEmail() {
     onSuccess: () => {
       setVerified(true);
     },
-    onError: (err) => {
-      setError(err.message ?? "Verification failed. The link may be expired or invalid.");
+    onError: err => {
+      setError(
+        err.message ??
+          "Verification failed. The link may be expired or invalid."
+      );
     },
   });
 
@@ -28,15 +37,20 @@ export default function VerifyEmail() {
     onSuccess: () => {
       setError("A new verification link has been sent to your email.");
     },
-    onError: (err) => {
-      setError(err.message ?? "Failed to resend verification email. Please try again.");
+    onError: err => {
+      setError(
+        err.message ?? "Failed to resend verification email. Please try again."
+      );
     },
   });
 
   useEffect(() => {
     if (!token) {
       // Defer state update to avoid synchronous setState in effect body
-      const timeoutId = setTimeout(() => setError("Missing verification token."), 0);
+      const timeoutId = setTimeout(
+        () => setError("Missing verification token."),
+        0
+      );
       return () => clearTimeout(timeoutId);
     }
     if (hasVerified.current) return;
@@ -58,7 +72,11 @@ export default function VerifyEmail() {
           </CardDescription>
         </CardHeader>
         <CardContent className="text-center">
-          {error && <p role="alert" className="text-sm text-destructive mb-4">{error}</p>}
+          {error && (
+            <p role="alert" className="text-sm text-destructive mb-4">
+              {error}
+            </p>
+          )}
           {verified ? (
             <Button asChild className="w-full">
               <Link to="/login">Sign in</Link>
@@ -71,7 +89,7 @@ export default function VerifyEmail() {
                 type="email"
                 placeholder="you@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
               />
               <Button
                 type="button"
@@ -80,7 +98,9 @@ export default function VerifyEmail() {
                 disabled={resendMutation.isPending || !email}
                 onClick={() => resendMutation.mutate({ email })}
               >
-                {resendMutation.isPending ? "Sending..." : "Resend verification email"}
+                {resendMutation.isPending
+                  ? "Sending..."
+                  : "Resend verification email"}
               </Button>
             </div>
           ) : (

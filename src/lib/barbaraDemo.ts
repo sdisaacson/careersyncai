@@ -56,7 +56,8 @@ export const BARBARA_PARSED_RESUME: ParsedDemoResume = {
     name: "Barbara Chen",
     experience:
       "Curatorial Intern at The Metropolitan Museum of Art; Gallery Assistant at Columbia University Wallach Art Gallery; Volunteer Docent at MoMA.",
-    education: "Bachelor of Arts in Art History, Minor in Museum Studies, Columbia University, Graduated May 2025.",
+    education:
+      "Bachelor of Arts in Art History, Minor in Museum Studies, Columbia University, Graduated May 2025.",
     skills:
       "Art historical research, provenance investigation, exhibition catalog writing, grant writing, Adobe Photoshop, InDesign, TMS/eMuseum, WordPress, public speaking, event coordination, French, Mandarin.",
   },
@@ -83,7 +84,8 @@ export const BARBARA_PROFILE = {
   skills: BARBARA_PARSED_RESUME.profile.skills,
   education: BARBARA_PARSED_RESUME.profile.education,
   experience: BARBARA_PARSED_RESUME.profile.experience,
-  preferredRoles: "Gallery Assistant, Curatorial Assistant, Museum Educator, Arts Administrator, Collections Coordinator",
+  preferredRoles:
+    "Gallery Assistant, Curatorial Assistant, Museum Educator, Arts Administrator, Collections Coordinator",
   preferredIndustries: "Arts & Culture, Museums, Education, Media",
   salaryExpectation: "$45k - $60k",
   workType: "In-person / Hybrid",
@@ -103,12 +105,43 @@ const BARBARA_SECTORS = [
 ];
 
 const BARBARA_COMPANIES: Record<string, string[]> = {
-  "Arts & Culture": ["The Met", "MoMA", "Whitney Museum", "Guggenheim", "New Museum", "Brooklyn Museum"],
-  Museums: ["The Met", "MoMA", "Whitney Museum", "Guggenheim", "New Museum", "Brooklyn Museum"],
-  Education: ["Columbia University", "NYU", "Parsons School of Design", "School of Visual Arts", "MoMA Learning"],
+  "Arts & Culture": [
+    "The Met",
+    "MoMA",
+    "Whitney Museum",
+    "Guggenheim",
+    "New Museum",
+    "Brooklyn Museum",
+  ],
+  Museums: [
+    "The Met",
+    "MoMA",
+    "Whitney Museum",
+    "Guggenheim",
+    "New Museum",
+    "Brooklyn Museum",
+  ],
+  Education: [
+    "Columbia University",
+    "NYU",
+    "Parsons School of Design",
+    "School of Visual Arts",
+    "MoMA Learning",
+  ],
   Media: ["Artnet", "Artsy", "Hyperallergic", "The Art Newspaper", "Frieze"],
-  Nonprofit: ["Creative Time", "Public Art Fund", "Art Production Fund", "Lower Manhattan Cultural Council"],
-  Galleries: ["David Zwirner", "Gagosian", "Hauser & Wirth", "Pace Gallery", "Lehmann Maupin"],
+  Nonprofit: [
+    "Creative Time",
+    "Public Art Fund",
+    "Art Production Fund",
+    "Lower Manhattan Cultural Council",
+  ],
+  Galleries: [
+    "David Zwirner",
+    "Gagosian",
+    "Hauser & Wirth",
+    "Pace Gallery",
+    "Lehmann Maupin",
+  ],
   Publishing: ["Phaidon", "Rizzoli", "Thames & Hudson", "Abrams Books"],
   "Auction Houses": ["Christie's", "Sotheby's", "Bonhams", "Heritage Auctions"],
 };
@@ -121,13 +154,47 @@ const BARBARA_TITLES: Record<string, string[]> = {
     "Public Programs Assistant",
     "Development Assistant",
   ],
-  Museums: ["Gallery Assistant", "Museum Educator", "Visitor Services Associate", "Curatorial Intern", "Registrar Assistant"],
-  Education: ["Education Assistant", "Teaching Assistant", "Program Coordinator", "Curriculum Assistant"],
-  Media: ["Editorial Assistant", "Content Coordinator", "Research Assistant", "Social Media Coordinator"],
-  Nonprofit: ["Program Assistant", "Grants Assistant", "Communications Assistant", "Event Coordinator"],
-  Galleries: ["Gallery Assistant", "Sales Assistant", "Artist Liaison", "Exhibition Assistant"],
-  Publishing: ["Editorial Assistant", "Photo Researcher", "Production Assistant"],
-  "Auction Houses": ["Cataloguing Assistant", "Client Services Assistant", "Specialist Assistant"],
+  Museums: [
+    "Gallery Assistant",
+    "Museum Educator",
+    "Visitor Services Associate",
+    "Curatorial Intern",
+    "Registrar Assistant",
+  ],
+  Education: [
+    "Education Assistant",
+    "Teaching Assistant",
+    "Program Coordinator",
+    "Curriculum Assistant",
+  ],
+  Media: [
+    "Editorial Assistant",
+    "Content Coordinator",
+    "Research Assistant",
+    "Social Media Coordinator",
+  ],
+  Nonprofit: [
+    "Program Assistant",
+    "Grants Assistant",
+    "Communications Assistant",
+    "Event Coordinator",
+  ],
+  Galleries: [
+    "Gallery Assistant",
+    "Sales Assistant",
+    "Artist Liaison",
+    "Exhibition Assistant",
+  ],
+  Publishing: [
+    "Editorial Assistant",
+    "Photo Researcher",
+    "Production Assistant",
+  ],
+  "Auction Houses": [
+    "Cataloguing Assistant",
+    "Client Services Assistant",
+    "Specialist Assistant",
+  ],
 };
 
 const BARBARA_LOCATIONS = ["New York, NY", "Brooklyn, NY", "Remote"];
@@ -135,12 +202,15 @@ const BARBARA_LOCATIONS = ["New York, NY", "Brooklyn, NY", "Remote"];
 export function generateBarbaraJobs(count: number = 12): Job[] {
   const jobs: Job[] = [];
   for (let i = 0; i < count; i++) {
-    const sector = BARBARA_SECTORS[Math.floor(Math.random() * BARBARA_SECTORS.length)];
+    const sector =
+      BARBARA_SECTORS[Math.floor(Math.random() * BARBARA_SECTORS.length)];
     const titles = BARBARA_TITLES[sector] || BARBARA_TITLES["Arts & Culture"];
     const title = titles[Math.floor(Math.random() * titles.length)];
-    const companies = BARBARA_COMPANIES[sector] || BARBARA_COMPANIES["Arts & Culture"];
+    const companies =
+      BARBARA_COMPANIES[sector] || BARBARA_COMPANIES["Arts & Culture"];
     const company = companies[Math.floor(Math.random() * companies.length)];
-    const location = BARBARA_LOCATIONS[Math.floor(Math.random() * BARBARA_LOCATIONS.length)];
+    const location =
+      BARBARA_LOCATIONS[Math.floor(Math.random() * BARBARA_LOCATIONS.length)];
 
     const fitScore = 75 + Math.floor(Math.random() * 23); // 75-97
 
@@ -152,23 +222,31 @@ export function generateBarbaraJobs(count: number = 12): Job[] {
       company,
       location,
       jobDescription: `We are seeking a detail-oriented ${title} to support our ${sector} team in New York. You will conduct research, assist with exhibitions and programs, and contribute to a welcoming, intellectually engaged environment.`,
-      requirements: "Bachelor's degree in Art History, Museum Studies, or related field; strong research and writing skills; attention to detail; ability to work collaboratively.",
+      requirements:
+        "Bachelor's degree in Art History, Museum Studies, or related field; strong research and writing skills; attention to detail; ability to work collaboratively.",
       responsibilities:
         "Support curatorial and education teams with research and administrative tasks. Assist with exhibition installation, public programs, and visitor engagement. Maintain accurate records and contribute to digital content.",
       salaryRange: "$42k - $58k",
       jobType: "Full-time",
       experienceLevel: "Entry Level",
       applicationLink: `https://careers.${company.toLowerCase().replace(/[^a-z]/g, "")}.com/jobs/${i + 1}`,
-      deadline: new Date(Date.now() + (14 + Math.floor(Math.random() * 60)) * 24 * 60 * 60 * 1000)
+      deadline: new Date(
+        Date.now() + (14 + Math.floor(Math.random() * 60)) * 24 * 60 * 60 * 1000
+      )
         .toISOString()
         .split("T")[0],
-      postedDate: new Date(Date.now() - Math.floor(Math.random() * 14) * 24 * 60 * 60 * 1000)
+      postedDate: new Date(
+        Date.now() - Math.floor(Math.random() * 14) * 24 * 60 * 60 * 1000
+      )
         .toISOString()
         .split("T")[0],
-      source: ["LinkedIn", "Indeed", "Company Website", "Idealist"][Math.floor(Math.random() * 4)],
+      source: ["LinkedIn", "Indeed", "Company Website", "Idealist"][
+        Math.floor(Math.random() * 4)
+      ],
       fitScore,
       matchReasons: `Your Art History background and ${sector} internship experience align well with this ${title} role. Strong writing and research skills are a key match.`,
-      skillGaps: "Some roles may prefer prior TMS/database experience or additional years of gallery work.",
+      skillGaps:
+        "Some roles may prefer prior TMS/database experience or additional years of gallery work.",
       status: "discovered",
       createdAt: new Date(),
     });

@@ -66,7 +66,7 @@ export default function ResearchPage() {
   const [isRunning, setIsRunning] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [sectors, setSectors] = useState<SectorState[]>(
-    SECTOR_CONFIGS.map((s) => ({
+    SECTOR_CONFIGS.map(s => ({
       id: s.id,
       name: s.name,
       color: s.color,
@@ -90,8 +90,16 @@ export default function ResearchPage() {
   const createManyJobs = trpc.job.createMany.useMutation();
 
   const addLog = useCallback(
-    (sector: string, sectorColor: string, message: string, status: LogEntry["status"] = "active") => {
-      setLogEntries((prev) => [...prev, createLogEntry(sector, sectorColor, message, status)]);
+    (
+      sector: string,
+      sectorColor: string,
+      message: string,
+      status: LogEntry["status"] = "active"
+    ) => {
+      setLogEntries(prev => [
+        ...prev,
+        createLogEntry(sector, sectorColor, message, status),
+      ]);
     },
     []
   );
@@ -123,8 +131,14 @@ export default function ResearchPage() {
     setSourcesScanned(0);
     setMatchesAnalyzed(0);
     setLogEntries([]);
-    setSectors((prev) =>
-      prev.map((s) => ({ ...s, status: "waiting" as SectorStatus, jobCount: 0, progress: 0, jobs: [] }))
+    setSectors(prev =>
+      prev.map(s => ({
+        ...s,
+        status: "waiting" as SectorStatus,
+        jobCount: 0,
+        progress: 0,
+        jobs: [],
+      }))
     );
 
     const allJobs: MockJob[] = [];
@@ -133,8 +147,8 @@ export default function ResearchPage() {
       const sectorConfig = SECTOR_CONFIGS[i];
 
       // Mark sector as running
-      setSectors((prev) =>
-        prev.map((s) =>
+      setSectors(prev =>
+        prev.map(s =>
           s.id === sectorConfig.id
             ? { ...s, status: "running" as SectorStatus }
             : s
@@ -145,7 +159,7 @@ export default function ResearchPage() {
       const messages = getLogMessagesForSector(sectorConfig);
       for (let m = 0; m < messages.length - 1; m++) {
         addLog(sectorConfig.name, sectorConfig.color, messages[m], "active");
-        await new Promise((r) => setTimeout(r, 300 + Math.random() * 400));
+        await new Promise(r => setTimeout(r, 300 + Math.random() * 400));
       }
 
       // Generate jobs
@@ -153,8 +167,8 @@ export default function ResearchPage() {
       allJobs.push(...jobs);
 
       // Mark sector as completed
-      setSectors((prev) =>
-        prev.map((s) =>
+      setSectors(prev =>
+        prev.map(s =>
           s.id === sectorConfig.id
             ? {
                 ...s,
@@ -167,10 +181,10 @@ export default function ResearchPage() {
         )
       );
 
-      setTotalJobsFound((prev) => prev + jobs.length);
-      setCompletedSectors((prev) => prev + 1);
-      setSourcesScanned((prev) => prev + Math.floor(Math.random() * 3) + 2);
-      setMatchesAnalyzed((prev) => prev + jobs.length * 3);
+      setTotalJobsFound(prev => prev + jobs.length);
+      setCompletedSectors(prev => prev + 1);
+      setSourcesScanned(prev => prev + Math.floor(Math.random() * 3) + 2);
+      setMatchesAnalyzed(prev => prev + jobs.length * 3);
 
       addLog(
         sectorConfig.name,
@@ -182,7 +196,7 @@ export default function ResearchPage() {
 
     // Save all jobs to database
     if (allJobs.length > 0) {
-      const dbJobs = allJobs.map((job) => ({
+      const dbJobs = allJobs.map(job => ({
         profileId: 1,
         sectorId: job.sectorId,
         title: job.title,
@@ -205,9 +219,19 @@ export default function ResearchPage() {
 
       try {
         await createManyJobs.mutateAsync(dbJobs);
-        addLog("System", "#00C9FF", `Saved ${dbJobs.length} jobs to database`, "complete");
+        addLog(
+          "System",
+          "#00C9FF",
+          `Saved ${dbJobs.length} jobs to database`,
+          "complete"
+        );
       } catch {
-        addLog("System", "#EF4444", "Failed to save jobs to database", "complete");
+        addLog(
+          "System",
+          "#EF4444",
+          "Failed to save jobs to database",
+          "complete"
+        );
       }
     }
 
@@ -222,16 +246,20 @@ export default function ResearchPage() {
     return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
-  const overallProgress = sectors.length > 0
-    ? Math.round(sectors.reduce((sum, s) => sum + s.progress, 0) / sectors.length)
-    : 0;
+  const overallProgress =
+    sectors.length > 0
+      ? Math.round(
+          sectors.reduce((sum, s) => sum + s.progress, 0) / sectors.length
+        )
+      : 0;
 
-  const avgFitScore = sectors.flatMap((s) => s.jobs).length > 0
-    ? Math.round(
-        sectors.flatMap((s) => s.jobs).reduce((sum, j) => sum + j.fitScore, 0) /
-        sectors.flatMap((s) => s.jobs).length
-      )
-    : 0;
+  const avgFitScore =
+    sectors.flatMap(s => s.jobs).length > 0
+      ? Math.round(
+          sectors.flatMap(s => s.jobs).reduce((sum, j) => sum + j.fitScore, 0) /
+            sectors.flatMap(s => s.jobs).length
+        )
+      : 0;
 
   return (
     <div style={{ backgroundColor: "#0B0E14", minHeight: "100dvh" }}>
@@ -259,7 +287,11 @@ export default function ResearchPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE_OUT_EXPO, delay: 0.1 }}
           className="text-center text-3xl font-bold sm:text-4xl lg:text-5xl"
-          style={{ color: "#F5F7FA", letterSpacing: "-0.02em", lineHeight: 1.15 }}
+          style={{
+            color: "#F5F7FA",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.15,
+          }}
         >
           Launching Research Agents
         </motion.h1>
@@ -283,17 +315,13 @@ export default function ResearchPage() {
           transition={{ duration: 0.6, ease: EASE_OUT_EXPO, delay: 0.3 }}
           className="mx-auto mt-8 flex max-w-[500px] items-center justify-center gap-2"
         >
-          {[1, 2, 3, 4, 5].map((step) => (
+          {[1, 2, 3, 4, 5].map(step => (
             <div key={step} className="flex items-center gap-2">
               <div
                 className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold"
                 style={{
                   backgroundColor:
-                    step < 3
-                      ? "#22C55E"
-                      : step === 3
-                        ? "#00C9FF"
-                        : "#1E293B",
+                    step < 3 ? "#22C55E" : step === 3 ? "#00C9FF" : "#1E293B",
                   color: step <= 3 ? "#FFFFFF" : "#64748B",
                   border:
                     step === 3
@@ -303,11 +331,7 @@ export default function ResearchPage() {
                         : "2px solid #334155",
                 }}
               >
-                {step < 3 ? (
-                  <CheckCircle2 size={14} />
-                ) : (
-                  step
-                )}
+                {step < 3 ? <CheckCircle2 size={14} /> : step}
               </div>
               {step < 5 && (
                 <div
@@ -344,14 +368,14 @@ export default function ResearchPage() {
                   ? "none"
                   : "0 0 20px rgba(0, 201, 255, 0.2)",
               }}
-              onMouseEnter={(e) => {
+              onMouseEnter={e => {
                 if (!isRunning) {
                   e.currentTarget.style.transform = "scale(1.02)";
                   e.currentTarget.style.boxShadow =
                     "0 0 30px rgba(0, 201, 255, 0.35)";
                 }
               }}
-              onMouseLeave={(e) => {
+              onMouseLeave={e => {
                 if (!isRunning) {
                   e.currentTarget.style.transform = "scale(1)";
                   e.currentTarget.style.boxShadow =
@@ -380,12 +404,12 @@ export default function ResearchPage() {
                   "linear-gradient(135deg, #00C9FF 0%, #3B82F6 50%, #7C3AED 100%)",
                 boxShadow: "0 0 20px rgba(0, 201, 255, 0.2)",
               }}
-              onMouseEnter={(e) => {
+              onMouseEnter={e => {
                 e.currentTarget.style.transform = "scale(1.02)";
                 e.currentTarget.style.boxShadow =
                   "0 0 30px rgba(0, 201, 255, 0.35)";
               }}
-              onMouseLeave={(e) => {
+              onMouseLeave={e => {
                 e.currentTarget.style.transform = "scale(1)";
                 e.currentTarget.style.boxShadow =
                   "0 0 20px rgba(0, 201, 255, 0.2)";
@@ -405,10 +429,11 @@ export default function ResearchPage() {
                 color: "#00C9FF",
                 backgroundColor: "transparent",
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "rgba(0, 201, 255, 0.08)";
+              onMouseEnter={e => {
+                e.currentTarget.style.backgroundColor =
+                  "rgba(0, 201, 255, 0.08)";
               }}
-              onMouseLeave={(e) => {
+              onMouseLeave={e => {
                 e.currentTarget.style.backgroundColor = "transparent";
               }}
             >
@@ -431,7 +456,10 @@ export default function ResearchPage() {
           <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <TrendingUp size={16} style={{ color: "#00C9FF" }} />
-              <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
+              <span
+                className="text-sm font-medium"
+                style={{ color: "#F5F7FA" }}
+              >
                 Overall Progress
               </span>
             </div>
@@ -482,7 +510,9 @@ export default function ResearchPage() {
               <Clock size={14} style={{ color: "#94A3B8" }} />
               <span className="text-xs" style={{ color: "#94A3B8" }}>
                 Time:{" "}
-                <strong style={{ color: "#F5F7FA" }}>{formatTime(elapsedTime)}</strong>
+                <strong style={{ color: "#F5F7FA" }}>
+                  {formatTime(elapsedTime)}
+                </strong>
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -623,18 +653,20 @@ export default function ResearchPage() {
                     sector.status === "running"
                       ? `0 0 20px ${sector.color}15`
                       : "none",
-                  transition: "border-color 0.35s ease-out, box-shadow 0.35s ease-out",
+                  transition:
+                    "border-color 0.35s ease-out, box-shadow 0.35s ease-out",
                 }}
-                onClick={() =>
-                  setExpandedSector(isExpanded ? null : sector.id)
-                }
-                onMouseEnter={(e) => {
+                onClick={() => setExpandedSector(isExpanded ? null : sector.id)}
+                onMouseEnter={e => {
                   if (sector.status !== "running") {
                     e.currentTarget.style.borderColor = `${sector.color}40`;
                   }
                 }}
-                onMouseLeave={(e) => {
-                  if (sector.status !== "running" && sector.status !== "completed") {
+                onMouseLeave={e => {
+                  if (
+                    sector.status !== "running" &&
+                    sector.status !== "completed"
+                  ) {
                     e.currentTarget.style.borderColor = "#334155";
                   } else if (sector.status === "completed") {
                     e.currentTarget.style.borderColor = `${sector.color}30`;
@@ -649,7 +681,10 @@ export default function ResearchPage() {
                         className="flex h-10 w-10 items-center justify-center rounded-lg"
                         style={{ backgroundColor: `${sector.color}15` }}
                       >
-                        <IconComponent size={20} style={{ color: sector.color }} />
+                        <IconComponent
+                          size={20}
+                          style={{ color: sector.color }}
+                        />
                       </div>
                       <div>
                         <h4
@@ -719,7 +754,10 @@ export default function ResearchPage() {
                   {/* Sparkline */}
                   {sector.status === "completed" && sector.jobs.length > 0 && (
                     <div className="mt-3">
-                      <Sparkline data={sector.jobs.map((j) => j.fitScore)} color={sector.color} />
+                      <Sparkline
+                        data={sector.jobs.map(j => j.fitScore)}
+                        color={sector.color}
+                      />
                     </div>
                   )}
                 </div>
@@ -871,25 +909,46 @@ export default function ResearchPage() {
                   >
                     <CounterAnimation target={totalJobsFound} duration={1000} />
                   </div>
-                  <span className="mt-1 block text-xs" style={{ color: "#94A3B8" }}>
+                  <span
+                    className="mt-1 block text-xs"
+                    style={{ color: "#94A3B8" }}
+                  >
                     Jobs Found
                   </span>
                 </div>
-                <div className="h-10 w-px" style={{ backgroundColor: "#334155" }} />
+                <div
+                  className="h-10 w-px"
+                  style={{ backgroundColor: "#334155" }}
+                />
                 <div className="text-center">
-                  <div className="text-2xl font-bold sm:text-3xl" style={{ color: "#F5F7FA" }}>
+                  <div
+                    className="text-2xl font-bold sm:text-3xl"
+                    style={{ color: "#F5F7FA" }}
+                  >
                     <CounterAnimation target={8} duration={800} />
                   </div>
-                  <span className="mt-1 block text-xs" style={{ color: "#94A3B8" }}>
+                  <span
+                    className="mt-1 block text-xs"
+                    style={{ color: "#94A3B8" }}
+                  >
                     Sectors
                   </span>
                 </div>
-                <div className="h-10 w-px" style={{ backgroundColor: "#334155" }} />
+                <div
+                  className="h-10 w-px"
+                  style={{ backgroundColor: "#334155" }}
+                />
                 <div className="text-center">
-                  <div className="text-2xl font-bold sm:text-3xl" style={{ color: "#F5F7FA" }}>
+                  <div
+                    className="text-2xl font-bold sm:text-3xl"
+                    style={{ color: "#F5F7FA" }}
+                  >
                     {formatTime(elapsedTime)}
                   </div>
-                  <span className="mt-1 block text-xs" style={{ color: "#94A3B8" }}>
+                  <span
+                    className="mt-1 block text-xs"
+                    style={{ color: "#94A3B8" }}
+                  >
                     Time Elapsed
                   </span>
                 </div>
@@ -902,12 +961,15 @@ export default function ResearchPage() {
                 transition={{ delay: 0.7, duration: 0.5 }}
                 className="mt-8"
               >
-                <h3 className="mb-4 text-sm font-medium" style={{ color: "#94A3B8" }}>
+                <h3
+                  className="mb-4 text-sm font-medium"
+                  style={{ color: "#94A3B8" }}
+                >
                   Top Matches
                 </h3>
                 <div className="flex flex-col gap-3 sm:flex-row">
                   {(() => {
-                    const allFound = sectors.flatMap((s) => s.jobs);
+                    const allFound = sectors.flatMap(s => s.jobs);
                     const top3 = allFound
                       .sort((a, b) => b.fitScore - a.fitScore)
                       .slice(0, 3);
@@ -928,7 +990,10 @@ export default function ResearchPage() {
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-medium" style={{ color: "#F5F7FA" }}>
+                          <span
+                            className="text-xs font-medium"
+                            style={{ color: "#F5F7FA" }}
+                          >
                             {job.title.length > 28
                               ? job.title.slice(0, 28) + "..."
                               : job.title}
@@ -940,8 +1005,7 @@ export default function ResearchPage() {
                                 job.fitScore >= 80
                                   ? "rgba(0, 201, 255, 0.15)"
                                   : "rgba(59, 130, 246, 0.15)",
-                              color:
-                                job.fitScore >= 80 ? "#00C9FF" : "#3B82F6",
+                              color: job.fitScore >= 80 ? "#00C9FF" : "#3B82F6",
                               fontFamily:
                                 '"JetBrains Mono", ui-monospace, monospace',
                             }}
@@ -949,10 +1013,16 @@ export default function ResearchPage() {
                             {job.fitScore}%
                           </span>
                         </div>
-                        <span className="mt-1 block text-[11px]" style={{ color: "#94A3B8" }}>
+                        <span
+                          className="mt-1 block text-[11px]"
+                          style={{ color: "#94A3B8" }}
+                        >
                           {job.company}
                         </span>
-                        <span className="mt-1 block text-[10px]" style={{ color: "#64748B" }}>
+                        <span
+                          className="mt-1 block text-[10px]"
+                          style={{ color: "#64748B" }}
+                        >
                           {job.sectorName}
                         </span>
                       </motion.div>
@@ -976,12 +1046,12 @@ export default function ResearchPage() {
                       "linear-gradient(135deg, #00C9FF 0%, #3B82F6 50%, #7C3AED 100%)",
                     boxShadow: "0 0 20px rgba(0, 201, 255, 0.2)",
                   }}
-                  onMouseEnter={(e) => {
+                  onMouseEnter={e => {
                     e.currentTarget.style.transform = "scale(1.02)";
                     e.currentTarget.style.boxShadow =
                       "0 0 30px rgba(0, 201, 255, 0.35)";
                   }}
-                  onMouseLeave={(e) => {
+                  onMouseLeave={e => {
                     e.currentTarget.style.transform = "scale(1)";
                     e.currentTarget.style.boxShadow =
                       "0 0 20px rgba(0, 201, 255, 0.2)";
@@ -1111,7 +1181,13 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
 }
 
 /* Counter Animation */
-function CounterAnimation({ target, duration }: { target: number; duration: number }) {
+function CounterAnimation({
+  target,
+  duration,
+}: {
+  target: number;
+  duration: number;
+}) {
   const [count, setCount] = useState(0);
   const startTimeRef = useRef<number>(0);
 

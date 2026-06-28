@@ -29,7 +29,10 @@ export const settingsRouter = createRouter({
       await db
         .insert(appSettings)
         .values({ key: input.key, value: input.value })
-        .onConflictDoUpdate({ target: appSettings.key, set: { value: input.value } });
+        .onConflictDoUpdate({
+          target: appSettings.key,
+          set: { value: input.value },
+        });
       return { success: true };
     }),
 

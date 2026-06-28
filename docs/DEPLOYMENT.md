@@ -20,26 +20,26 @@ Copy `.env.example` to `.env` and configure all required variables:
 
 ### Required
 
-| Variable | Example | Description |
-|----------|---------|-------------|
-| `DATABASE_URL` | `postgresql://user:pass@host:5432/db` | PostgreSQL connection string |
-| `APP_SECRET` | `your-32-char-secret-here` | JWT signing key (min 32 chars) |
-| `BASE_URL` | `https://careersync.app` | Public base URL |
+| Variable       | Example                               | Description                    |
+| -------------- | ------------------------------------- | ------------------------------ |
+| `DATABASE_URL` | `postgresql://user:pass@host:5432/db` | PostgreSQL connection string   |
+| `APP_SECRET`   | `your-32-char-secret-here`            | JWT signing key (min 32 chars) |
+| `BASE_URL`     | `https://careersync.app`              | Public base URL                |
 
 ### Optional
 
-| Variable | Description |
-|----------|-------------|
-| `RESEND_API_KEY` | Email sending via Resend |
-| `FROM_EMAIL` | Sender email address |
-| `MOONSHOT_API_KEY` | LLM-powered features |
-| `ADMIN_EMAILS` | Comma-separated admin emails |
-| `STRIPE_PUBLISHABLE_KEY` | Stripe public key |
-| `STRIPE_SECRET_KEY` | Stripe secret key |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook secret |
-| `STRIPE_PRICE_STARTER` | Price ID for Starter plan |
-| `STRIPE_PRICE_PRO` | Price ID for Pro plan |
-| `STRIPE_PRICE_PREMIUM` | Price ID for Premium plan |
+| Variable                 | Description                  |
+| ------------------------ | ---------------------------- |
+| `RESEND_API_KEY`         | Email sending via Resend     |
+| `FROM_EMAIL`             | Sender email address         |
+| `MOONSHOT_API_KEY`       | LLM-powered features         |
+| `ADMIN_EMAILS`           | Comma-separated admin emails |
+| `STRIPE_PUBLISHABLE_KEY` | Stripe public key            |
+| `STRIPE_SECRET_KEY`      | Stripe secret key            |
+| `STRIPE_WEBHOOK_SECRET`  | Stripe webhook secret        |
+| `STRIPE_PRICE_STARTER`   | Price ID for Starter plan    |
+| `STRIPE_PRICE_PRO`       | Price ID for Pro plan        |
+| `STRIPE_PRICE_PREMIUM`   | Price ID for Premium plan    |
 
 ---
 
@@ -57,6 +57,7 @@ npm run build
 ```
 
 The build produces:
+
 - `dist/public/` — Static frontend assets (Vite output)
 - `dist/boot.js` — Bundled Hono backend (esbuild)
 
@@ -71,6 +72,7 @@ NODE_ENV=production node dist/boot.js
 ```
 
 The server:
+
 1. Serves static files from `dist/public/`
 2. Handles SPA routing (returns `index.html` for unknown routes)
 3. Runs tRPC API at `/api/trpc/*`
@@ -132,7 +134,7 @@ DATABASE_URL=postgresql://user:pass@localhost:5432/careersync npm run db:migrate
 server {
     listen 80;
     server_name careersync.app;
-    
+
     location / {
         proxy_pass http://localhost:3000;
         proxy_http_version 1.1;
@@ -196,6 +198,7 @@ The server logs all requests:
 ### Error Tracking
 
 Consider integrating:
+
 - Sentry for error tracking
 - Logtail for log aggregation
 - UptimeRobot for uptime monitoring

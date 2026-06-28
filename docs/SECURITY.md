@@ -16,7 +16,9 @@ Security practices and implementation details for CareerSync AI.
 
 ```ts
 // api/auth/session.ts
-export async function signSessionToken(payload: SessionPayload): Promise<string> {
+export async function signSessionToken(
+  payload: SessionPayload
+): Promise<string> {
   const secret = new TextEncoder().encode(env.appSecret);
   return new jose.SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
@@ -33,10 +35,10 @@ export async function signSessionToken(payload: SessionPayload): Promise<string>
 export function getSessionCookieOptions(headers: Headers): CookieOptions {
   const localhost = isLocalhost(headers);
   return {
-    httpOnly: true,      // Not accessible via JavaScript
+    httpOnly: true, // Not accessible via JavaScript
     path: "/",
     sameSite: localhost ? "Lax" : "None",
-    secure: !localhost,  // HTTPS only in production
+    secure: !localhost, // HTTPS only in production
   };
 }
 ```
@@ -77,9 +79,9 @@ const valid = await bcrypt.compare(input.password, user.passwordHash);
 
 ### Roles
 
-| Role | Description | Access |
-|------|-------------|--------|
-| `user` | Default role | Own profile, jobs, resumes, subscription |
+| Role    | Description         | Access                                                       |
+| ------- | ------------------- | ------------------------------------------------------------ |
+| `user`  | Default role        | Own profile, jobs, resumes, subscription                     |
 | `admin` | Elevated privileges | All user access + admin dashboard, user management, settings |
 
 ### Middleware Levels
@@ -156,13 +158,13 @@ const authInput = z.object({
 
 ### Data Protection
 
-| Data | Storage | Notes |
-|------|---------|-------|
-| Passwords | bcrypt hash | Never stored plain text |
-| JWT tokens | Client cookies | HTTP-only, secure flag |
-| API keys | Environment vars | Never in code or client |
-| Resume text | Database | Encrypted at rest (if DB supports) |
-| Email tokens | Hashed in DB | SHA-256 hash of random token |
+| Data         | Storage          | Notes                              |
+| ------------ | ---------------- | ---------------------------------- |
+| Passwords    | bcrypt hash      | Never stored plain text            |
+| JWT tokens   | Client cookies   | HTTP-only, secure flag             |
+| API keys     | Environment vars | Never in code or client            |
+| Resume text  | Database         | Encrypted at rest (if DB supports) |
+| Email tokens | Hashed in DB     | SHA-256 hash of random token       |
 
 ---
 
@@ -201,7 +203,7 @@ STRIPE_WEBHOOK_SECRET= # Stripe webhook verification
 ```ts
 // api/boot.ts
 app.use("/api/*", async (c, next) => {
-  c.header("Access-Control-Allow-Origin", "*");  // Dev only
+  c.header("Access-Control-Allow-Origin", "*"); // Dev only
   c.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   c.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   // ...
@@ -221,10 +223,12 @@ app.use("/api/*", async (c, next) => {
 ## Rate Limiting
 
 Currently implemented via:
+
 - Body size limit: 50MB (`hono/body-limit`)
 - No explicit rate limiting on API endpoints (recommended for production)
 
 **Recommended additions**:
+
 - `hono-rate-limiter` for per-IP limits
 - Cloudflare rate limiting (if behind Cloudflare)
 

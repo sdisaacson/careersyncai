@@ -9,12 +9,15 @@ export const interviewRouter = createRouter({
     .input(z.object({ profileId: z.number() }))
     .mutation(async ({ input }) => {
       const db = getDb();
-      const [{ id }] = await db.insert(interviews).values({
-        profileId: input.profileId,
-        status: "in_progress",
-        currentQuestion: 0,
-        totalQuestions: 8,
-      }).returning({ id: interviews.id });
+      const [{ id }] = await db
+        .insert(interviews)
+        .values({
+          profileId: input.profileId,
+          status: "in_progress",
+          currentQuestion: 0,
+          totalQuestions: 8,
+        })
+        .returning({ id: interviews.id });
       return { id };
     }),
 
@@ -42,7 +45,10 @@ export const interviewRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      const [{ id }] = await db.insert(interviewQuestions).values(input).returning({ id: interviewQuestions.id });
+      const [{ id }] = await db
+        .insert(interviewQuestions)
+        .values(input)
+        .returning({ id: interviewQuestions.id });
       return { id, success: true };
     }),
 

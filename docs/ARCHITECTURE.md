@@ -64,11 +64,11 @@ This document describes the system architecture of CareerSync AI — how the fro
 
 ### State Management
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Server State | tRPC + React Query | API data, caching, mutations |
-| Client State | React hooks | Local UI state (forms, modals, selections) |
-| Auth State | `useAuth` hook | Current user, login/logout |
+| Layer        | Technology         | Purpose                                    |
+| ------------ | ------------------ | ------------------------------------------ |
+| Server State | tRPC + React Query | API data, caching, mutations               |
+| Client State | React hooks        | Local UI state (forms, modals, selections) |
+| Auth State   | `useAuth` hook     | Current user, login/logout                 |
 
 ### Key Patterns
 
@@ -144,7 +144,7 @@ adminQuery     → authedQuery + requireRole("admin")
 type TrpcContext = {
   req: Request;
   resHeaders: Headers;
-  user?: User;  // populated by authenticateRequest()
+  user?: User; // populated by authenticateRequest()
 };
 ```
 
@@ -154,18 +154,18 @@ type TrpcContext = {
 
 ### Tables (10 total)
 
-| Table | Purpose | Key Relations |
-|-------|---------|---------------|
-| `users` | Authentication & roles | — |
-| `profiles` | Candidate profile (resume + interview) | `userId` → users |
-| `interviews` | Interview session state | `profileId` → profiles |
-| `interviewQuestions` | Q&A pairs | `interviewId` → interviews |
-| `sectors` | Economic sectors (8 default) | — |
-| `jobs` | Discovered job opportunities | `profileId` → profiles, `sectorId` → sectors |
-| `tailoredResumes` | Generated resume per job | `jobId` → jobs, `profileId` → profiles |
-| `researchSessions` | Research agent progress | `profileId` → profiles |
-| `subscriptions` | Billing & plans | `userId` → users |
-| `appSettings` | Runtime configuration | — |
+| Table                | Purpose                                | Key Relations                                |
+| -------------------- | -------------------------------------- | -------------------------------------------- |
+| `users`              | Authentication & roles                 | —                                            |
+| `profiles`           | Candidate profile (resume + interview) | `userId` → users                             |
+| `interviews`         | Interview session state                | `profileId` → profiles                       |
+| `interviewQuestions` | Q&A pairs                              | `interviewId` → interviews                   |
+| `sectors`            | Economic sectors (8 default)           | —                                            |
+| `jobs`               | Discovered job opportunities           | `profileId` → profiles, `sectorId` → sectors |
+| `tailoredResumes`    | Generated resume per job               | `jobId` → jobs, `profileId` → profiles       |
+| `researchSessions`   | Research agent progress                | `profileId` → profiles                       |
+| `subscriptions`      | Billing & plans                        | `userId` → users                             |
+| `appSettings`        | Runtime configuration                  | —                                            |
 
 ### Enums
 
@@ -273,9 +273,9 @@ Logout
 
 ### Role-Based Access Control
 
-| Role | Access |
-|------|--------|
-| `user` | Own profile, jobs, resumes, subscription |
+| Role    | Access                                                    |
+| ------- | --------------------------------------------------------- |
+| `user`  | Own profile, jobs, resumes, subscription                  |
 | `admin` | All of above + admin dashboard, user management, settings |
 
 Admin assignment: `ADMIN_EMAILS` env var or manual role update via admin panel.

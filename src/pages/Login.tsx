@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { trpc } from "@/lib/trpc.tsx";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,7 +24,7 @@ export default function Login() {
       await utils.auth.me.invalidate();
       navigate("/dashboard");
     },
-    onError: (err) => {
+    onError: err => {
       setError(err.message ?? "Login failed. Please try again.");
     },
   });
@@ -34,7 +40,9 @@ export default function Login() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle>Sign in</CardTitle>
-          <CardDescription>Enter your email and password to continue</CardDescription>
+          <CardDescription>
+            Enter your email and password to continue
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -46,7 +54,7 @@ export default function Login() {
                 autoComplete="email"
                 placeholder="you@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -58,12 +66,14 @@ export default function Login() {
                 autoComplete="current-password"
                 placeholder="••••••••"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 required
               />
             </div>
             {error && (
-              <p role="alert" className="text-sm text-destructive">{error}</p>
+              <p role="alert" className="text-sm text-destructive">
+                {error}
+              </p>
             )}
             <Button
               type="submit"
@@ -78,7 +88,10 @@ export default function Login() {
             <Link to="/register" className="text-primary hover:underline">
               Create account
             </Link>
-            <Link to="/forgot-password" className="text-primary hover:underline">
+            <Link
+              to="/forgot-password"
+              className="text-primary hover:underline"
+            >
               Forgot password?
             </Link>
           </div>

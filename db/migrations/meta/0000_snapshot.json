@@ -41,9 +41,7 @@
         "appSettings_key_unique": {
           "name": "appSettings_key_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "key"
-          ]
+          "columns": ["key"]
         }
       },
       "policies": {},
@@ -684,9 +682,7 @@
         "subscriptions_userId_unique": {
           "name": "subscriptions_userId_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "userId"
-          ]
+          "columns": ["userId"]
         }
       },
       "policies": {},
@@ -876,16 +872,12 @@
         "users_unionId_unique": {
           "name": "users_unionId_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "unionId"
-          ]
+          "columns": ["unionId"]
         },
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -897,64 +889,37 @@
     "public.interview_status": {
       "name": "interview_status",
       "schema": "public",
-      "values": [
-        "in_progress",
-        "completed"
-      ]
+      "values": ["in_progress", "completed"]
     },
     "public.job_status": {
       "name": "job_status",
       "schema": "public",
-      "values": [
-        "discovered",
-        "shortlisted",
-        "applied",
-        "archived"
-      ]
+      "values": ["discovered", "shortlisted", "applied", "archived"]
     },
     "public.profile_status": {
       "name": "profile_status",
       "schema": "public",
-      "values": [
-        "uploaded",
-        "interviewing",
-        "completed"
-      ]
+      "values": ["uploaded", "interviewing", "completed"]
     },
     "public.research_session_status": {
       "name": "research_session_status",
       "schema": "public",
-      "values": [
-        "running",
-        "completed",
-        "failed"
-      ]
+      "values": ["running", "completed", "failed"]
     },
     "public.subscription_interval": {
       "name": "subscription_interval",
       "schema": "public",
-      "values": [
-        "month",
-        "year"
-      ]
+      "values": ["month", "year"]
     },
     "public.subscription_status": {
       "name": "subscription_status",
       "schema": "public",
-      "values": [
-        "active",
-        "canceled",
-        "past_due",
-        "inactive"
-      ]
+      "values": ["active", "canceled", "past_due", "inactive"]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": [
-        "user",
-        "admin"
-      ]
+      "values": ["user", "admin"]
     }
   },
   "schemas": {},

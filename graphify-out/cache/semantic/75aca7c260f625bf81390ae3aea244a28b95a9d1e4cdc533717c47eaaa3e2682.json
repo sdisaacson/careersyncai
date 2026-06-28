@@ -1,1 +1,166 @@
-{"nodes": [{"id": "public_resume_template_preview", "label": "Resume Template Preview", "file_type": "image", "source_file": "public/resume-template-preview.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null, "rationale": "Marketing preview image showing a sample resume layout for the CareerSync application."}, {"id": "public_resume_template_preview_resume", "label": "Resume", "file_type": "concept", "source_file": "public/resume-template-preview.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_resume_template_preview_senior_software_engineer", "label": "Senior Software Engineer", "file_type": "concept", "source_file": "public/resume-template-preview.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_resume_template_preview_professional_summary", "label": "Professional Summary", "file_type": "concept", "source_file": "public/resume-template-preview.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_resume_template_preview_experience", "label": "Experience", "file_type": "concept", "source_file": "public/resume-template-preview.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_resume_template_preview_skills", "label": "Skills", "file_type": "concept", "source_file": "public/resume-template-preview.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_resume_template_preview_education", "label": "Education", "file_type": "concept", "source_file": "public/resume-template-preview.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "public_resume_template_preview_certifications", "label": "Certifications", "file_type": "concept", "source_file": "public/resume-template-preview.jpg", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}], "edges": [{"source": "public_resume_template_preview", "target": "public_resume_template_preview_resume", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/resume-template-preview.jpg", "source_location": null, "weight": 1.0}, {"source": "public_resume_template_preview", "target": "public_resume_template_preview_senior_software_engineer", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/resume-template-preview.jpg", "source_location": null, "weight": 1.0}, {"source": "public_resume_template_preview", "target": "public_resume_template_preview_professional_summary", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/resume-template-preview.jpg", "source_location": null, "weight": 1.0}, {"source": "public_resume_template_preview", "target": "public_resume_template_preview_experience", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/resume-template-preview.jpg", "source_location": null, "weight": 1.0}, {"source": "public_resume_template_preview", "target": "public_resume_template_preview_skills", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/resume-template-preview.jpg", "source_location": null, "weight": 1.0}, {"source": "public_resume_template_preview", "target": "public_resume_template_preview_education", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/resume-template-preview.jpg", "source_location": null, "weight": 1.0}, {"source": "public_resume_template_preview", "target": "public_resume_template_preview_certifications", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/resume-template-preview.jpg", "source_location": null, "weight": 1.0}], "hyperedges": []}
+{
+  "nodes": [
+    {
+      "id": "public_resume_template_preview",
+      "label": "Resume Template Preview",
+      "file_type": "image",
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Marketing preview image showing a sample resume layout for the CareerSync application."
+    },
+    {
+      "id": "public_resume_template_preview_resume",
+      "label": "Resume",
+      "file_type": "concept",
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_resume_template_preview_senior_software_engineer",
+      "label": "Senior Software Engineer",
+      "file_type": "concept",
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_resume_template_preview_professional_summary",
+      "label": "Professional Summary",
+      "file_type": "concept",
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_resume_template_preview_experience",
+      "label": "Experience",
+      "file_type": "concept",
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_resume_template_preview_skills",
+      "label": "Skills",
+      "file_type": "concept",
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_resume_template_preview_education",
+      "label": "Education",
+      "file_type": "concept",
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "public_resume_template_preview_certifications",
+      "label": "Certifications",
+      "file_type": "concept",
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "public_resume_template_preview",
+      "target": "public_resume_template_preview_resume",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_resume_template_preview",
+      "target": "public_resume_template_preview_senior_software_engineer",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_resume_template_preview",
+      "target": "public_resume_template_preview_professional_summary",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_resume_template_preview",
+      "target": "public_resume_template_preview_experience",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_resume_template_preview",
+      "target": "public_resume_template_preview_skills",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_resume_template_preview",
+      "target": "public_resume_template_preview_education",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "public_resume_template_preview",
+      "target": "public_resume_template_preview_certifications",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "public/resume-template-preview.jpg",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

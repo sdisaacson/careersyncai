@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from "react";
 
 interface Node {
   x: number;
@@ -16,7 +16,10 @@ interface NeuralCanvasProps {
   className?: string;
 }
 
-export default function NeuralCanvas({ nodeCount = 70, className }: NeuralCanvasProps) {
+export default function NeuralCanvas({
+  nodeCount = 70,
+  className,
+}: NeuralCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const nodesRef = useRef<Node[]>([]);
   const mouseRef = useRef({ x: -9999, y: -9999 });
@@ -27,10 +30,12 @@ export default function NeuralCanvas({ nodeCount = 70, className }: NeuralCanvas
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
     if (prefersReducedMotion) return;
 
     const resize = () => {
@@ -42,8 +47,8 @@ export default function NeuralCanvas({ nodeCount = 70, className }: NeuralCanvas
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = w * dpr;
       canvas.height = h * dpr;
-      canvas.style.width = w + 'px';
-      canvas.style.height = h + 'px';
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
       ctx.scale(dpr, dpr);
     };
 
@@ -80,9 +85,9 @@ export default function NeuralCanvas({ nodeCount = 70, className }: NeuralCanvas
       mouseRef.current = { x: -9999, y: -9999 };
     };
 
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('resize', resize);
+    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("resize", resize);
 
     let time = 0;
     const animate = () => {
@@ -114,14 +119,14 @@ export default function NeuralCanvas({ nodeCount = 70, className }: NeuralCanvas
         const dy = node.y - mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < repelDist && dist > 0) {
-          const force = (repelDist - dist) / repelDist * repelForce;
+          const force = ((repelDist - dist) / repelDist) * repelForce;
           node.x += (dx / dist) * force;
           node.y += (dy / dist) * force;
         }
 
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 201, 255, 0.6)';
+        ctx.fillStyle = "rgba(0, 201, 255, 0.6)";
         ctx.fill();
       }
 
@@ -149,9 +154,9 @@ export default function NeuralCanvas({ nodeCount = 70, className }: NeuralCanvas
 
     return () => {
       cancelAnimationFrame(rafRef.current);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseleave', handleMouseLeave);
-      window.removeEventListener('resize', resize);
+      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("resize", resize);
     };
   }, [nodeCount]);
 
@@ -159,7 +164,14 @@ export default function NeuralCanvas({ nodeCount = 70, className }: NeuralCanvas
     <canvas
       ref={canvasRef}
       className={className}
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: 0,
+      }}
     />
   );
 }

@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -49,13 +49,13 @@ module.exports = {
           ring: "hsl(var(--sidebar-ring))",
         },
         "deep-navy": "#0B0E14",
-        "midnight": "#111827",
+        midnight: "#111827",
         "electric-blue": "#00C9FF",
         "ice-white": "#F5F7FA",
         "indigo-deep": "#1E3A8A",
         "purple-glow": "#7C3AED",
         "soft-blue": "#3B82F6",
-        "slate": {
+        slate: {
           400: "#94A3B8",
           500: "#64748B",
           700: "#334155",
@@ -103,4 +103,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

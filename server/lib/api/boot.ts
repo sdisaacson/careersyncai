@@ -36,20 +36,22 @@ app.use("/api/*", async (c, next) => {
     throw err;
   }
   const duration = Date.now() - start;
-  console.log(`[${new Date().toISOString()}] ${c.req.method} ${c.req.url} - ${c.res.status} (${duration}ms)`);
+  console.log(
+    `[${new Date().toISOString()}] ${c.req.method} ${c.req.url} - ${c.res.status} (${duration}ms)`
+  );
 });
 
 // Health check endpoint (no auth required)
-app.get("/api/health", (c) => c.json({ ok: true, ts: Date.now() }));
+app.get("/api/health", c => c.json({ ok: true, ts: Date.now() }));
 
 // Simple test endpoint
-app.post("/api/test", async (c) => {
+app.post("/api/test", async c => {
   const body = await c.req.json().catch(() => ({}));
   return c.json({ received: body, ok: true });
 });
 
 // tRPC handler - must match the endpoint exactly
-app.use("/api/trpc/*", async (c) => {
+app.use("/api/trpc/*", async c => {
   try {
     const response = await fetchRequestHandler({
       endpoint: "/api/trpc",
@@ -60,12 +62,18 @@ app.use("/api/trpc/*", async (c) => {
     return response;
   } catch (err) {
     console.error("[tRPC ERROR]", err);
-    return c.json({ error: "Internal Server Error", message: err instanceof Error ? err.message : "Unknown error" }, 500);
+    return c.json(
+      {
+        error: "Internal Server Error",
+        message: err instanceof Error ? err.message : "Unknown error",
+      },
+      500
+    );
   }
 });
 
 // Catch-all for unmatched API routes
-app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
+app.all("/api/*", c => c.json({ error: "Not Found" }, 404));
 
 // Serve static files and SPA fallback in production
 if (env.isProduction) {
@@ -74,7 +82,7 @@ if (env.isProduction) {
 
   app.use("*", serveStatic({ root: "./dist/public" }));
 
-  app.notFound((c) => {
+  app.notFound(c => {
     const accept = c.req.header("accept") ?? "";
     if (!accept.includes("text/html")) {
       return c.json({ error: "Not Found" }, 404);

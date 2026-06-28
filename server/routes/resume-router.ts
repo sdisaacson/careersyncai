@@ -18,7 +18,10 @@ export const resumeRouter = createRouter({
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      const [{ id }] = await db.insert(tailoredResumes).values(input).returning({ id: tailoredResumes.id });
+      const [{ id }] = await db
+        .insert(tailoredResumes)
+        .values(input)
+        .returning({ id: tailoredResumes.id });
       return { id };
     }),
 

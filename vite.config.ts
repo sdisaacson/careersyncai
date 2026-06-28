@@ -1,23 +1,25 @@
-import devServer from "@hono/vite-dev-server"
-import path from "path"
-const __dirname = import.meta.dirname
-import react from "@vitejs/plugin-react"
-import { defineConfig } from "vite"
-import { inspectAttr } from 'plugin-inspect-react-code'
+import devServer from "@hono/vite-dev-server";
+import path from "path";
+const __dirname = import.meta.dirname;
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import { inspectAttr } from "plugin-inspect-react-code";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     devServer({ entry: "api/boot.ts", exclude: [/^\/(?!api\/)/] }),
-    inspectAttr(), react()],
+    inspectAttr(),
+    react(),
+  ],
   server: {
     port: 3000,
   },
   preview: {
     port: 4173,
     proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
+      "/api": {
+        target: "http://localhost:3000",
         changeOrigin: true,
       },
     },
@@ -28,7 +30,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
       "@contracts": path.resolve(__dirname, "./contracts"),
       "@db": path.resolve(__dirname, "./db"),
-      "db": path.resolve(__dirname, "./db"),
+      db: path.resolve(__dirname, "./db"),
     },
   },
   envDir: path.resolve(__dirname),
@@ -36,4 +38,4 @@ export default defineConfig({
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
   },
-})
+});

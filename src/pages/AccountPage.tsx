@@ -48,7 +48,12 @@ function formatDate(date: Date | string | null | undefined): string {
 }
 
 export default function AccountPage() {
-  const { user, isLoading: authLoading, logout, isAuthenticated } = useAuth({
+  const {
+    user,
+    isLoading: authLoading,
+    logout,
+    isAuthenticated,
+  } = useAuth({
     redirectOnUnauthenticated: true,
   });
 
@@ -251,10 +256,16 @@ export default function AccountPage() {
                         style={{ color: "var(--electric-blue)" }}
                       />
                       <div>
-                        <p className="text-xs" style={{ color: "var(--slate-500)" }}>
+                        <p
+                          className="text-xs"
+                          style={{ color: "var(--slate-500)" }}
+                        >
                           Renewal date
                         </p>
-                        <p className="text-sm" style={{ color: "var(--ice-white)" }}>
+                        <p
+                          className="text-sm"
+                          style={{ color: "var(--ice-white)" }}
+                        >
                           {formatDate(subscription.currentPeriodEnd)}
                         </p>
                       </div>
@@ -263,10 +274,16 @@ export default function AccountPage() {
                       <div className="flex items-center gap-3">
                         <AlertCircle size={18} style={{ color: "#EF4444" }} />
                         <div>
-                          <p className="text-xs" style={{ color: "var(--slate-500)" }}>
+                          <p
+                            className="text-xs"
+                            style={{ color: "var(--slate-500)" }}
+                          >
                             Cancellation
                           </p>
-                          <p className="text-sm" style={{ color: "var(--ice-white)" }}>
+                          <p
+                            className="text-sm"
+                            style={{ color: "var(--ice-white)" }}
+                          >
                             Scheduled to cancel at period end
                           </p>
                         </div>
@@ -338,7 +355,10 @@ export default function AccountPage() {
                 className="flex items-center gap-2"
                 style={{ color: "var(--ice-white)" }}
               >
-                <CreditCard size={20} style={{ color: "var(--electric-blue)" }} />
+                <CreditCard
+                  size={20}
+                  style={{ color: "var(--electric-blue)" }}
+                />
                 Update Payment Method
               </CardTitle>
               <CardDescription style={{ color: "var(--slate-400)" }}>
@@ -347,11 +367,14 @@ export default function AccountPage() {
             </CardHeader>
             <CardContent>
               <form
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={e => e.preventDefault()}
                 className="grid grid-cols-1 gap-4 sm:grid-cols-2"
               >
                 <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="payment-name" style={{ color: "var(--slate-400)" }}>
+                  <Label
+                    htmlFor="payment-name"
+                    style={{ color: "var(--slate-400)" }}
+                  >
                     Name on card
                   </Label>
                   <Input
@@ -365,7 +388,10 @@ export default function AccountPage() {
                   />
                 </div>
                 <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="payment-card" style={{ color: "var(--slate-400)" }}>
+                  <Label
+                    htmlFor="payment-card"
+                    style={{ color: "var(--slate-400)" }}
+                  >
                     Card number
                   </Label>
                   <Input
@@ -379,7 +405,10 @@ export default function AccountPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="payment-expiry" style={{ color: "var(--slate-400)" }}>
+                  <Label
+                    htmlFor="payment-expiry"
+                    style={{ color: "var(--slate-400)" }}
+                  >
                     Expiry
                   </Label>
                   <Input
@@ -393,7 +422,10 @@ export default function AccountPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="payment-cvc" style={{ color: "var(--slate-400)" }}>
+                  <Label
+                    htmlFor="payment-cvc"
+                    style={{ color: "var(--slate-400)" }}
+                  >
                     CVC
                   </Label>
                   <Input

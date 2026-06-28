@@ -1,6 +1,7 @@
 import { useRef, useEffect, useCallback, memo } from "react";
 
-export type ParticlePhase = "spawn" | "converge" | "cluster" | "disperse" | "pulse";
+export type ParticlePhase =
+  "spawn" | "converge" | "cluster" | "disperse" | "pulse";
 
 export type AgentCanvasProps = {
   isRunning: boolean;
@@ -32,18 +33,33 @@ type Particle = {
 const PHASE_DURATION = 2500;
 const TOTAL_CYCLE = PHASE_DURATION * 5;
 
-function getPhase(elapsed: number): { phase: ParticlePhase; phaseTime: number } {
+function getPhase(elapsed: number): {
+  phase: ParticlePhase;
+  phaseTime: number;
+} {
   const cyclePos = elapsed % TOTAL_CYCLE;
   if (cyclePos < PHASE_DURATION) {
     return { phase: "spawn", phaseTime: cyclePos / PHASE_DURATION };
   } else if (cyclePos < PHASE_DURATION * 2) {
-    return { phase: "converge", phaseTime: (cyclePos - PHASE_DURATION) / PHASE_DURATION };
+    return {
+      phase: "converge",
+      phaseTime: (cyclePos - PHASE_DURATION) / PHASE_DURATION,
+    };
   } else if (cyclePos < PHASE_DURATION * 3) {
-    return { phase: "cluster", phaseTime: (cyclePos - PHASE_DURATION * 2) / PHASE_DURATION };
+    return {
+      phase: "cluster",
+      phaseTime: (cyclePos - PHASE_DURATION * 2) / PHASE_DURATION,
+    };
   } else if (cyclePos < PHASE_DURATION * 4) {
-    return { phase: "disperse", phaseTime: (cyclePos - PHASE_DURATION * 3) / PHASE_DURATION };
+    return {
+      phase: "disperse",
+      phaseTime: (cyclePos - PHASE_DURATION * 3) / PHASE_DURATION,
+    };
   } else {
-    return { phase: "pulse", phaseTime: (cyclePos - PHASE_DURATION * 4) / PHASE_DURATION };
+    return {
+      phase: "pulse",
+      phaseTime: (cyclePos - PHASE_DURATION * 4) / PHASE_DURATION,
+    };
   }
 }
 
@@ -56,8 +72,14 @@ function easeOutCubic(t: number): number {
 }
 
 const SECTOR_COLORS = [
-  "#00C9FF", "#22C55E", "#F59E0B", "#EF4444",
-  "#8B5CF6", "#64748B", "#EC4899", "#3B82F6",
+  "#00C9FF",
+  "#22C55E",
+  "#F59E0B",
+  "#EF4444",
+  "#8B5CF6",
+  "#64748B",
+  "#EC4899",
+  "#3B82F6",
 ];
 
 const AgentCanvas = memo(function AgentCanvas({
@@ -78,7 +100,10 @@ const AgentCanvas = memo(function AgentCanvas({
 
   const initParticles = useCallback((width: number, height: number) => {
     const particles: Particle[] = [];
-    const sectorAngles = Array.from({ length: 8 }, (_, i) => (i * Math.PI * 2) / 8);
+    const sectorAngles = Array.from(
+      { length: 8 },
+      (_, i) => (i * Math.PI * 2) / 8
+    );
     const clusterRadius = Math.min(width, height) * 0.22;
     const cx = width / 2;
     const cy = height / 2;
@@ -170,7 +195,10 @@ const AgentCanvas = memo(function AgentCanvas({
       ctx.fillRect(0, 0, width, height);
 
       // Draw sector rings for completed sectors
-      const sectorAngles = Array.from({ length: 8 }, (_, i) => (i * Math.PI * 2) / 8);
+      const sectorAngles = Array.from(
+        { length: 8 },
+        (_, i) => (i * Math.PI * 2) / 8
+      );
       const clusterRadius = minDim * 0.22;
 
       for (let i = 0; i < 8; i++) {
@@ -204,7 +232,14 @@ const AgentCanvas = memo(function AgentCanvas({
 
       // Center hub with pulsing effect
       const hubPulse = isRunning ? 1 + Math.sin(now * 0.002) * 0.2 : 1;
-      const hubGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 20 * hubPulse);
+      const hubGrad = ctx.createRadialGradient(
+        cx,
+        cy,
+        0,
+        cx,
+        cy,
+        20 * hubPulse
+      );
       hubGrad.addColorStop(0, "rgba(0, 201, 255, 0.9)");
       hubGrad.addColorStop(0.4, "rgba(59, 130, 246, 0.6)");
       hubGrad.addColorStop(1, "rgba(124, 58, 237, 0)");
@@ -253,7 +288,9 @@ const AgentCanvas = memo(function AgentCanvas({
             ctx.beginPath();
             ctx.moveTo(p.x - (tx - p.x) * 0.3, p.y - (ty - p.y) * 0.3);
             ctx.lineTo(p.x, p.y);
-            ctx.strokeStyle = `${sectorColor}${Math.round(trailAlpha * 255).toString(16).padStart(2, "0")}`;
+            ctx.strokeStyle = `${sectorColor}${Math.round(trailAlpha * 255)
+              .toString(16)
+              .padStart(2, "0")}`;
             ctx.lineWidth = 1;
             ctx.stroke();
             break;
@@ -268,7 +305,8 @@ const AgentCanvas = memo(function AgentCanvas({
             break;
           }
           case "disperse": {
-            const dispAngle = (p.clusterIndex * Math.PI * 2) / 8 + p.angle + now * 0.0005;
+            const dispAngle =
+              (p.clusterIndex * Math.PI * 2) / 8 + p.angle + now * 0.0005;
             const dispDist = eased * minDim * 0.42;
             const tx = cx + Math.cos(dispAngle) * dispDist;
             const ty = cy + Math.sin(dispAngle) * dispDist;
@@ -304,14 +342,20 @@ const AgentCanvas = memo(function AgentCanvas({
         if (p.opacity > 0.4) {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius * 4, 0, Math.PI * 2);
-          ctx.fillStyle = `${sectorColor}${Math.round((p.opacity - 0.4) * 0.12 * 255).toString(16).padStart(2, "0")}`;
+          ctx.fillStyle = `${sectorColor}${Math.round(
+            (p.opacity - 0.4) * 0.12 * 255
+          )
+            .toString(16)
+            .padStart(2, "0")}`;
           ctx.fill();
         }
 
         // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `${sectorColor}${Math.round(p.opacity * 255).toString(16).padStart(2, "0")}`;
+        ctx.fillStyle = `${sectorColor}${Math.round(p.opacity * 255)
+          .toString(16)
+          .padStart(2, "0")}`;
         ctx.fill();
       }
 
@@ -321,7 +365,11 @@ const AgentCanvas = memo(function AgentCanvas({
         const maxConnections = 2;
         for (let i = 0; i < particles.length; i += 2) {
           let connections = 0;
-          for (let j = i + 1; j < particles.length && connections < maxConnections; j += 2) {
+          for (
+            let j = i + 1;
+            j < particles.length && connections < maxConnections;
+            j += 2
+          ) {
             const dx = particles[i].x - particles[j].x;
             const dy = particles[i].y - particles[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
@@ -330,10 +378,13 @@ const AgentCanvas = memo(function AgentCanvas({
               ctx.beginPath();
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
-              const connColor = particles[i].clusterIndex === particles[j].clusterIndex
-                ? SECTOR_COLORS[particles[i].clusterIndex]
-                : "#00C9FF";
-              ctx.strokeStyle = `${connColor}${Math.round(alpha * 255).toString(16).padStart(2, "0")}`;
+              const connColor =
+                particles[i].clusterIndex === particles[j].clusterIndex
+                  ? SECTOR_COLORS[particles[i].clusterIndex]
+                  : "#00C9FF";
+              ctx.strokeStyle = `${connColor}${Math.round(alpha * 255)
+                .toString(16)
+                .padStart(2, "0")}`;
               ctx.lineWidth = 0.5;
               ctx.stroke();
               connections++;
@@ -352,7 +403,9 @@ const AgentCanvas = memo(function AgentCanvas({
           ctx.beginPath();
           ctx.moveTo(cx, cy);
           ctx.lineTo(tx, ty);
-          ctx.strokeStyle = `${SECTOR_COLORS[i]}${Math.round(pulseAlpha * 255).toString(16).padStart(2, "0")}`;
+          ctx.strokeStyle = `${SECTOR_COLORS[i]}${Math.round(pulseAlpha * 255)
+            .toString(16)
+            .padStart(2, "0")}`;
           ctx.lineWidth = 0.8;
           ctx.stroke();
         }
@@ -360,8 +413,14 @@ const AgentCanvas = memo(function AgentCanvas({
 
       // Sector labels
       const sectorNames = [
-        "Technology", "Healthcare", "Finance", "Energy",
-        "Education", "Manufacturing", "Consulting", "Government",
+        "Technology",
+        "Healthcare",
+        "Finance",
+        "Energy",
+        "Education",
+        "Manufacturing",
+        "Consulting",
+        "Government",
       ];
       const labelRadius = minDim * 0.36;
 
@@ -383,7 +442,9 @@ const AgentCanvas = memo(function AgentCanvas({
         // Label background with rounded rect
         ctx.beginPath();
         ctx.roundRect(lx - labelW / 2, ly - labelH / 2, labelW, labelH, 12);
-        ctx.fillStyle = `${SECTOR_COLORS[i]}${Math.round(bgAlpha * 255).toString(16).padStart(2, "0")}`;
+        ctx.fillStyle = `${SECTOR_COLORS[i]}${Math.round(bgAlpha * 255)
+          .toString(16)
+          .padStart(2, "0")}`;
         ctx.fill();
 
         if (isActive) {
@@ -413,7 +474,11 @@ const AgentCanvas = memo(function AgentCanvas({
       ctx.fillText(`Jobs Found: ${statsRef.current.jobsFound}`, 20, 40);
 
       ctx.fillStyle = "#94A3B8";
-      ctx.fillText(`Sectors: ${statsRef.current.completedSectors}/${totalSectors}`, 20, 58);
+      ctx.fillText(
+        `Sectors: ${statsRef.current.completedSectors}/${totalSectors}`,
+        20,
+        58
+      );
 
       // Animated status indicator
       if (isRunning) {

@@ -23,9 +23,13 @@ async function sendEmail(args: {
 }) {
   if (!resend || !fromEmail) {
     if (isProduction) {
-      throw new Error(`Email cannot be sent in production: ${args.description}`);
+      throw new Error(
+        `Email cannot be sent in production: ${args.description}`
+      );
     }
-    console.log(`[email] ${args.description} for ${args.to}: ${args.fallbackLink}`);
+    console.log(
+      `[email] ${args.description} for ${args.to}: ${args.fallbackLink}`
+    );
     return { success: true };
   }
   const { error } = await resend.emails.send({
