@@ -3,6 +3,7 @@ name = "careersyncai"
 main = "dist/boot.js"
 # Set this to today's date
 compatibility_date = "2026-06-27"
+compatibility_flags = [ "nodejs_compat" ]
 workers_dev = true
 
 [build]
