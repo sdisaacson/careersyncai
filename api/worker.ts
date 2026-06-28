@@ -57,6 +57,9 @@ app.use("/api/trpc/*", async (c) => {
 app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
 
 // SPA fallback - serve index.html for non-API routes
+// Note: With not_found_handling = "single-page-application" in wrangler.toml,
+// navigation requests (with Sec-Fetch-Mode: navigate) are handled by Cloudflare
+// automatically. This fallback handles non-navigation requests and API errors.
 app.get("*", async (c) => {
   try {
     const asset = await c.env.ASSETS.fetch(c.req.raw);
@@ -66,7 +69,13 @@ app.get("*", async (c) => {
     }
     return asset;
   } catch {
-    return c.text("Not Found", 404);
+    // If ASSETS.fetch throws (e.g., path doesn't exist), fallback to index.html
+    try {
+      const index = await c.env.ASSETS.fetch(new URL("/index.html", c.req.url));
+      return index;
+    } catch {
+      return c.text("Not Found", 404);
+    }
   }
 });
 
