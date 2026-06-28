@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router";
 import Layout from "./components/Layout";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import UploadPage from "./pages/UploadPage";
 import InterviewPage from "./pages/InterviewPage";
@@ -32,19 +33,68 @@ export default function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/upload" element={<UploadPage />} />
-        <Route path="/interview" element={<InterviewPage />} />
-        <Route path="/research" element={<ResearchPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/resumes" element={<ResumesPage />} />
-        <Route path="/datasheet" element={<DatasheetPage />} />
+        <Route
+          path="/upload"
+          element={
+            <ProtectedRoute>
+              <UploadPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/interview"
+          element={
+            <ProtectedRoute>
+              <InterviewPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/research"
+          element={
+            <ProtectedRoute>
+              <ResearchPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/resumes"
+          element={
+            <ProtectedRoute>
+              <ResumesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/datasheet"
+          element={
+            <ProtectedRoute>
+              <DatasheetPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/account" element={<AccountPage />} />
+        <Route
+          path="/account"
+          element={
+            <ProtectedRoute>
+              <AccountPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/demo" element={<DemoPage />} />
         <Route path="/demo/upload" element={<DemoUploadPage />} />
         <Route path="/demo/interview" element={<DemoInterviewPage />} />
