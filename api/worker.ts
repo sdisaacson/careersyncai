@@ -1,7 +1,8 @@
 import { Hono } from "hono";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { appRouter } from "./router";
-import { createContext } from "./context";
+import { createContextFactory } from "./context";
+import { setCurrentCloudflareEnv } from "./lib/cloudflare-env";
 
 const app = new Hono();
 
@@ -36,11 +37,14 @@ app.get("/api/health", (c) => c.json({ ok: true, ts: Date.now() }));
 // tRPC handler
 app.use("/api/trpc/*", async (c) => {
   try {
+    // Set the Cloudflare env globally so getDb() and other functions can access it
+    setCurrentCloudflareEnv(c.env as any);
+    
     const response = await fetchRequestHandler({
       endpoint: "/api/trpc",
       req: c.req.raw,
       router: appRouter,
-      createContext,
+      createContext: createContextFactory(c.env as any),
     });
     return response;
   } catch (err) {

@@ -26,15 +26,16 @@ export type TrpcContext = {
   cloudflareEnv?: CloudflareEnv;
 };
 
-export async function createContext(
-  opts: FetchCreateContextFnOptions,
-  cloudflareEnv?: CloudflareEnv,
-): Promise<TrpcContext> {
-  const ctx: TrpcContext = { req: opts.req, resHeaders: opts.resHeaders, cloudflareEnv };
-  try {
-    ctx.user = await authenticateRequest(opts.req.headers, cloudflareEnv);
-  } catch {
-    // Authentication is optional here
-  }
-  return ctx;
+export function createContextFactory(cloudflareEnv: CloudflareEnv) {
+  return async function createContext(
+    opts: FetchCreateContextFnOptions,
+  ): Promise<TrpcContext> {
+    const ctx: TrpcContext = { req: opts.req, resHeaders: opts.resHeaders, cloudflareEnv };
+    try {
+      ctx.user = await authenticateRequest(opts.req.headers, cloudflareEnv);
+    } catch {
+      // Authentication is optional here
+    }
+    return ctx;
+  };
 }

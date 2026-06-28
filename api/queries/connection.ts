@@ -2,14 +2,15 @@ import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import * as schema from "@db/schema";
 import * as relations from "@db/relations";
-import type { CloudflareEnv } from "../context";
+import { getCurrentCloudflareEnv } from "../lib/cloudflare-env";
 
 const fullSchema = { ...schema, ...relations };
 
 let instance: ReturnType<typeof drizzle<typeof fullSchema>>;
 
-function getDatabaseUrl(cloudflareEnv?: CloudflareEnv): string {
-  // In Cloudflare Workers, use the env binding
+function getDatabaseUrl(): string {
+  // First try the per-request Cloudflare env (set by worker.ts)
+  const cloudflareEnv = getCurrentCloudflareEnv();
   if (cloudflareEnv?.DATABASE_URL) {
     return cloudflareEnv.DATABASE_URL;
   }
@@ -20,9 +21,9 @@ function getDatabaseUrl(cloudflareEnv?: CloudflareEnv): string {
   throw new Error("DATABASE_URL is not configured");
 }
 
-export function getDb(cloudflareEnv?: CloudflareEnv) {
+export function getDb() {
   if (!instance) {
-    const client = postgres(getDatabaseUrl(cloudflareEnv), { prepare: false });
+    const client = postgres(getDatabaseUrl(), { prepare: false });
     instance = drizzle(client, { schema: fullSchema });
   }
   return instance;
