@@ -1,6 +1,6 @@
 "$schema" = "./node_modules/wrangler/config-schema.json"
 name = "careersyncai"
-main = "dist/boot.js"
+main = "dist/public/index.html"
 # Set this to today's date
 compatibility_date = "2026-06-27"
 compatibility_flags = [ "nodejs_compat" ]
