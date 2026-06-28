@@ -1,6 +1,6 @@
 "$schema" = "./node_modules/wrangler/config-schema.json"
 name = "careersyncai"
-main = "dist/boot.js"
+main = "api/worker.ts"
 # Set this to today's date
 compatibility_date = "2026-06-27"
 compatibility_flags = [ "nodejs_compat" ]
@@ -12,3 +12,23 @@ command = "npm run build"
 [route]
 pattern = "careersyncai.sisaacson.io/*"
 zone_name = "careersyncai.sisaacson.io"
+
+# Cloudflare Workers environment variables (use wrangler secret for sensitive values)
+[vars]
+APP_ID = ""
+BASE_URL = "https://careersyncai.sisaacson.io"
+ADMIN_SECRET_PATH = "/admin/login"
+
+# Secrets (set via: wrangler secret put <name>)
+# APP_SECRET
+# DATABASE_URL
+# RESEND_API_KEY
+# FROM_EMAIL
+# MOONSHOT_API_KEY
+# STRIPE_PUBLISHABLE_KEY
+# STRIPE_SECRET_KEY
+# STRIPE_WEBHOOK_SECRET
+# STRIPE_PRICE_STARTER
+# STRIPE_PRICE_PRO
+# STRIPE_PRICE_PREMIUM
+# ADMIN_EMAILS
