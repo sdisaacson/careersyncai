@@ -3,8 +3,9 @@ import { bodyLimit } from "hono/body-limit";
 import type { HttpBindings } from "@hono/node-server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { appRouter } from "./router";
-import { createContext } from "./context";
+import { createContextFactory } from "./context";
 import { env } from "./lib/env";
+import { setCurrentCloudflareEnv } from "./lib/cloudflare-env";
 
 const app = new Hono<{ Bindings: HttpBindings }>();
 
@@ -47,11 +48,29 @@ app.post("/api/test", async (c) => {
 // tRPC handler - must match the endpoint exactly
 app.use("/api/trpc/*", async (c) => {
   try {
+    // For local dev, create a CloudflareEnv-like object from process.env
+    const localEnv = {
+      APP_SECRET: process.env.APP_SECRET,
+      DATABASE_URL: process.env.DATABASE_URL,
+      RESEND_API_KEY: process.env.RESEND_API_KEY,
+      FROM_EMAIL: process.env.FROM_EMAIL,
+      MOONSHOT_API_KEY: process.env.MOONSHOT_API_KEY,
+      STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+      STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+      APP_ID: process.env.APP_ID,
+      BASE_URL: process.env.BASE_URL,
+      ADMIN_SECRET_PATH: process.env.ADMIN_SECRET_PATH,
+      ADMIN_EMAILS: process.env.ADMIN_EMAILS,
+      NODE_ENV: process.env.NODE_ENV,
+    };
+    setCurrentCloudflareEnv(localEnv);
+    
     const response = await fetchRequestHandler({
       endpoint: "/api/trpc",
       req: c.req.raw,
       router: appRouter,
-      createContext,
+      createContext: createContextFactory(localEnv),
     });
     return response;
   } catch (err) {

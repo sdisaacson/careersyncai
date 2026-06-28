@@ -17,14 +17,7 @@ zone_name = "sisaacson.io"
 
 # Non-sensitive config (these become plain text env vars in the Worker)
 [vars]
-APP_ID = ""
-BASE_URL = "https://careersyncai.sisaacson.io"
-ADMIN_SECRET_PATH = "/admin/login"
-ADMIN_EMAILS = "scot@tsisaacson.io"
-DATABASE_URL = "postgresql://postgres.ijcavxnozqxypbjsyzeq:woxUeiSRkGAtJDz1@aws-1-us-west-2.pooler.supabase.com:6543/postgres"
-APP_SECRET = "jJKjtlbE38Yqb9lDazZBD7KdImoF3TWgF1w"
-RESEND_API_KEY=re_RrSi54mF_11VKQ5T2Rv9aEoTc8HqxdGHR
-FROM_EMAIL=scott@sisaacson.io
+
 
 # Secrets should NOT be in wrangler.toml — set these via wrangler secret:
 #   echo "value" | wrangler secret put NAME
@@ -35,4 +28,3 @@ FROM_EMAIL=scott@sisaacson.io
 #   RESEND_API_KEY    - Resend API key for email sending
 #   FROM_EMAIL        - Sender email address
 #   MOONSHOT_API_KEY  - Moonshot AI API key (optional)
-# 

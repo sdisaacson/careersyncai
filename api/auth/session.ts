@@ -1,5 +1,5 @@
 import * as jose from "jose";
-import type { CloudflareEnv } from "../context";
+import { getCurrentCloudflareEnv } from "../lib/cloudflare-env";
 
 export type SessionPayload = {
   userId: number;
@@ -9,10 +9,11 @@ export type SessionPayload = {
 
 const JWT_ALG = "HS256";
 
-function getAppSecret(cloudflareEnv?: CloudflareEnv): string {
+function getAppSecret(): string {
+  const env = getCurrentCloudflareEnv();
   // In Cloudflare Workers, use the env binding
-  if (cloudflareEnv?.APP_SECRET) {
-    return cloudflareEnv.APP_SECRET;
+  if (env?.APP_SECRET) {
+    return env.APP_SECRET;
   }
   // Fallback to process.env for local Node.js development
   if (typeof process !== "undefined" && process.env?.APP_SECRET) {
@@ -23,9 +24,8 @@ function getAppSecret(cloudflareEnv?: CloudflareEnv): string {
 
 export async function signSessionToken(
   payload: SessionPayload,
-  cloudflareEnv?: CloudflareEnv,
 ): Promise<string> {
-  const secret = new TextEncoder().encode(getAppSecret(cloudflareEnv));
+  const secret = new TextEncoder().encode(getAppSecret());
   return new jose.SignJWT(payload)
     .setProtectedHeader({ alg: JWT_ALG })
     .setIssuedAt()
@@ -35,13 +35,12 @@ export async function signSessionToken(
 
 export async function verifySessionToken(
   token: string,
-  cloudflareEnv?: CloudflareEnv,
 ): Promise<SessionPayload | null> {
   if (!token) {
     return null;
   }
   try {
-    const secret = new TextEncoder().encode(getAppSecret(cloudflareEnv));
+    const secret = new TextEncoder().encode(getAppSecret());
     const { payload } = await jose.jwtVerify(token, secret, {
       algorithms: [JWT_ALG],
     });

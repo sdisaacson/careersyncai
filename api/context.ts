@@ -32,7 +32,7 @@ export function createContextFactory(cloudflareEnv: CloudflareEnv) {
   ): Promise<TrpcContext> {
     const ctx: TrpcContext = { req: opts.req, resHeaders: opts.resHeaders, cloudflareEnv };
     try {
-      ctx.user = await authenticateRequest(opts.req.headers, cloudflareEnv);
+      ctx.user = await authenticateRequest(opts.req.headers);
     } catch {
       // Authentication is optional here
     }
