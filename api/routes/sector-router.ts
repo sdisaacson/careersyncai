@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { createRouter, publicQuery } from "./middleware";
-import { getDb } from "./queries/connection";
+import { createRouter, publicQuery } from "../lib/api/middleware";
+import { getDb } from "../queries/api/connection";
 import { sectors } from "@db/schema";
 import { eq, asc } from "drizzle-orm";
 

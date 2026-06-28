@@ -1,12 +1,20 @@
 import { Hono } from "hono";
+import { bodyLimit } from "hono/body-limit";
+import type { HttpBindings } from "@hono/node-server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { appRouter } from "./router";
-import { createContextFactory } from "./context";
-import { setCurrentCloudflareEnv } from "./lib/cloudflare-env";
+import { createContext } from "./context";
+import { env } from "./lib/env";
+import { serveStatic } from "@hono/node-server/serve-static";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const app = new Hono();
+const app = new Hono<{ Bindings: HttpBindings }>();
 
-// CORS middleware
+app.use(bodyLimit({ maxSize: 50 * 1024 * 1024 }));
+
+// CORS middleware - allow all origins in dev
 app.use("/api/*", async (c, next) => {
   c.header("Access-Control-Allow-Origin", "*");
   c.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -17,7 +25,7 @@ app.use("/api/*", async (c, next) => {
   await next();
 });
 
-// Request logging
+// Request logging middleware
 app.use("/api/*", async (c, next) => {
   const start = Date.now();
   console.log(`[${new Date().toISOString()}] ${c.req.method} ${c.req.url}`);
@@ -31,20 +39,23 @@ app.use("/api/*", async (c, next) => {
   console.log(`[${new Date().toISOString()}] ${c.req.method} ${c.req.url} - ${c.res.status} (${duration}ms)`);
 });
 
-// Health check
+// Health check endpoint (no auth required)
 app.get("/api/health", (c) => c.json({ ok: true, ts: Date.now() }));
 
-// tRPC handler
+// Simple test endpoint
+app.post("/api/test", async (c) => {
+  const body = await c.req.json().catch(() => ({}));
+  return c.json({ received: body, ok: true });
+});
+
+// tRPC handler - must match the endpoint exactly
 app.use("/api/trpc/*", async (c) => {
   try {
-    // Set the Cloudflare env globally so getDb() and other functions can access it
-    setCurrentCloudflareEnv(c.env as any);
-    
     const response = await fetchRequestHandler({
       endpoint: "/api/trpc",
       req: c.req.raw,
       router: appRouter,
-      createContext: createContextFactory(c.env as any),
+      createContext,
     });
     return response;
   } catch (err) {
@@ -56,27 +67,22 @@ app.use("/api/trpc/*", async (c) => {
 // Catch-all for unmatched API routes
 app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
 
-// SPA fallback - serve index.html for non-API routes
-// Note: With not_found_handling = "single-page-application" in wrangler.toml,
-// navigation requests (with Sec-Fetch-Mode: navigate) are handled by Cloudflare
-// automatically. This fallback handles non-navigation requests and API errors.
-app.get("*", async (c) => {
-  try {
-    const asset = await c.env.ASSETS.fetch(c.req.raw);
-    if (asset.status === 404) {
-      const index = await c.env.ASSETS.fetch(new URL("/index.html", c.req.url));
-      return index;
+// Serve static files and SPA fallback in production
+if (env.isProduction) {
+  const __dirname = fileURLToPath(new URL(".", import.meta.url));
+  const distPath = path.resolve(__dirname, "../dist/public");
+
+  app.use("*", serveStatic({ root: "./dist/public" }));
+
+  app.notFound((c) => {
+    const accept = c.req.header("accept") ?? "";
+    if (!accept.includes("text/html")) {
+      return c.json({ error: "Not Found" }, 404);
     }
-    return asset;
-  } catch {
-    // If ASSETS.fetch throws (e.g., path doesn't exist), fallback to index.html
-    try {
-      const index = await c.env.ASSETS.fetch(new URL("/index.html", c.req.url));
-      return index;
-    } catch {
-      return c.text("Not Found", 404);
-    }
-  }
-});
+    const indexPath = path.resolve(distPath, "index.html");
+    const content = fs.readFileSync(indexPath, "utf-8");
+    return c.html(content);
+  });
+}
 
 export default app;

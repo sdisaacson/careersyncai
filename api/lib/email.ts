@@ -1,28 +1,14 @@
 import { Resend } from "resend";
-import { getCurrentCloudflareEnv } from "./cloudflare-env";
 
-function getResendApiKey(): string | undefined {
-  const env = getCurrentCloudflareEnv();
-  return env?.RESEND_API_KEY || (typeof process !== "undefined" ? process.env?.RESEND_API_KEY : undefined);
-}
+const resendApiKey = process.env.RESEND_API_KEY;
+const fromEmail = process.env.FROM_EMAIL;
+const baseUrl = process.env.BASE_URL || "http://localhost:4173";
+const isProduction = process.env.NODE_ENV === "production";
 
-function getFromEmail(): string | undefined {
-  const env = getCurrentCloudflareEnv();
-  return env?.FROM_EMAIL || (typeof process !== "undefined" ? process.env?.FROM_EMAIL : undefined);
-}
-
-function getBaseUrl(): string {
-  const env = getCurrentCloudflareEnv();
-  return env?.BASE_URL || (typeof process !== "undefined" ? process.env?.BASE_URL : undefined) || "http://localhost:4173";
-}
-
-function isProduction(): boolean {
-  const env = getCurrentCloudflareEnv();
-  return env?.NODE_ENV === "production" || (typeof process !== "undefined" && process.env?.NODE_ENV === "production");
-}
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 function buildUrl(path: string, token: string) {
-  const url = new URL(path, getBaseUrl());
+  const url = new URL(path, baseUrl);
   url.searchParams.set("token", token);
   return url.toString();
 }
@@ -35,12 +21,8 @@ async function sendEmail(args: {
   description: string;
   fallbackLink: string;
 }) {
-  const resendApiKey = getResendApiKey();
-  const fromEmail = getFromEmail();
-  const resend = resendApiKey ? new Resend(resendApiKey) : null;
-
   if (!resend || !fromEmail) {
-    if (isProduction()) {
+    if (isProduction) {
       throw new Error(`Email cannot be sent in production: ${args.description}`);
     }
     console.log(`[email] ${args.description} for ${args.to}: ${args.fallbackLink}`);

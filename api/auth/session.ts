@@ -1,5 +1,4 @@
 import * as jose from "jose";
-import { getCurrentCloudflareEnv } from "../lib/cloudflare-env";
 
 export type SessionPayload = {
   userId: number;
@@ -10,16 +9,11 @@ export type SessionPayload = {
 const JWT_ALG = "HS256";
 
 function getAppSecret(): string {
-  const env = getCurrentCloudflareEnv();
-  // In Cloudflare Workers, use the env binding
-  if (env?.APP_SECRET) {
-    return env.APP_SECRET;
+  const secret = process.env.APP_SECRET;
+  if (!secret) {
+    throw new Error("APP_SECRET is not configured");
   }
-  // Fallback to process.env for local Node.js development
-  if (typeof process !== "undefined" && process.env?.APP_SECRET) {
-    return process.env.APP_SECRET;
-  }
-  throw new Error("APP_SECRET is not configured");
+  return secret;
 }
 
 export async function signSessionToken(
