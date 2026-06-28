@@ -1,14 +1,12 @@
 "$schema" = "./node_modules/wrangler/config-schema.json"
 name = "careersyncai"
-main = "dist/public/index.html"
-# Set this to today's date
+main = "api/worker.ts"        # ← FIX THIS: Point to your Hono/Worker entry file
 compatibility_date = "2026-06-27"
 compatibility_flags = [ "nodejs_compat" ]
 workers_dev = true
 
-# Add this:
 [assets]
-directory = "./dist"
+directory = "./dist/public"         # Where your built frontend lives (index.html, JS, CSS
 
 [build]
 command = "npm run build"
@@ -17,28 +15,16 @@ command = "npm run build"
 pattern = "careersyncai.sisaacson.io/*"
 zone_name = "sisaacson.io"
 
-# Cloudflare Workers environment variables (use wrangler secret for sensitive values)
+# Non-sensitive config
 [vars]
 APP_ID = ""
 BASE_URL = "https://careersyncai.sisaacson.io"
 ADMIN_SECRET_PATH = "/admin/login"
-APP_SECRET = "jJKjtlbE38Yqb9lDazZBD7KdImoF3TWgF1w"
-DATABASE_URL = "postgresql://postgres.ijcavxnozqxypbjsyzeq:woxUeiSRkGAtJDz1@aws-1-us-west-2.pooler.supabase.com:6543/postgres"
 ADMIN_EMAILS = "scott@sisaacson.io"
-RESEND_API_KEY = "re_RrSi54mF_11VKQ5T2Rv9aEoTc8HqxdGHR"
-FROM_EMAIL = "scott@sisaacson.io"
-MOONSHOT_API_KEY = ""
 
-# Secrets (set via: wrangler secret put <name>)
-# APP_SECRET
-# DATABASE_URL
-# RESEND_API_KEY
-# FROM_EMAIL
-# MOONSHOT_API_KEY
-# STRIPE_PUBLISHABLE_KEY
-# STRIPE_SECRET_KEY
-# STRIPE_WEBHOOK_SECRET
-# STRIPE_PRICE_STARTER
-# STRIPE_PRICE_PRO
-# STRIPE_PRICE_PREMIUM
-# ADMIN_EMAILS
+# These should be moved to wrangler secrets (see below)
+# APP_SECRET = "..."
+# DATABASE_URL = "..."
+# RESEND_API_KEY = "..."
+# FROM_EMAIL = "..."
+# MOONSHOT_API_KEY = "..."
