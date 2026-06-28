@@ -2,8 +2,8 @@ import { eq, sql } from "drizzle-orm";
 import * as schema from "@db/schema";
 import type { InsertUser } from "@db/schema";
 import { getDb } from "./connection";
-import { getCurrentCloudflareEnv } from "../../lib/cloudflare-env";
-import { hashToken } from "../../auth/token";
+import { getCurrentCloudflareEnv } from "../../lib/cloudflare-env.js";
+import { hashToken } from "../../auth/token.js";
 
 function getAdminEmails(): string[] {
   const env = getCurrentCloudflareEnv();

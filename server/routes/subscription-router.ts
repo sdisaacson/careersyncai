@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { createRouter, authedQuery } from "../lib/api/middleware";
-import { getDb } from "../queries/api/connection";
+import { createRouter, authedQuery } from "../lib/api/middleware.js";
+import { getDb } from "../queries/api/connection.js";
 import { subscriptions } from "@db/schema";
 import { eq } from "drizzle-orm";
 import { addMonths } from "date-fns";

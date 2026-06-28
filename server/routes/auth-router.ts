@@ -3,9 +3,9 @@ import * as cookie from "cookie";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { Session } from "@contracts/constants";
-import { getSessionCookieOptions } from "../../api/lib/cookies";
-import { createRouter, authedQuery, publicQuery } from "../lib/api/middleware";
-import { signSessionToken } from "../auth/session";
+import { getSessionCookieOptions } from "../../api/lib/cookies.js";
+import { createRouter, authedQuery, publicQuery } from "../lib/api/middleware.js";
+import { signSessionToken } from "../auth/session.js";
 import {
   findUserByEmail,
   findUserByVerificationToken,
@@ -15,8 +15,8 @@ import {
   setPasswordResetToken,
   updatePasswordHash,
   setEmailVerificationToken,
-} from "../queries/api/users";
-import { sendVerificationEmail, sendPasswordResetEmail } from "../../api/lib/email";
+} from "../queries/api/users.js";
+import { sendVerificationEmail, sendPasswordResetEmail } from "../../api/lib/email.js";
 
 function generateToken() {
   return crypto.randomBytes(32).toString("hex");
