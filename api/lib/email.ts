@@ -1,24 +1,28 @@
 import { Resend } from "resend";
-import type { CloudflareEnv } from "../context";
+import { getCurrentCloudflareEnv } from "./cloudflare-env";
 
-function getResendApiKey(cloudflareEnv?: CloudflareEnv): string | undefined {
-  return cloudflareEnv?.RESEND_API_KEY || (typeof process !== "undefined" ? process.env?.RESEND_API_KEY : undefined);
+function getResendApiKey(): string | undefined {
+  const env = getCurrentCloudflareEnv();
+  return env?.RESEND_API_KEY || (typeof process !== "undefined" ? process.env?.RESEND_API_KEY : undefined);
 }
 
-function getFromEmail(cloudflareEnv?: CloudflareEnv): string | undefined {
-  return cloudflareEnv?.FROM_EMAIL || (typeof process !== "undefined" ? process.env?.FROM_EMAIL : undefined);
+function getFromEmail(): string | undefined {
+  const env = getCurrentCloudflareEnv();
+  return env?.FROM_EMAIL || (typeof process !== "undefined" ? process.env?.FROM_EMAIL : undefined);
 }
 
-function getBaseUrl(cloudflareEnv?: CloudflareEnv): string {
-  return cloudflareEnv?.BASE_URL || (typeof process !== "undefined" ? process.env?.BASE_URL : undefined) || "http://localhost:4173";
+function getBaseUrl(): string {
+  const env = getCurrentCloudflareEnv();
+  return env?.BASE_URL || (typeof process !== "undefined" ? process.env?.BASE_URL : undefined) || "http://localhost:4173";
 }
 
-function isProduction(cloudflareEnv?: CloudflareEnv): boolean {
-  return cloudflareEnv?.NODE_ENV === "production" || (typeof process !== "undefined" && process.env?.NODE_ENV === "production");
+function isProduction(): boolean {
+  const env = getCurrentCloudflareEnv();
+  return env?.NODE_ENV === "production" || (typeof process !== "undefined" && process.env?.NODE_ENV === "production");
 }
 
-function buildUrl(path: string, token: string, cloudflareEnv?: CloudflareEnv) {
-  const url = new URL(path, getBaseUrl(cloudflareEnv));
+function buildUrl(path: string, token: string) {
+  const url = new URL(path, getBaseUrl());
   url.searchParams.set("token", token);
   return url.toString();
 }
@@ -30,13 +34,13 @@ async function sendEmail(args: {
   text: string;
   description: string;
   fallbackLink: string;
-}, cloudflareEnv?: CloudflareEnv) {
-  const resendApiKey = getResendApiKey(cloudflareEnv);
-  const fromEmail = getFromEmail(cloudflareEnv);
+}) {
+  const resendApiKey = getResendApiKey();
+  const fromEmail = getFromEmail();
   const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
   if (!resend || !fromEmail) {
-    if (isProduction(cloudflareEnv)) {
+    if (isProduction()) {
       throw new Error(`Email cannot be sent in production: ${args.description}`);
     }
     console.log(`[email] ${args.description} for ${args.to}: ${args.fallbackLink}`);
@@ -55,8 +59,8 @@ async function sendEmail(args: {
   return { success: true };
 }
 
-export async function sendVerificationEmail(to: string, token: string, cloudflareEnv?: CloudflareEnv) {
-  const link = buildUrl("/verify-email", token, cloudflareEnv);
+export async function sendVerificationEmail(to: string, token: string) {
+  const link = buildUrl("/verify-email", token);
   return sendEmail({
     to,
     subject: "Verify your email",
@@ -64,11 +68,11 @@ export async function sendVerificationEmail(to: string, token: string, cloudflar
     text: `Verify your email: ${link}`,
     description: "Verification link",
     fallbackLink: link,
-  }, cloudflareEnv);
+  });
 }
 
-export async function sendPasswordResetEmail(to: string, token: string, cloudflareEnv?: CloudflareEnv) {
-  const link = buildUrl("/reset-password", token, cloudflareEnv);
+export async function sendPasswordResetEmail(to: string, token: string) {
+  const link = buildUrl("/reset-password", token);
   return sendEmail({
     to,
     subject: "Reset your password",
@@ -76,5 +80,5 @@ export async function sendPasswordResetEmail(to: string, token: string, cloudfla
     text: `Reset your password (expires in 1 hour): ${link}`,
     description: "Password reset link",
     fallbackLink: link,
-  }, cloudflareEnv);
+  });
 }
