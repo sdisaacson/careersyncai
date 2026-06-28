@@ -119,7 +119,8 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.16",
+    "wrangler": "^4.105.0"
   },
   "allowScripts": {
     "core-js@3.49.0": true,
