@@ -1,12 +1,12 @@
 "$schema" = "./node_modules/wrangler/config-schema.json"
 name = "careersyncai"
-main = "api/worker.ts"        # ← FIX THIS: Point to your Hono/Worker entry file
+main = "api/worker.ts"              # ← FIXED: Worker entry file, not HTML
 compatibility_date = "2026-06-27"
 compatibility_flags = [ "nodejs_compat" ]
 workers_dev = true
 
 [assets]
-directory = "./dist/public"         # Where your built frontend lives (index.html, JS, CSS
+directory = "./dist/public"         # ← FIXED: Vite outputs to dist/public/
 
 [build]
 command = "npm run build"
@@ -22,9 +22,5 @@ BASE_URL = "https://careersyncai.sisaacson.io"
 ADMIN_SECRET_PATH = "/admin/login"
 ADMIN_EMAILS = "scott@sisaacson.io"
 
-# These should be moved to wrangler secrets (see below)
-# APP_SECRET = "..."
-# DATABASE_URL = "..."
-# RESEND_API_KEY = "..."
-# FROM_EMAIL = "..."
-# MOONSHOT_API_KEY = "..."
+# Secrets should NOT be in wrangler.toml — move these to wrangler secret:
+# APP_SECRET, DATABASE_URL, RESEND_API_KEY, FROM_EMAIL, MOONSHOT_API_KEY
