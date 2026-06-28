@@ -21,3 +21,4 @@ coverage/
 *.log
 .vercel
 .worktrees/
+.superpowers/

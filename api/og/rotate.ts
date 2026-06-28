@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "../../db/schema.js";
-import { OG_CARD_COUNT } from "../../src/lib/og-cards";
+import { OG_CARD_COUNT } from "../../contracts/og-cards.js";
 
 const CURRENT_OG_KEY = "current_og_index";
 

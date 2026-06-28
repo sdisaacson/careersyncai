@@ -5,7 +5,7 @@ import {
   ogCards,
   OG_CARD_WIDTH,
   OG_CARD_HEIGHT,
-} from "../src/lib/og-cards";
+} from "../contracts/og-cards";
 
 const OUT_DIR = path.resolve(process.cwd(), "public/og-cards");
 
