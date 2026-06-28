@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createRouter, publicQuery } from "../lib/api/middleware.js";
 import { getDb } from "../queries/api/connection.js";
-import { interviews, interviewQuestions } from "@db/schema";
+import { interviews, interviewQuestions } from "../../db/schema.js";
 import { eq, desc, asc } from "drizzle-orm";
 
 export const interviewRouter = createRouter({

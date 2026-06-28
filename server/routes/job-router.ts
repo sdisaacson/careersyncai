@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createRouter, publicQuery } from "../lib/api/middleware.js";
 import { getDb } from "../queries/api/connection.js";
-import { jobs } from "@db/schema";
+import { jobs } from "../../db/schema.js";
 import { eq, desc, and, gte, sql } from "drizzle-orm";
 
 export const jobRouter = createRouter({

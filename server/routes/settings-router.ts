@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createRouter, adminQuery } from "../lib/api/middleware.js";
 import { getDb } from "../queries/api/connection.js";
-import { appSettings } from "@db/schema";
+import { appSettings } from "../../db/schema.js";
 import { eq } from "drizzle-orm";
 
 export const settingsRouter = createRouter({

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createRouter, publicQuery } from "../lib/api/middleware.js";
 import { getDb } from "../queries/api/connection.js";
-import { sectors } from "@db/schema";
+import { sectors } from "../../db/schema.js";
 import { eq, asc } from "drizzle-orm";
 
 export const sectorRouter = createRouter({
