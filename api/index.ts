@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import app from "../server/lib/api/app";
+import app from "../server/lib/api/app.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const url = new URL(req.url || "/", `https://${req.headers.host}`);

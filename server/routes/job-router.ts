@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { createRouter, publicQuery } from "../lib/api/middleware";
-import { getDb } from "../queries/api/connection";
+import { createRouter, publicQuery } from "../lib/api/middleware.js";
+import { getDb } from "../queries/api/connection.js";
 import { jobs } from "@db/schema";
-import { eq, desc, asc, and, gte, sql } from "drizzle-orm";
+import { eq, desc, and, gte, sql } from "drizzle-orm";
 
 export const jobRouter = createRouter({
   create: publicQuery
@@ -26,6 +26,7 @@ export const jobRouter = createRouter({
         fitScore: z.number().optional(),
         matchReasons: z.string().optional(),
         skillGaps: z.string().optional(),
+        status: z.enum(["discovered", "shortlisted", "applied", "archived"]).optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -37,16 +38,7 @@ export const jobRouter = createRouter({
       return { id };
     }),
 
-  createMany: publicQuery
-    .input(z.array(z.record(z.any())))
-    .mutation(async ({ input }) => {
-      const db = getDb();
-      if (input.length === 0) return { count: 0 };
-      await db.insert(jobs).values(input as unknown[]);
-      return { count: input.length };
-    }),
-
-  getByProfile: publicQuery
+getByProfile: publicQuery
     .input(z.object({ profileId: z.number() }))
     .query(async ({ input }) => {
       const db = getDb();
@@ -54,126 +46,144 @@ export const jobRouter = createRouter({
         .select()
         .from(jobs)
         .where(eq(jobs.profileId, input.profileId))
-        .orderBy(desc(jobs.fitScore));
+        .orderBy(desc(jobs.createdAt));
     }),
 
   getById: publicQuery
     .input(z.object({ id: z.number() }))
     .query(async ({ input }) => {
       const db = getDb();
-      const result = await db
+      const [job] = await db
         .select()
         .from(jobs)
         .where(eq(jobs.id, input.id))
         .limit(1);
-      return result[0] ?? null;
+      return job ?? null;
     }),
 
-  updateStatus: publicQuery
+  update: publicQuery
     .input(
       z.object({
         id: z.number(),
-        status: z.enum(["discovered", "shortlisted", "applied", "archived"]),
+        data: z.object({
+          title: z.string().optional(),
+          company: z.string().optional(),
+          location: z.string().optional(),
+          jobDescription: z.string().optional(),
+          requirements: z.string().optional(),
+          responsibilities: z.string().optional(),
+          salaryRange: z.string().optional(),
+          jobType: z.string().optional(),
+          experienceLevel: z.string().optional(),
+          applicationLink: z.string().optional(),
+          deadline: z.string().optional(),
+          postedDate: z.string().optional(),
+          source: z.string().optional(),
+          fitScore: z.number().optional(),
+          matchReasons: z.string().optional(),
+          skillGaps: z.string().optional(),
+          status: z.enum(["discovered", "shortlisted", "applied", "archived"]).optional(),
+        }),
       })
     )
     .mutation(async ({ input }) => {
       const db = getDb();
-      await db
+      const [updated] = await db
         .update(jobs)
-        .set({ status: input.status })
-        .where(eq(jobs.id, input.id));
+        .set(input.data)
+        .where(eq(jobs.id, input.id))
+        .returning();
+      return updated ?? null;
+    }),
+
+  delete: publicQuery
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      const db = getDb();
+      await db.delete(jobs).where(eq(jobs.id, input.id));
       return { success: true };
     }),
 
-  filter: publicQuery
+  search: publicQuery
     .input(
       z.object({
         profileId: z.number(),
+        query: z.string().optional(),
         sectorId: z.number().optional(),
+        jobType: z.string().optional(),
+        experienceLevel: z.string().optional(),
+        location: z.string().optional(),
+        status: z.enum(["discovered", "shortlisted", "applied", "archived"]).optional(),
         minFitScore: z.number().optional(),
-        status: z
-          .enum(["discovered", "shortlisted", "applied", "archived"])
-          .optional(),
-        search: z.string().optional(),
-        sortBy: z
-          .enum(["fitScore", "createdAt", "title", "company"])
-          .optional(),
+        sortBy: z.enum(["createdAt", "fitScore", "postedDate"]).optional(),
         sortOrder: z.enum(["asc", "desc"]).optional(),
+        limit: z.number().optional(),
+        offset: z.number().optional(),
       })
     )
     .query(async ({ input }) => {
-      const {
-        profileId,
-        sectorId,
-        minFitScore,
-        status,
-        search,
-        sortBy,
-        sortOrder,
-      } = input;
       const db = getDb();
-      const conditions = [eq(jobs.profileId, profileId)];
+      const conditions = [eq(jobs.profileId, input.profileId)];
 
-      if (sectorId) conditions.push(eq(jobs.sectorId, sectorId));
-      if (minFitScore) conditions.push(gte(jobs.fitScore, minFitScore));
-      if (status) conditions.push(eq(jobs.status, status));
-      if (search) {
-        conditions.push(
-          sql`${jobs.title} LIKE ${`%${search}%`} OR ${jobs.company} LIKE ${`%${search}%`}`
-        );
+      if (input.sectorId !== undefined) {
+        conditions.push(eq(jobs.sectorId, input.sectorId));
+      }
+      if (input.jobType) {
+        conditions.push(eq(jobs.jobType, input.jobType));
+      }
+      if (input.experienceLevel) {
+        conditions.push(eq(jobs.experienceLevel, input.experienceLevel));
+      }
+      if (input.location) {
+        conditions.push(eq(jobs.location, input.location));
+      }
+      if (input.status) {
+        conditions.push(eq(jobs.status, input.status));
+      }
+      if (input.minFitScore !== undefined) {
+        conditions.push(gte(jobs.fitScore, input.minFitScore));
       }
 
-      const orderCol =
+      const sortBy = input.sortBy ?? "createdAt";
+      const sortOrder = input.sortOrder ?? "desc";
+
+      const sortColumn =
         sortBy === "fitScore"
           ? jobs.fitScore
-          : sortBy === "title"
-            ? jobs.title
-            : sortBy === "company"
-              ? jobs.company
-              : jobs.createdAt;
+          : sortBy === "postedDate"
+            ? jobs.postedDate
+            : jobs.createdAt;
 
-      return db
+      const query = db
         .select()
         .from(jobs)
         .where(and(...conditions))
-        .orderBy(sortOrder === "asc" ? asc(orderCol) : desc(orderCol));
+        .orderBy(sortOrder === "asc" ? sql`${sortColumn} asc` : sql`${sortColumn} desc`)
+        .limit(input.limit ?? 100)
+        .offset(input.offset ?? 0);
+
+      return query;
     }),
 
-  stats: publicQuery
+  getStats: publicQuery
     .input(z.object({ profileId: z.number() }))
     .query(async ({ input }) => {
       const db = getDb();
-      const all = await db
-        .select()
+      const [result] = await db
+        .select({
+          total: sql<number>`count(*)`,
+          avgFitScore: sql<number>`avg(${jobs.fitScore})`,
+          maxFitScore: sql<number>`max(${jobs.fitScore})`,
+          minFitScore: sql<number>`min(${jobs.fitScore})`,
+        })
         .from(jobs)
         .where(eq(jobs.profileId, input.profileId));
 
       return {
-        total: all.length,
-        bySector: all.reduce(
-          (acc, job) => {
-            const sector = job.sectorId?.toString() ?? "unknown";
-            acc[sector] = (acc[sector] || 0) + 1;
-            return acc;
-          },
-          {} as Record<string, number>
-        ),
-        avgFitScore:
-          all.length > 0
-            ? Math.round(
-                all.reduce((s, j) => s + (j.fitScore ?? 0), 0) / all.length
-              )
-            : 0,
-        shortlisted: all.filter(j => j.status === "shortlisted").length,
-        applied: all.filter(j => j.status === "applied").length,
+        total: result?.total ?? 0,
+        avgFitScore: result?.avgFitScore ? Math.round(result.avgFitScore * 10) / 10 : 0,
+        maxFitScore: result?.maxFitScore ?? 0,
+        minFitScore: result?.minFitScore ?? 0,
       };
-    }),
-
-  deleteByProfile: publicQuery
-    .input(z.object({ profileId: z.number() }))
-    .mutation(async ({ input }) => {
-      const db = getDb();
-      await db.delete(jobs).where(eq(jobs.profileId, input.profileId));
-      return { success: true };
     }),
 });

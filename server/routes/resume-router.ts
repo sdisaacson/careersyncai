@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { createRouter, publicQuery } from "../lib/api/middleware";
-import { getDb } from "../queries/api/connection";
+import { createRouter, publicQuery } from "../lib/api/middleware.js";
+import { getDb } from "../queries/api/connection.js";
 import { tailoredResumes } from "@db/schema";
 import { eq, desc } from "drizzle-orm";
 
@@ -11,6 +11,7 @@ export const resumeRouter = createRouter({
         jobId: z.number(),
         profileId: z.number(),
         content: z.string(),
+        pdfUrl: z.string().optional(),
         highlights: z.string().optional(),
         changesMade: z.string().optional(),
         narrativeSummary: z.string().optional(),
@@ -25,16 +26,7 @@ export const resumeRouter = createRouter({
       return { id };
     }),
 
-  createMany: publicQuery
-    .input(z.array(z.record(z.any())))
-    .mutation(async ({ input }) => {
-      const db = getDb();
-      if (input.length === 0) return { count: 0 };
-      await db.insert(tailoredResumes).values(input as unknown[]);
-      return { count: input.length };
-    }),
-
-  getByProfile: publicQuery
+getByProfile: publicQuery
     .input(z.object({ profileId: z.number() }))
     .query(async ({ input }) => {
       const db = getDb();
@@ -49,22 +41,42 @@ export const resumeRouter = createRouter({
     .input(z.object({ jobId: z.number() }))
     .query(async ({ input }) => {
       const db = getDb();
-      const result = await db
+      const [resume] = await db
         .select()
         .from(tailoredResumes)
         .where(eq(tailoredResumes.jobId, input.jobId))
         .limit(1);
-      return result[0] ?? null;
+      return resume ?? null;
     }),
 
-  updatePdfUrl: publicQuery
-    .input(z.object({ id: z.number(), pdfUrl: z.string() }))
+  update: publicQuery
+    .input(
+      z.object({
+        id: z.number(),
+        data: z.object({
+          content: z.string().optional(),
+          pdfUrl: z.string().optional(),
+          highlights: z.string().optional(),
+          changesMade: z.string().optional(),
+          narrativeSummary: z.string().optional(),
+        }),
+      })
+    )
     .mutation(async ({ input }) => {
       const db = getDb();
-      await db
+      const [updated] = await db
         .update(tailoredResumes)
-        .set({ pdfUrl: input.pdfUrl })
-        .where(eq(tailoredResumes.id, input.id));
+        .set(input.data)
+        .where(eq(tailoredResumes.id, input.id))
+        .returning();
+      return updated ?? null;
+    }),
+
+  delete: publicQuery
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      const db = getDb();
+      await db.delete(tailoredResumes).where(eq(tailoredResumes.id, input.id));
       return { success: true };
     }),
 });
