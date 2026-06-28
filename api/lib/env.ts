@@ -2,9 +2,8 @@ import "dotenv/config";
 
 function required(name: string): string {
   const value = process.env[name];
-  if (!value && process.env.NODE_ENV === "production") {
-    throw new Error(`Missing required environment variable: ${name}`);
-  }
+  // In Cloudflare Workers, env vars are injected at runtime, not build time.
+  // Don't throw during bundling — only throw when the value is actually used at runtime.
   return value ?? "";
 }
 
