@@ -5,7 +5,7 @@ import {
   subscriptions,
   jobs,
   tailoredResumes,
-} from "./schema";
+} from "./schema.js";
 
 export const usersRelations = relations(users, ({ many }) => ({
   profiles: many(profiles),
