@@ -67,10 +67,6 @@ function easeInOut(t: number): number {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
 
-function easeOutCubic(t: number): number {
-  return 1 - Math.pow(1 - t, 3);
-}
-
 const SECTOR_COLORS = [
   "#00C9FF",
   "#22C55E",

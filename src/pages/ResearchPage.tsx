@@ -19,7 +19,6 @@ import {
   TrendingUp,
   Database,
   ZapIcon,
-  Activity,
   Search,
   Network,
   Sparkles,

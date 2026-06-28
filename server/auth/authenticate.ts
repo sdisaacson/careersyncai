@@ -2,7 +2,7 @@ import * as cookie from "cookie";
 import { Session } from "@contracts/constants";
 import { Errors } from "@contracts/errors";
 import { verifySessionToken } from "./session";
-import { findUserById } from "../queries/users";
+import { findUserById } from "../queries/api/users";
 
 export async function authenticateRequest(headers: Headers) {
   const cookies = cookie.parse(headers.get("cookie") || "");

@@ -3,7 +3,7 @@ import * as cookie from "cookie";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { Session } from "@contracts/constants";
-import { getSessionCookieOptions } from "../lib/cookies";
+import { getSessionCookieOptions } from "../../api/lib/cookies";
 import { createRouter, authedQuery, publicQuery } from "../lib/api/middleware";
 import { signSessionToken } from "../auth/session";
 import {
@@ -16,7 +16,7 @@ import {
   updatePasswordHash,
   setEmailVerificationToken,
 } from "../queries/api/users";
-import { sendVerificationEmail, sendPasswordResetEmail } from "../lib/email";
+import { sendVerificationEmail, sendPasswordResetEmail } from "../../api/lib/email";
 
 function generateToken() {
   return crypto.randomBytes(32).toString("hex");
@@ -63,7 +63,8 @@ export const authRouter = createRouter({
     } catch (err) {
       console.error("[signup error]", err);
       throw new Error(
-        err instanceof Error ? err.message : "Registration failed"
+        err instanceof Error ? err.message : "Registration failed",
+        { cause: err }
       );
     }
   }),

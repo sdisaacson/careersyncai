@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Github, Twitter, Linkedin } from "lucide-react";
+import { ExternalLink, Share2, Globe } from "lucide-react";
 
 const footerColumns = [
   {
@@ -85,7 +85,7 @@ export default function Footer() {
                   e.currentTarget.style.color = "#94A3B8";
                 }}
               >
-                <Github size={20} />
+                <ExternalLink size={20} />
               </a>
               <a
                 href="https://twitter.com"
@@ -100,7 +100,7 @@ export default function Footer() {
                   e.currentTarget.style.color = "#94A3B8";
                 }}
               >
-                <Twitter size={20} />
+                <Share2 size={20} />
               </a>
               <a
                 href="https://linkedin.com"
@@ -115,7 +115,7 @@ export default function Footer() {
                   e.currentTarget.style.color = "#94A3B8";
                 }}
               >
-                <Linkedin size={20} />
+                <Globe size={20} />
               </a>
             </div>
           </div>

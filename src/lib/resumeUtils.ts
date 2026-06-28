@@ -141,7 +141,7 @@ export function sortResumes(
   sortOrder: "asc" | "desc"
 ): MockTailoredResume[] {
   const sorted = [...items].sort((a, b) => {
-    let comparison = 0;
+    let comparison: number;
     switch (sortBy) {
       case "fitScore":
         comparison = (a.job.fitScore ?? 0) - (b.job.fitScore ?? 0);
