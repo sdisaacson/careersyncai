@@ -27,17 +27,12 @@ export async function findUserById(id: number) {
 }
 
 export async function findUserByEmail(email: string) {
-  try {
-    const rows = await getDb()
-      .select()
-      .from(schema.users)
-      .where(eq(schema.users.email, email.toLowerCase()))
-      .limit(1);
-    return rows.at(0);
-  } catch (err) {
-    console.error("[findUserByEmail] database error:", err);
-    throw err;
-  }
+  const rows = await getDb()
+    .select()
+    .from(schema.users)
+    .where(eq(schema.users.email, email.toLowerCase()))
+    .limit(1);
+  return rows.at(0);
 }
 
 export async function findUserByVerificationToken(token: string) {
