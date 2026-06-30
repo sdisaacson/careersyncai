@@ -17,7 +17,10 @@ function getDatabaseUrl(): string {
 
 export function getDb() {
   if (!instance) {
-    const client = postgres(getDatabaseUrl(), { prepare: false, ssl: { rejectUnauthorized: false } });
+    const client = postgres(getDatabaseUrl(), {
+      prepare: false,
+      ssl: { rejectUnauthorized: false },
+    });
     instance = drizzle(client, { schema: fullSchema });
   }
   return instance;

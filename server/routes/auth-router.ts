@@ -4,7 +4,11 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { Session } from "../../contracts/constants.js";
 import { getSessionCookieOptions } from "../../api/lib/cookies.js";
-import { createRouter, authedQuery, publicQuery } from "../lib/api/middleware.js";
+import {
+  createRouter,
+  authedQuery,
+  publicQuery,
+} from "../lib/api/middleware.js";
 import { signSessionToken } from "../auth/session.js";
 import {
   findUserByEmail,
@@ -16,7 +20,10 @@ import {
   updatePasswordHash,
   setEmailVerificationToken,
 } from "../queries/api/users.js";
-import { sendVerificationEmail, sendPasswordResetEmail } from "../../api/lib/email.js";
+import {
+  sendVerificationEmail,
+  sendPasswordResetEmail,
+} from "../../api/lib/email.js";
 
 function generateToken() {
   return crypto.randomBytes(32).toString("hex");
@@ -63,8 +70,7 @@ export const authRouter = createRouter({
     } catch (err) {
       console.error("[signup error]", err);
       throw new Error(
-        err instanceof Error ? err.message : "Registration failed",
-        
+        err instanceof Error ? err.message : "Registration failed"
       );
     }
   }),

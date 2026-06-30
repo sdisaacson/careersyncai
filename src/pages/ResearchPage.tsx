@@ -339,9 +339,9 @@ export default function ResearchPage() {
           style={{ color: "#94A3B8", lineHeight: 1.6 }}
         >
           Our AI is now searching across {chosenSectorConfigs.length} economic
-          sectors in parallel. Each
-          specialized agent scans job boards, company websites, and professional
-          networks to find the best matches for your profile.
+          sectors in parallel. Each specialized agent scans job boards, company
+          websites, and professional networks to find the best matches for your
+          profile.
         </motion.p>
 
         {/* Progress steps */}

@@ -74,9 +74,13 @@ export class HttpClient {
 
   post<T>(
     url: string,
-    body?: RequestInit['body'] | Record<string, unknown> | unknown[],
+    body?: RequestInit["body"] | Record<string, unknown> | unknown[],
     config?: RequestConfig
   ) {
-    return this.request<T>(url, { ...config, method: "POST", body: body as RequestInit['body'] });
+    return this.request<T>(url, {
+      ...config,
+      method: "POST",
+      body: body as RequestInit["body"],
+    });
   }
 }

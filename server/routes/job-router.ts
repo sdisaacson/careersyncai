@@ -26,7 +26,9 @@ export const jobRouter = createRouter({
         fitScore: z.number().optional(),
         matchReasons: z.string().optional(),
         skillGaps: z.string().optional(),
-        status: z.enum(["discovered", "shortlisted", "applied", "archived"]).optional(),
+        status: z
+          .enum(["discovered", "shortlisted", "applied", "archived"])
+          .optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -38,7 +40,7 @@ export const jobRouter = createRouter({
       return { id };
     }),
 
-getByProfile: publicQuery
+  getByProfile: publicQuery
     .input(z.object({ profileId: z.number() }))
     .query(async ({ input }) => {
       const db = getDb();
@@ -82,7 +84,9 @@ getByProfile: publicQuery
           fitScore: z.number().optional(),
           matchReasons: z.string().optional(),
           skillGaps: z.string().optional(),
-          status: z.enum(["discovered", "shortlisted", "applied", "archived"]).optional(),
+          status: z
+            .enum(["discovered", "shortlisted", "applied", "archived"])
+            .optional(),
         }),
       })
     )
@@ -113,7 +117,9 @@ getByProfile: publicQuery
         jobType: z.string().optional(),
         experienceLevel: z.string().optional(),
         location: z.string().optional(),
-        status: z.enum(["discovered", "shortlisted", "applied", "archived"]).optional(),
+        status: z
+          .enum(["discovered", "shortlisted", "applied", "archived"])
+          .optional(),
         minFitScore: z.number().optional(),
         sortBy: z.enum(["createdAt", "fitScore", "postedDate"]).optional(),
         sortOrder: z.enum(["asc", "desc"]).optional(),
@@ -158,7 +164,9 @@ getByProfile: publicQuery
         .select()
         .from(jobs)
         .where(and(...conditions))
-        .orderBy(sortOrder === "asc" ? sql`${sortColumn} asc` : sql`${sortColumn} desc`)
+        .orderBy(
+          sortOrder === "asc" ? sql`${sortColumn} asc` : sql`${sortColumn} desc`
+        )
         .limit(input.limit ?? 100)
         .offset(input.offset ?? 0);
 
@@ -181,7 +189,9 @@ getByProfile: publicQuery
 
       return {
         total: result?.total ?? 0,
-        avgFitScore: result?.avgFitScore ? Math.round(result.avgFitScore * 10) / 10 : 0,
+        avgFitScore: result?.avgFitScore
+          ? Math.round(result.avgFitScore * 10) / 10
+          : 0,
         maxFitScore: result?.maxFitScore ?? 0,
         minFitScore: result?.minFitScore ?? 0,
       };

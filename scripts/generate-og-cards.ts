@@ -3,11 +3,7 @@ import path from "path";
 import sharp from "sharp";
 import "dotenv/config";
 import { generateText } from "ai";
-import {
-  ogCards,
-  OG_CARD_WIDTH,
-  OG_CARD_HEIGHT,
-} from "../contracts/og-cards";
+import { ogCards, OG_CARD_WIDTH, OG_CARD_HEIGHT } from "../contracts/og-cards";
 
 const OUT_DIR = path.resolve(process.cwd(), "public/og-cards");
 
@@ -82,7 +78,9 @@ function buildSvg(card: (typeof ogCards)[number]): string {
 </svg>`;
 }
 
-async function renderFallbackPng(card: (typeof ogCards)[number]): Promise<Buffer> {
+async function renderFallbackPng(
+  card: (typeof ogCards)[number]
+): Promise<Buffer> {
   const svg = buildSvg(card);
   return sharp(Buffer.from(svg))
     .resize(OG_CARD_WIDTH, OG_CARD_HEIGHT)
@@ -108,13 +106,17 @@ async function generateCardPng(
     // Extract the SVG from the code block in the model response.
     const svg = extractSvgFromResponse(result.text);
     if (!svg) {
-      console.warn(`[${card.id}] No SVG found in response; falling back to SVG.`);
+      console.warn(
+        `[${card.id}] No SVG found in response; falling back to SVG.`
+      );
       return null;
     }
 
     // Validate rough structure before attempting to rasterize.
     if (!svg.includes("<svg") || !svg.includes("</svg>")) {
-      console.warn(`[${card.id}] Response did not contain a valid SVG; falling back.`);
+      console.warn(
+        `[${card.id}] Response did not contain a valid SVG; falling back.`
+      );
       return null;
     }
 

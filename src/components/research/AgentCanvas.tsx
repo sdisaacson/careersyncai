@@ -1,11 +1,7 @@
 import { useRef, useEffect, useCallback, memo } from "react";
 
 export type ParticlePhase =
-  | "spawn"
-  | "converge"
-  | "cluster"
-  | "disperse"
-  | "pulse";
+  "spawn" | "converge" | "cluster" | "disperse" | "pulse";
 
 export type AgentCanvasProps = {
   isRunning: boolean;

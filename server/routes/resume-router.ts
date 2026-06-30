@@ -26,7 +26,7 @@ export const resumeRouter = createRouter({
       return { id };
     }),
 
-getByProfile: publicQuery
+  getByProfile: publicQuery
     .input(z.object({ profileId: z.number() }))
     .query(async ({ input }) => {
       const db = getDb();

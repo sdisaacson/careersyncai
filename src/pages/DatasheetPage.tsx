@@ -1579,262 +1579,260 @@ export default function DatasheetPage() {
                     <tr
                       key={job.id}
                       className="border-t transition-colors duration-150"
-                        style={{
-                          backgroundColor:
-                            rowIdx % 2 === 0
-                              ? "#111827"
-                              : "rgba(30, 41, 59, 0.5)",
-                          borderColor: "#334155",
-                          borderLeft: isSelected
-                            ? "3px solid #00C9FF"
-                            : "3px solid transparent",
-                        }}
-                        onMouseEnter={e => {
-                          e.currentTarget.style.backgroundColor =
-                            "rgba(0, 201, 255, 0.04)";
-                          e.currentTarget.style.borderLeft = isSelected
-                            ? "3px solid #00C9FF"
-                            : "3px solid rgba(0, 201, 255, 0.2)";
-                        }}
-                        onMouseLeave={e => {
-                          e.currentTarget.style.backgroundColor =
-                            rowIdx % 2 === 0
-                              ? "#111827"
-                              : "rgba(30, 41, 59, 0.5)";
-                          e.currentTarget.style.borderLeft = isSelected
-                            ? "3px solid #00C9FF"
-                            : "3px solid transparent";
-                        }}
-                      >
-                        {/* Checkbox */}
-                        {isColVisible("select") && (
-                          <td className="px-3 py-3">
-                            <button
-                              onClick={() => toggleSelect(job.id)}
-                              className="flex h-4 w-4 items-center justify-center rounded border"
-                              style={{
-                                borderColor: isSelected ? "#00C9FF" : "#334155",
-                                backgroundColor: isSelected
-                                  ? "rgba(0, 201, 255, 0.2)"
-                                  : "transparent",
+                      style={{
+                        backgroundColor:
+                          rowIdx % 2 === 0
+                            ? "#111827"
+                            : "rgba(30, 41, 59, 0.5)",
+                        borderColor: "#334155",
+                        borderLeft: isSelected
+                          ? "3px solid #00C9FF"
+                          : "3px solid transparent",
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.backgroundColor =
+                          "rgba(0, 201, 255, 0.04)";
+                        e.currentTarget.style.borderLeft = isSelected
+                          ? "3px solid #00C9FF"
+                          : "3px solid rgba(0, 201, 255, 0.2)";
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.backgroundColor =
+                          rowIdx % 2 === 0
+                            ? "#111827"
+                            : "rgba(30, 41, 59, 0.5)";
+                        e.currentTarget.style.borderLeft = isSelected
+                          ? "3px solid #00C9FF"
+                          : "3px solid transparent";
+                      }}
+                    >
+                      {/* Checkbox */}
+                      {isColVisible("select") && (
+                        <td className="px-3 py-3">
+                          <button
+                            onClick={() => toggleSelect(job.id)}
+                            className="flex h-4 w-4 items-center justify-center rounded border"
+                            style={{
+                              borderColor: isSelected ? "#00C9FF" : "#334155",
+                              backgroundColor: isSelected
+                                ? "rgba(0, 201, 255, 0.2)"
+                                : "transparent",
+                            }}
+                          >
+                            {isSelected && (
+                              <Check size={10} style={{ color: "#00C9FF" }} />
+                            )}
+                          </button>
+                        </td>
+                      )}
+
+                      {/* Rank */}
+                      {isColVisible("rank") && (
+                        <td className="px-3 py-3">
+                          <span
+                            className="font-mono text-xs"
+                            style={{ color: "#64748B" }}
+                          >
+                            {(safePage - 1) * pageSize + rowIdx + 1}
+                          </span>
+                        </td>
+                      )}
+
+                      {/* Fit Score */}
+                      {isColVisible("fitScore") && (
+                        <td className="px-3 py-3">
+                          <FitScorePill score={job.fitScore} />
+                        </td>
+                      )}
+
+                      {/* Company */}
+                      {isColVisible("company") && (
+                        <td className="px-3 py-3">
+                          <span
+                            className="text-sm font-semibold"
+                            style={{ color: "#F5F7FA" }}
+                          >
+                            {job.company}
+                          </span>
+                        </td>
+                      )}
+
+                      {/* Title */}
+                      {isColVisible("title") && (
+                        <td className="max-w-[220px] px-3 py-3">
+                          <span
+                            className="block truncate text-sm"
+                            style={{
+                              color: "#F5F7FA",
+                              textDecoration: isExpired
+                                ? "line-through"
+                                : "none",
+                              opacity: isExpired ? 0.5 : 1,
+                            }}
+                            title={job.title}
+                          >
+                            {job.title}
+                          </span>
+                        </td>
+                      )}
+
+                      {/* Sector */}
+                      {isColVisible("sector") && (
+                        <td className="px-3 py-3">
+                          <SectorPill sectorId={job.sectorId} />
+                        </td>
+                      )}
+
+                      {/* Location */}
+                      {isColVisible("location") && (
+                        <td className="px-3 py-3">
+                          <span
+                            className="flex items-center gap-1 text-xs whitespace-nowrap"
+                            style={{ color: "#94A3B8" }}
+                          >
+                            {job.location ? (
+                              <>
+                                <MapPin size={11} /> {job.location}
+                              </>
+                            ) : (
+                              "—"
+                            )}
+                          </span>
+                        </td>
+                      )}
+
+                      {/* Salary */}
+                      {isColVisible("salaryRange") && (
+                        <td className="px-3 py-3">
+                          <span
+                            className="font-mono text-xs font-semibold"
+                            style={{
+                              color: job.salaryRange ? "#F5F7FA" : "#64748B",
+                            }}
+                          >
+                            {job.salaryRange || "Not listed"}
+                          </span>
+                        </td>
+                      )}
+
+                      {/* Job Type */}
+                      {isColVisible("jobType") && (
+                        <td className="px-3 py-3">
+                          <span
+                            className="text-xs"
+                            style={{ color: "#94A3B8" }}
+                          >
+                            {job.jobType || "—"}
+                          </span>
+                        </td>
+                      )}
+
+                      {/* Experience Level */}
+                      {isColVisible("experienceLevel") && (
+                        <td className="px-3 py-3">
+                          <span
+                            className="text-xs"
+                            style={{ color: "#94A3B8" }}
+                          >
+                            {job.experienceLevel || "—"}
+                          </span>
+                        </td>
+                      )}
+
+                      {/* Deadline */}
+                      {isColVisible("deadline") && (
+                        <td className="px-3 py-3">
+                          <DeadlineCell deadline={job.deadline} />
+                        </td>
+                      )}
+
+                      {/* Application Link */}
+                      {isColVisible("applicationLink") && (
+                        <td className="px-3 py-3">
+                          {job.applicationLink && !isExpired ? (
+                            <a
+                              href={job.applicationLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1 text-xs font-medium transition-colors duration-150"
+                              style={{ color: "#00C9FF" }}
+                              onMouseEnter={e => {
+                                e.currentTarget.style.color = "#3B82F6";
+                              }}
+                              onMouseLeave={e => {
+                                e.currentTarget.style.color = "#00C9FF";
                               }}
                             >
-                              {isSelected && (
-                                <Check size={10} style={{ color: "#00C9FF" }} />
-                              )}
-                            </button>
-                          </td>
-                        )}
-
-                        {/* Rank */}
-                        {isColVisible("rank") && (
-                          <td className="px-3 py-3">
+                              Apply <ExternalLink size={10} />
+                            </a>
+                          ) : (
                             <span
-                              className="font-mono text-xs"
+                              className="text-xs"
                               style={{ color: "#64748B" }}
                             >
-                              {(safePage - 1) * pageSize + rowIdx + 1}
+                              —
                             </span>
-                          </td>
-                        )}
+                          )}
+                        </td>
+                      )}
 
-                        {/* Fit Score */}
-                        {isColVisible("fitScore") && (
-                          <td className="px-3 py-3">
-                            <FitScorePill score={job.fitScore} />
-                          </td>
-                        )}
+                      {/* Requirements */}
+                      {isColVisible("requirements") && (
+                        <td className="px-3 py-3">
+                          <RequirementsMatch requirements={job.requirements} />
+                        </td>
+                      )}
 
-                        {/* Company */}
-                        {isColVisible("company") && (
-                          <td className="px-3 py-3">
-                            <span
-                              className="text-sm font-semibold"
-                              style={{ color: "#F5F7FA" }}
-                            >
-                              {job.company}
-                            </span>
-                          </td>
-                        )}
+                      {/* Status */}
+                      {isColVisible("status") && (
+                        <td className="px-3 py-3">
+                          <StatusBadge status={job.status} />
+                        </td>
+                      )}
 
-                        {/* Title */}
-                        {isColVisible("title") && (
-                          <td className="max-w-[220px] px-3 py-3">
-                            <span
-                              className="block truncate text-sm"
-                              style={{
-                                color: "#F5F7FA",
-                                textDecoration: isExpired
-                                  ? "line-through"
-                                  : "none",
-                                opacity: isExpired ? 0.5 : 1,
+                      {/* Actions */}
+                      {isColVisible("actions") && (
+                        <td className="px-3 py-3">
+                          <div className="flex items-center gap-1">
+                            <Link
+                              to={`/dashboard?jobId=${job.id}`}
+                              className="rounded p-1.5 transition-colors duration-150"
+                              style={{ color: "#94A3B8" }}
+                              onMouseEnter={e => {
+                                e.currentTarget.style.color = "#00C9FF";
+                                e.currentTarget.style.backgroundColor =
+                                  "rgba(0, 201, 255, 0.08)";
                               }}
-                              title={job.title}
-                            >
-                              {job.title}
-                            </span>
-                          </td>
-                        )}
-
-                        {/* Sector */}
-                        {isColVisible("sector") && (
-                          <td className="px-3 py-3">
-                            <SectorPill sectorId={job.sectorId} />
-                          </td>
-                        )}
-
-                        {/* Location */}
-                        {isColVisible("location") && (
-                          <td className="px-3 py-3">
-                            <span
-                              className="flex items-center gap-1 text-xs whitespace-nowrap"
-                              style={{ color: "#94A3B8" }}
-                            >
-                              {job.location ? (
-                                <>
-                                  <MapPin size={11} /> {job.location}
-                                </>
-                              ) : (
-                                "—"
-                              )}
-                            </span>
-                          </td>
-                        )}
-
-                        {/* Salary */}
-                        {isColVisible("salaryRange") && (
-                          <td className="px-3 py-3">
-                            <span
-                              className="font-mono text-xs font-semibold"
-                              style={{
-                                color: job.salaryRange ? "#F5F7FA" : "#64748B",
+                              onMouseLeave={e => {
+                                e.currentTarget.style.color = "#94A3B8";
+                                e.currentTarget.style.backgroundColor =
+                                  "transparent";
                               }}
+                              title="View Details"
                             >
-                              {job.salaryRange || "Not listed"}
-                            </span>
-                          </td>
-                        )}
-
-                        {/* Job Type */}
-                        {isColVisible("jobType") && (
-                          <td className="px-3 py-3">
-                            <span
-                              className="text-xs"
+                              <Eye size={14} />
+                            </Link>
+                            <Link
+                              to={`/resumes?jobId=${job.id}`}
+                              className="rounded p-1.5 transition-colors duration-150"
                               style={{ color: "#94A3B8" }}
+                              onMouseEnter={e => {
+                                e.currentTarget.style.color = "#00C9FF";
+                                e.currentTarget.style.backgroundColor =
+                                  "rgba(0, 201, 255, 0.08)";
+                              }}
+                              onMouseLeave={e => {
+                                e.currentTarget.style.color = "#94A3B8";
+                                e.currentTarget.style.backgroundColor =
+                                  "transparent";
+                              }}
+                              title="Generate Resume"
                             >
-                              {job.jobType || "—"}
-                            </span>
-                          </td>
-                        )}
-
-                        {/* Experience Level */}
-                        {isColVisible("experienceLevel") && (
-                          <td className="px-3 py-3">
-                            <span
-                              className="text-xs"
-                              style={{ color: "#94A3B8" }}
-                            >
-                              {job.experienceLevel || "—"}
-                            </span>
-                          </td>
-                        )}
-
-                        {/* Deadline */}
-                        {isColVisible("deadline") && (
-                          <td className="px-3 py-3">
-                            <DeadlineCell deadline={job.deadline} />
-                          </td>
-                        )}
-
-                        {/* Application Link */}
-                        {isColVisible("applicationLink") && (
-                          <td className="px-3 py-3">
-                            {job.applicationLink && !isExpired ? (
-                              <a
-                                href={job.applicationLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1 text-xs font-medium transition-colors duration-150"
-                                style={{ color: "#00C9FF" }}
-                                onMouseEnter={e => {
-                                  e.currentTarget.style.color = "#3B82F6";
-                                }}
-                                onMouseLeave={e => {
-                                  e.currentTarget.style.color = "#00C9FF";
-                                }}
-                              >
-                                Apply <ExternalLink size={10} />
-                              </a>
-                            ) : (
-                              <span
-                                className="text-xs"
-                                style={{ color: "#64748B" }}
-                              >
-                                —
-                              </span>
-                            )}
-                          </td>
-                        )}
-
-                        {/* Requirements */}
-                        {isColVisible("requirements") && (
-                          <td className="px-3 py-3">
-                            <RequirementsMatch
-                              requirements={job.requirements}
-                            />
-                          </td>
-                        )}
-
-                        {/* Status */}
-                        {isColVisible("status") && (
-                          <td className="px-3 py-3">
-                            <StatusBadge status={job.status} />
-                          </td>
-                        )}
-
-                        {/* Actions */}
-                        {isColVisible("actions") && (
-                          <td className="px-3 py-3">
-                            <div className="flex items-center gap-1">
-                              <Link
-                                to={`/dashboard?jobId=${job.id}`}
-                                className="rounded p-1.5 transition-colors duration-150"
-                                style={{ color: "#94A3B8" }}
-                                onMouseEnter={e => {
-                                  e.currentTarget.style.color = "#00C9FF";
-                                  e.currentTarget.style.backgroundColor =
-                                    "rgba(0, 201, 255, 0.08)";
-                                }}
-                                onMouseLeave={e => {
-                                  e.currentTarget.style.color = "#94A3B8";
-                                  e.currentTarget.style.backgroundColor =
-                                    "transparent";
-                                }}
-                                title="View Details"
-                              >
-                                <Eye size={14} />
-                              </Link>
-                              <Link
-                                to={`/resumes?jobId=${job.id}`}
-                                className="rounded p-1.5 transition-colors duration-150"
-                                style={{ color: "#94A3B8" }}
-                                onMouseEnter={e => {
-                                  e.currentTarget.style.color = "#00C9FF";
-                                  e.currentTarget.style.backgroundColor =
-                                    "rgba(0, 201, 255, 0.08)";
-                                }}
-                                onMouseLeave={e => {
-                                  e.currentTarget.style.color = "#94A3B8";
-                                  e.currentTarget.style.backgroundColor =
-                                    "transparent";
-                                }}
-                                title="Generate Resume"
-                              >
-                                <FileText size={14} />
-                              </Link>
-                            </div>
-                          </td>
-                        )}
+                              <FileText size={14} />
+                            </Link>
+                          </div>
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
