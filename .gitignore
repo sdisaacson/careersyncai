@@ -22,3 +22,6 @@ coverage/
 .vercel
 .worktrees/
 .superpowers/
+docs/
+AGENTS.md
+CLAUDE.md

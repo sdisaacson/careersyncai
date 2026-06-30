@@ -67,7 +67,7 @@ function buildSvg(card: (typeof ogCards)[number]): string {
   </defs>
   <rect width="100%" height="100%" fill="url(#bg)" />
   ${decorations}
-  <text x="600" y="${brandY}" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="700" letter-spacing="4" fill="${card.accent}">CAREERSYNCAI</text>
+  <text x="600" y="${brandY}" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="700" letter-spacing="4"><tspan fill="#FFFFFF">CAREERSYNC</tspan><tspan fill="#12C6FF">AI</tspan></text>
   <text x="600" y="${line1Y}" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="72" font-weight="800" fill="${card.textColor}">${lines[0] || ""}</text>
   ${lines[1] ? `<text x="600" y="${line2Y}" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="72" font-weight="800" fill="${card.textColor}">${lines[1]}</text>` : ""}
 </svg>`;
