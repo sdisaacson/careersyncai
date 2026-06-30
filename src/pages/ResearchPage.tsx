@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -15,7 +15,6 @@ import {
   ArrowRight,
   BarChart3,
   Clock,
-  Globe,
   TrendingUp,
   Database,
   ZapIcon,
@@ -88,6 +87,43 @@ export default function ResearchPage() {
 
   const createManyJobs = trpc.job.createMany.useMutation();
 
+  const profileQuery = trpc.profile.getByUser.useQuery({ userId: 1 });
+
+  // Sectors the user chose during the Interview step live in
+  // profile.preferredIndustries (comma-separated labels). Match each sector
+  // config by name; fall back to all sectors if there is no usable selection.
+  const chosenSectorConfigs = useMemo(() => {
+    const raw = profileQuery.data?.preferredIndustries;
+    if (!raw) return SECTOR_CONFIGS;
+    const labels = raw
+      .split(",")
+      .map((l: string) => l.trim().toLowerCase())
+      .filter(Boolean);
+    if (labels.length === 0) return SECTOR_CONFIGS;
+    const matched = SECTOR_CONFIGS.filter(cfg =>
+      labels.some((label: string) => label.includes(cfg.name.toLowerCase()))
+    );
+    return matched.length > 0 ? matched : SECTOR_CONFIGS;
+  }, [profileQuery.data?.preferredIndustries]);
+
+  // Keep the sectors list in sync with the chosen sectors while idle. The
+  // guard prevents wiping results mid-run or after completion.
+  useEffect(() => {
+    if (isRunning || isComplete) return;
+    setSectors(
+      chosenSectorConfigs.map(s => ({
+        id: s.id,
+        name: s.name,
+        color: s.color,
+        icon: s.icon,
+        status: "waiting" as SectorStatus,
+        jobCount: 0,
+        progress: 0,
+        jobs: [],
+      }))
+    );
+  }, [chosenSectorConfigs, isRunning, isComplete]);
+
   const addLog = useCallback(
     (
       sector: string,
@@ -142,8 +178,8 @@ export default function ResearchPage() {
 
     const allJobs: MockJob[] = [];
 
-    for (let i = 0; i < SECTOR_CONFIGS.length; i++) {
-      const sectorConfig = SECTOR_CONFIGS[i];
+    for (let i = 0; i < chosenSectorConfigs.length; i++) {
+      const sectorConfig = chosenSectorConfigs[i];
 
       // Mark sector as running
       setSectors(prev =>
@@ -237,7 +273,7 @@ export default function ResearchPage() {
     setIsRunning(false);
     setIsComplete(true);
     if (timerRef.current) clearInterval(timerRef.current);
-  }, [isRunning, addLog, createManyJobs]);
+  }, [isRunning, addLog, createManyJobs, chosenSectorConfigs]);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -302,7 +338,8 @@ export default function ResearchPage() {
           className="mx-auto mt-6 max-w-[640px] text-center text-base sm:text-lg"
           style={{ color: "#94A3B8", lineHeight: 1.6 }}
         >
-          Our AI is now searching across 8 economic sectors in parallel. Each
+          Our AI is now searching across {chosenSectorConfigs.length} economic
+          sectors in parallel. Each
           specialized agent scans job boards, company websites, and professional
           networks to find the best matches for your profile.
         </motion.p>
@@ -488,16 +525,7 @@ export default function ResearchPage() {
               transition={{ duration: 0.5, ease: "easeOut" }}
             />
           </div>
-          <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div className="flex items-center gap-2">
-              <Globe size={14} style={{ color: "#94A3B8" }} />
-              <span className="text-xs" style={{ color: "#94A3B8" }}>
-                Sectors:{" "}
-                <strong style={{ color: "#F5F7FA" }}>
-                  {completedSectors}/8
-                </strong>
-              </span>
-            </div>
+          <div className="mt-4 grid grid-cols-3 gap-4">
             <div className="flex items-center gap-2">
               <BarChart3 size={14} style={{ color: "#94A3B8" }} />
               <span className="text-xs" style={{ color: "#94A3B8" }}>
@@ -542,9 +570,41 @@ export default function ResearchPage() {
             <AgentCanvas
               isRunning={isRunning}
               completedSectors={completedSectors}
-              totalSectors={8}
+              sectorColors={chosenSectorConfigs.map(s => s.color)}
               jobsFound={totalJobsFound}
             />
+
+            {/* Sector pills — left edge of the agent animation */}
+            <div className="pointer-events-none absolute left-3 top-1/2 z-10 flex max-h-[88%] -translate-y-1/2 flex-col gap-1.5 overflow-hidden">
+              {sectors.map(sector => (
+                <div
+                  key={sector.id}
+                  className="flex items-center gap-2 rounded-full px-2.5 py-1 text-[11px] font-medium"
+                  style={{
+                    backgroundColor: `${sector.color}1A`,
+                    border: `1px solid ${sector.color}${
+                      sector.status === "waiting" ? "20" : "55"
+                    }`,
+                    color: sector.color,
+                    opacity: sector.status === "waiting" ? 0.55 : 1,
+                    backdropFilter: "blur(4px)",
+                    WebkitBackdropFilter: "blur(4px)",
+                  }}
+                >
+                  <span
+                    className="h-1.5 w-1.5 shrink-0 rounded-full"
+                    style={{
+                      backgroundColor: sector.color,
+                      boxShadow:
+                        sector.status === "running"
+                          ? `0 0 6px ${sector.color}`
+                          : "none",
+                    }}
+                  />
+                  <span className="whitespace-nowrap">{sector.name}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
 
           {/* Activity Log */}
@@ -552,10 +612,14 @@ export default function ResearchPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO, delay: 0.6 }}
-            className="h-[400px] lg:h-auto lg:w-[42%]"
+            className="relative h-[400px] lg:h-auto lg:w-[42%]"
             style={{ minHeight: "300px" }}
           >
-            <ActivityLog entries={logEntries} onClear={clearLog} />
+            {/* Pulled out of flow on lg so streamed log content can't grow the
+                card — it scrolls inside a box stretched to the canvas height. */}
+            <div className="h-full lg:absolute lg:inset-0">
+              <ActivityLog entries={logEntries} onClear={clearLog} />
+            </div>
           </motion.div>
         </div>
 
@@ -603,24 +667,6 @@ export default function ResearchPage() {
 
       {/* Section 3: Sector Breakdown */}
       <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.7, ease: EASE_OUT_EXPO }}
-          className="mb-8"
-        >
-          <h2
-            className="text-2xl font-semibold sm:text-3xl"
-            style={{ color: "#F5F7FA", letterSpacing: "-0.01em" }}
-          >
-            Sector Coverage
-          </h2>
-          <p className="mt-2 text-base" style={{ color: "#94A3B8" }}>
-            Research distribution across economic sectors
-          </p>
-        </motion.div>
-
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {sectors.map((sector, index) => {
             const IconComponent = SECTOR_ICONS[sector.icon] || Cpu;

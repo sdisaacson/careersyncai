@@ -21,7 +21,7 @@ const ActivityLog = memo(function ActivityLog({
 
   return (
     <div
-      className="flex h-full flex-col overflow-hidden"
+      className="flex h-full min-h-0 flex-col overflow-hidden"
       style={{
         backgroundColor: "#111827",
         border: "1px solid #334155",
@@ -30,7 +30,7 @@ const ActivityLog = memo(function ActivityLog({
     >
       {/* Header */}
       <div
-        className="flex items-center justify-between px-5 py-4"
+        className="flex shrink-0 items-center justify-between px-5 py-4"
         style={{ borderBottom: "1px solid #334155" }}
       >
         <div className="flex items-center gap-2">
@@ -66,10 +66,10 @@ const ActivityLog = memo(function ActivityLog({
         </button>
       </div>
 
-      {/* Log entries */}
+      {/* Log entries — fixed-height scroll region so the card never grows */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto px-5 py-4"
+        className="activity-log-scroll min-h-0 flex-1 overflow-y-auto px-5 py-4"
         style={{ scrollBehavior: "smooth" }}
       >
         <div className="flex flex-col gap-2.5">
@@ -154,6 +154,23 @@ const ActivityLog = memo(function ActivityLog({
             opacity: 1;
             transform: translateY(0);
           }
+        }
+        .activity-log-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: #334155 transparent;
+        }
+        .activity-log-scroll::-webkit-scrollbar {
+          width: 8px;
+        }
+        .activity-log-scroll::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .activity-log-scroll::-webkit-scrollbar-thumb {
+          background-color: #334155;
+          border-radius: 4px;
+        }
+        .activity-log-scroll::-webkit-scrollbar-thumb:hover {
+          background-color: #475569;
         }
       `}</style>
     </div>
