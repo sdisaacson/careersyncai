@@ -11,10 +11,12 @@ import {
 
 const OUT_DIR = path.resolve(process.cwd(), "public/og-cards");
 
-// Nano Banana Pro multimodal model: images are returned as content parts in
-// result.files (not result.images). Falls back to SVG if generation fails or
-// the environment has no gateway credentials (Vercel OIDC or AI_GATEWAY_API_KEY).
-const IMAGE_MODEL = "google/gemini-3-pro-image";
+// The Vercel AI SDK automatically uses the AI Gateway for provider/model
+// strings. On Vercel (or locally after `vercel env pull`) it authenticates
+// via OIDC; otherwise set AI_GATEWAY_API_KEY in your .env.
+const IMAGE_MODEL = "google/gemini-3-pro-preview";
+
+const SYSTEM_PROMPT = `You are an expert SVG artist. The user will provide a description inside square brackets like [Use this verbiage as the heading using the font Inter: "AI's took your jobs? We brought better ones." — Display Friendly cartoon robots carrying briefcases and coffee, bright coral-to-yellow gradient, bold playful typography, flat illustration style.]. Based on that description, generate a complete and valid SVG file using pure SVG markup. The SVG canvas should default to [1200x630] unless the user specifies otherwise. Output only the raw SVG code wrapped in a code block for easy copying. Do not include any HTML, webpage scaffolding, or external dependencies. The SVG must be fully self-contained so it can be saved directly as a .svg file and opened in any browser or vector editor. Always prioritize visually appealing, clean vector shapes and completely static designs. **Do not include any CSS animations, keyframes, transitions, or \`<animate>\` tags.** If the description is vague, make creative decisions to produce something visually interesting while staying true to the intent of the description.`;
 
 function escapeXml(str: string): string {
   return str
@@ -84,7 +86,7 @@ async function renderFallbackPng(card: (typeof ogCards)[number]): Promise<Buffer
   const svg = buildSvg(card);
   return sharp(Buffer.from(svg))
     .resize(OG_CARD_WIDTH, OG_CARD_HEIGHT)
-    .png()
+    .png({ quality: 85, compressionLevel: 9, adaptiveFiltering: true })
     .toBuffer();
 }
 
@@ -92,35 +94,53 @@ async function generateCardPng(
   card: (typeof ogCards)[number]
 ): Promise<Buffer | null> {
   try {
-    // The Vercel AI SDK automatically uses the AI Gateway for provider/model
-    // strings. On Vercel (or locally after `vercel env pull`) it authenticates
-    // via OIDC; otherwise set AI_GATEWAY_API_KEY in your .env.
+    const phrase = card.phrase.replace(/\n/g, " ");
     const result = await generateText({
       model: IMAGE_MODEL,
-      prompt: card.prompt,
+      system: SYSTEM_PROMPT,
+      prompt: `[Use this verbiage as the heading using the font Inter: "${phrase}" — ${card.prompt}]`,
     });
 
     if (result.warnings?.length) {
       console.warn(`[${card.id}] warnings:`, result.warnings);
     }
 
-    // Nano Banana Pro returns generated images as content parts in result.files.
-    const imageFile = result.files.find(f => f.mediaType?.startsWith("image/"));
-    if (!imageFile) {
-      console.warn(`[${card.id}] No image file returned; falling back to SVG.`);
+    // Extract the SVG from the code block in the model response.
+    const svg = extractSvgFromResponse(result.text);
+    if (!svg) {
+      console.warn(`[${card.id}] No SVG found in response; falling back to SVG.`);
       return null;
     }
 
-    // Ensure the returned image is exactly the right size and format.
-    return sharp(imageFile.uint8Array)
+    // Validate rough structure before attempting to rasterize.
+    if (!svg.includes("<svg") || !svg.includes("</svg>")) {
+      console.warn(`[${card.id}] Response did not contain a valid SVG; falling back.`);
+      return null;
+    }
+
+    // Render the AI-generated SVG to a 1200x630 PNG.
+    return sharp(Buffer.from(svg))
       .resize(OG_CARD_WIDTH, OG_CARD_HEIGHT, { fit: "fill" })
-      .png()
+      .png({ quality: 85, compressionLevel: 9, adaptiveFiltering: true })
       .toBuffer();
   } catch (err) {
-    console.error(`[${card.id}] Image generation failed:`, err);
+    console.error(`[${card.id}] SVG generation failed:`, err);
     console.log(`[${card.id}] Falling back to SVG renderer.`);
     return null;
   }
+}
+
+function extractSvgFromResponse(text: string): string | null {
+  // Match an SVG inside a markdown code block (with or without "svg" label).
+  const codeBlockMatch = text.match(/```(?:svg)?\s*([\s\S]*?)\s*```/);
+  if (codeBlockMatch?.[1]?.trim()) {
+    const content = codeBlockMatch[1].trim();
+    if (content.startsWith("<svg")) return content;
+  }
+
+  // Fallback: grab the first <svg...>...</svg> block in the raw text.
+  const inlineMatch = text.match(/(<svg\b[\s\S]*?<\/svg>)/);
+  return inlineMatch?.[1]?.trim() ?? null;
 }
 
 async function main() {
