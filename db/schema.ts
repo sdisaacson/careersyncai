@@ -7,6 +7,7 @@ import {
   timestamp,
   integer,
   boolean,
+  jsonb,
 } from "drizzle-orm/pg-core";
 
 export const userRoleEnum = pgEnum("user_role", ["user", "admin"]);
@@ -39,6 +40,11 @@ export const subscriptionStatusEnum = pgEnum("subscription_status", [
 export const subscriptionIntervalEnum = pgEnum("subscription_interval", [
   "month",
   "year",
+]);
+export const insightSeverityEnum = pgEnum("insight_severity", [
+  "opportunity",
+  "warning",
+  "info",
 ]);
 
 export const users = pgTable("users", {
@@ -237,3 +243,23 @@ export const appSettings = pgTable("appSettings", {
 
 export type AppSetting = typeof appSettings.$inferSelect;
 export type InsertAppSetting = typeof appSettings.$inferInsert;
+
+// ─── Job Insights (AI-style analysis of filtered job data) ──────────────────
+export const jobInsights = pgTable("jobInsights", {
+  id: serial("id").primaryKey(),
+  userId: integer("userId").notNull(),
+  profileId: integer("profileId").notNull(),
+  insightType: varchar("insightType", { length: 50 }).notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  data: jsonb("data"),
+  severity: insightSeverityEnum("severity").default("info").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt")
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+
+export type JobInsight = typeof jobInsights.$inferSelect;
+export type InsertJobInsight = typeof jobInsights.$inferInsert;

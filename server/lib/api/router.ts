@@ -8,6 +8,7 @@ import { sectorRouter } from "../../routes/sector-router.js";
 import { subscriptionRouter } from "../../routes/subscription-router.js";
 import { settingsRouter } from "../../routes/settings-router.js";
 import { adminRouter } from "../../routes/admin-router.js";
+import { insightsRouter } from "../../routes/insights-router.js";
 import { createRouter, publicQuery } from "./middleware.js";
 
 export const appRouter = createRouter({
@@ -22,6 +23,7 @@ export const appRouter = createRouter({
   subscription: subscriptionRouter,
   settings: settingsRouter,
   admin: adminRouter,
+  insights: insightsRouter,
 });
 
 export type AppRouter = typeof appRouter;

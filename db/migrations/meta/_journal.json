@@ -8,6 +8,13 @@
       "when": 1782602746378,
       "tag": "0000_awesome_bloodstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782847656555,
+      "tag": "0001_outstanding_nico_minoru",
+      "breakpoints": true
     }
   ]
 }
