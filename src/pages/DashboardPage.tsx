@@ -104,11 +104,11 @@ function JobCard({
 
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5, delay: index * 0.06, ease: easeOutExpo }}
+      whileHover={{ y: -4 }}
       className="group relative flex flex-col rounded-xl border p-5 transition-all duration-300"
       style={{
         backgroundColor: "#111827",
@@ -116,12 +116,10 @@ function JobCard({
       }}
       onMouseEnter={e => {
         e.currentTarget.style.borderColor = "rgba(0, 201, 255, 0.3)";
-        e.currentTarget.style.transform = "translateY(-4px)";
         e.currentTarget.style.boxShadow = "0 12px 32px rgba(0, 201, 255, 0.06)";
       }}
       onMouseLeave={e => {
         e.currentTarget.style.borderColor = "#334155";
-        e.currentTarget.style.transform = "translateY(0)";
         e.currentTarget.style.boxShadow = "none";
       }}
     >
@@ -236,7 +234,6 @@ function JobListRow({
 
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
@@ -328,17 +325,15 @@ function JobDetailDrawer({
   const updateStatus = trpc.job.updateStatus.useMutation();
   const [now] = useState(() => Date.now());
 
-  if (!job) return null;
-
-  const sectorName = getSectorName(job.sectorId);
-  const requirements = job.requirements?.split(",").map(r => r.trim()) ?? [];
+  const sectorName = job ? getSectorName(job.sectorId) : "";
+  const requirements = job?.requirements?.split(",").map(r => r.trim()) ?? [];
   const matchItems =
-    job.matchReasons
+    job?.matchReasons
       ?.split(".")
       .filter(Boolean)
       .map(s => s.trim()) ?? [];
   const gapItems =
-    job.skillGaps
+    job?.skillGaps
       ?.split(".")
       .filter(Boolean)
       .map(s => s.trim()) ?? [];
@@ -346,22 +341,24 @@ function JobDetailDrawer({
   const handleStatusChange = (
     status: "discovered" | "shortlisted" | "applied" | "archived"
   ) => {
+    if (!job) return;
     updateStatus.mutate({ id: job.id, status });
   };
 
-  const isExpired = job.deadline ? new Date(job.deadline) < new Date() : false;
-  const daysUntilDeadline = job.deadline
+  const isExpired = job?.deadline ? new Date(job.deadline) < new Date() : false;
+  const daysUntilDeadline = job?.deadline
     ? Math.ceil(
         (new Date(job.deadline).getTime() - now) / (1000 * 60 * 60 * 24)
       )
     : null;
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {job && (
         <>
           {/* Backdrop */}
           <motion.div
+            key={`drawer-backdrop-${job.id}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -372,6 +369,7 @@ function JobDetailDrawer({
           />
           {/* Drawer */}
           <motion.div
+            key={`drawer-panel-${job.id}`}
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -1378,11 +1376,7 @@ export default function DashboardPage() {
       </div>
 
       {/* ═══ Section 4: Job Detail Drawer ═══ */}
-      <AnimatePresence>
-        {selectedJob && (
-          <JobDetailDrawer job={selectedJob} onClose={handleCloseDrawer} />
-        )}
-      </AnimatePresence>
+      <JobDetailDrawer job={selectedJob} onClose={handleCloseDrawer} />
     </div>
   );
 }
