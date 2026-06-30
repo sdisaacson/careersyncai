@@ -1489,13 +1489,18 @@ export default function DatasheetPage() {
       </div>
 
       {/* ═══ Section 3: Data Table ═══ */}
-      <div className="mx-auto max-w-[1400px] px-4 pb-8 sm:px-6 lg:px-8">
+      <div className="px-4 pb-8 sm:px-6 lg:px-8">
         <div
-          className="overflow-hidden rounded-xl border"
-          style={{ backgroundColor: "#111827", borderColor: "#334155" }}
+          className="mx-auto overflow-hidden rounded-xl border"
+          style={{
+            backgroundColor: "#111827",
+            borderColor: "#334155",
+            width: "fit-content",
+            maxWidth: "100%",
+          }}
         >
           <div className="overflow-x-auto">
-            <table className="w-full" style={{ minWidth: "900px" }}>
+            <table className="w-full" style={{ minWidth: "max-content" }}>
               {/* Sticky Header */}
               <thead>
                 <tr style={{ backgroundColor: "#1E293B" }}>
@@ -1565,21 +1570,15 @@ export default function DatasheetPage() {
 
               {/* Body */}
               <tbody>
-                <AnimatePresence mode="popLayout">
-                  {paginatedJobs.map((job, rowIdx) => {
-                    const isSelected = selectedIds.has(job.id);
-                    const isExpired = job.deadline
-                      ? daysUntil(job.deadline)! < 0
-                      : false;
-                    return (
-                      <motion.tr
-                        key={job.id}
-                        layout
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2, delay: rowIdx * 0.015 }}
-                        className="border-t transition-colors duration-150"
+                {paginatedJobs.map((job, rowIdx) => {
+                  const isSelected = selectedIds.has(job.id);
+                  const isExpired = job.deadline
+                    ? daysUntil(job.deadline)! < 0
+                    : false;
+                  return (
+                    <tr
+                      key={job.id}
+                      className="border-t transition-colors duration-150"
                         style={{
                           backgroundColor:
                             rowIdx % 2 === 0
@@ -1836,10 +1835,9 @@ export default function DatasheetPage() {
                             </div>
                           </td>
                         )}
-                      </motion.tr>
-                    );
-                  })}
-                </AnimatePresence>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
