@@ -180,7 +180,7 @@ export default function Navbar() {
                 style={{ boxShadow: "0 0 20px rgba(0, 201, 255, 0.2)" }}
                 asChild
               >
-                <Link to="/signup">Sign Up</Link>
+                <Link to="/register">Sign Up</Link>
               </Button>
             </>
           )}

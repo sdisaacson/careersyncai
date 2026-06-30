@@ -970,7 +970,7 @@ export default function ResearchPage() {
                     className="text-2xl font-bold sm:text-3xl"
                     style={{ color: "#F5F7FA" }}
                   >
-                    <CounterAnimation target={8} duration={800} />
+                    <CounterAnimation target={chosenSectorConfigs.length} duration={800} />
                   </div>
                   <span
                     className="mt-1 block text-xs"

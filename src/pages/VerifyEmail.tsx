@@ -1,13 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
 import { trpc } from "@/lib/trpc.tsx";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { AuthCard } from "@/components/AuthCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -59,57 +53,59 @@ export default function VerifyEmail() {
   }, [token, verifyMutation]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <CardTitle>
-            {verified ? "Email verified" : "Verifying your email"}
-          </CardTitle>
-          <CardDescription>
-            {verified
-              ? "Your email has been verified. You can now sign in."
-              : "Please wait while we verify your email address."}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="text-center">
-          {error && (
-            <p role="alert" className="text-sm text-destructive mb-4">
-              {error}
-            </p>
-          )}
-          {verified ? (
-            <Button asChild className="w-full">
-              <Link to="/login">Sign in</Link>
-            </Button>
-          ) : error ? (
-            <div className="space-y-2 text-left">
-              <Label htmlFor="resend-email">Email</Label>
-              <Input
-                id="resend-email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                disabled={resendMutation.isPending || !email}
-                onClick={() => resendMutation.mutate({ email })}
-              >
-                {resendMutation.isPending
-                  ? "Sending..."
-                  : "Resend verification email"}
-              </Button>
-            </div>
-          ) : (
-            <Button disabled className="w-full">
-              Verifying...
-            </Button>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+    <AuthCard
+      title={verified ? "Email verified" : "Verifying your email"}
+      description={
+        verified
+          ? "Your email has been verified. You can now sign in."
+          : "Please wait while we verify your email address."
+      }
+    >
+      {error && (
+        <p role="alert" className="text-destructive mb-4 text-sm">
+          {error}
+        </p>
+      )}
+      {verified ? (
+        <Button asChild className="accent-gradient w-full text-white">
+          <Link to="/login">Sign in</Link>
+        </Button>
+      ) : error ? (
+        <div className="space-y-2 text-left">
+          <Label htmlFor="resend-email" style={{ color: "#F5F7FA" }}>Email</Label>
+          <Input
+            id="resend-email"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            style={{
+              backgroundColor: "#1E293B",
+              borderColor: "#334155",
+              color: "#F5F7FA",
+            }}
+          />
+          <Button
+            type="button"
+            className="w-full border"
+            style={{
+              backgroundColor: "transparent",
+              borderColor: "#334155",
+              color: "#F5F7FA",
+            }}
+            disabled={resendMutation.isPending || !email}
+            onClick={() => resendMutation.mutate({ email })}
+          >
+            {resendMutation.isPending
+              ? "Sending..."
+              : "Resend verification email"}
+          </Button>
+        </div>
+      ) : (
+        <Button disabled className="w-full">
+          Verifying...
+        </Button>
+      )}
+    </AuthCard>
   );
 }

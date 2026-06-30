@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
 import { trpc } from "@/lib/trpc.tsx";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { AuthCard } from "@/components/AuthCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -64,87 +58,82 @@ export default function ResetPassword() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <Card className="w-full max-w-sm">
-          <CardHeader className="text-center">
-            <CardTitle>Password updated</CardTitle>
-            <CardDescription>
-              Your password has been reset. You can now sign in with your new
-              password.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center">
-            <Button asChild className="w-full">
-              <Link to="/login">Sign in</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      <AuthCard
+        title="Password updated"
+        description="Your password has been reset. You can now sign in with your new password."
+      >
+        <Button asChild className="accent-gradient w-full text-white">
+          <Link to="/login">Sign in</Link>
+        </Button>
+      </AuthCard>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <CardTitle>New password</CardTitle>
-          <CardDescription>
-            Enter a new password for your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="password">New password</Label>
-              <Input
-                id="password"
-                type="password"
-                autoComplete="new-password"
-                placeholder="••••••••"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-              />
-              <p className="text-xs text-muted-foreground">
-                Must be at least 8 characters
-              </p>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirm-password">Confirm new password</Label>
-              <Input
-                id="confirm-password"
-                type="password"
-                autoComplete="new-password"
-                placeholder="••••••••"
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                required
-              />
-              <p className="text-xs text-muted-foreground">
-                Must be at least 8 characters
-              </p>
-            </div>
-            {error && (
-              <p role="alert" className="text-sm text-destructive">
-                {error}
-              </p>
-            )}
-            <Button
-              type="submit"
-              className="w-full"
-              size="lg"
-              disabled={resetMutation.isPending || !token}
-            >
-              {resetMutation.isPending ? "Resetting..." : "Reset password"}
-            </Button>
-          </form>
-          <p className="mt-6 text-center text-sm">
-            <Link to="/login" className="text-primary hover:underline">
-              Back to sign in
-            </Link>
+    <AuthCard
+      title="New password"
+      description="Enter a new password for your account"
+    >
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="password" style={{ color: "#F5F7FA" }}>New password</Label>
+          <Input
+            id="password"
+            type="password"
+            autoComplete="new-password"
+            placeholder="••••••••"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+            style={{
+              backgroundColor: "#1E293B",
+              borderColor: "#334155",
+              color: "#F5F7FA",
+            }}
+          />
+          <p className="text-xs" style={{ color: "#64748B" }}>
+            Must be at least 8 characters
           </p>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="confirm-password" style={{ color: "#F5F7FA" }}>Confirm new password</Label>
+          <Input
+            id="confirm-password"
+            type="password"
+            autoComplete="new-password"
+            placeholder="••••••••"
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+            required
+            style={{
+              backgroundColor: "#1E293B",
+              borderColor: "#334155",
+              color: "#F5F7FA",
+            }}
+          />
+          <p className="text-xs" style={{ color: "#64748B" }}>
+            Must be at least 8 characters
+          </p>
+        </div>
+        {error && (
+          <p role="alert" className="text-sm text-destructive">
+            {error}
+          </p>
+        )}
+        <Button
+          type="submit"
+          className="accent-gradient w-full text-white"
+          size="lg"
+          disabled={resetMutation.isPending || !token}
+        >
+          {resetMutation.isPending ? "Resetting..." : "Reset password"}
+        </Button>
+      </form>
+      <p className="mt-6 text-center text-sm">
+        <Link to="/login" style={{ color: "#00C9FF" }} className="hover:underline">
+          Back to sign in
+        </Link>
+      </p>
+    </AuthCard>
   );
 }
