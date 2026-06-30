@@ -383,7 +383,7 @@ export default function ResearchPage() {
       </section>
 
       {/* Section 2: Control + Overall Progress + Main Dashboard */}
-      <section className="mx-auto max-w-[1200px] px-4 pb-12 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-[1200px] px-4 pb-0 sm:px-6 lg:px-8">
         {/* Control Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -666,7 +666,7 @@ export default function ResearchPage() {
       </section>
 
       {/* Section 3: Sector Breakdown */}
-      <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-[1200px] px-4 pt-4 pb-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {sectors.map((sector, index) => {
             const IconComponent = SECTOR_ICONS[sector.icon] || Cpu;
