@@ -206,3 +206,64 @@
     background-size: 200% 100%;
   }
 }
+
+/* ============================================================
+   View Transitions (react-router native)
+   Navigations that opt in via `viewTransition` on <Link> are
+   wrapped in document.startViewTransition by react-router.
+   Browsers without support skip the animation gracefully.
+   ============================================================ */
+
+:root {
+  --vt-duration-exit: 150ms;
+  --vt-duration-enter: 210ms;
+}
+
+@keyframes vt-fade {
+  from {
+    filter: blur(3px);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+/* Page-level cross-fade. The page content is captured as `root`;
+   persistent chrome (header/footer) is lifted out below so it stays
+   static. Top-level tabs are lateral navigation, so a cross-fade
+   (not a directional slide) is the correct spatial signal. */
+::view-transition-old(root) {
+  animation: var(--vt-duration-exit) ease-in both vt-fade reverse;
+}
+::view-transition-new(root) {
+  animation: var(--vt-duration-enter) ease-out var(--vt-duration-exit) both
+    vt-fade;
+}
+
+/* Persistent chrome isolation: the sticky navbar and footer keep their
+   own snapshot so they don't fade with the page. Both use
+   backdrop-filter, so hide the old snapshot to avoid a blur flash. */
+::view-transition-group(site-header),
+::view-transition-group(site-footer) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header),
+::view-transition-old(site-footer) {
+  display: none;
+}
+::view-transition-new(site-header),
+::view-transition-new(site-footer) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

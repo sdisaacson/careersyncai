@@ -46,6 +46,7 @@ export default function Footer() {
       style={{
         backgroundColor: "#0B0E14",
         borderTop: "1px solid rgba(148, 163, 184, 0.08)",
+        viewTransitionName: "site-footer",
       }}
     >
       <div

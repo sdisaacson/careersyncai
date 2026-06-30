@@ -60,12 +60,14 @@ export default function Navbar() {
         WebkitBackdropFilter: "blur(16px)",
         borderColor: "rgba(148, 163, 184, 0.08)",
         height: "64px",
+        viewTransitionName: "site-header",
       }}
     >
       <div className="mx-auto flex h-full max-w-[1200px] items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           to="/"
+          viewTransition
           className="flex items-center gap-0 text-xl font-bold tracking-tight"
         >
           <span style={{ color: "#F5F7FA" }}>CareerSync</span>
@@ -78,6 +80,7 @@ export default function Navbar() {
             <Link
               key={link.path}
               to={link.path}
+              viewTransition
               className="relative px-3 py-2 text-sm font-medium transition-colors duration-200"
               style={{
                 color: isActive(link.path) ? "#00C9FF" : "#94A3B8",
@@ -240,6 +243,7 @@ export default function Navbar() {
                   >
                     <Link
                       to={link.path}
+                      viewTransition
                       className="block rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-200"
                       style={{
                         color: isActive(link.path) ? "#00C9FF" : "#94A3B8",
