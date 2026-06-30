@@ -20,6 +20,8 @@ coverage/
 # Logs
 *.log
 .vercel
+# Knowledge graph artifacts (generated locally by graphify)
+graphify-out/
 .worktrees/
 .superpowers/
 docs/
