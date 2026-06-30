@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { Routes, Route } from "react-router";
 import Layout from "./components/Layout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -109,6 +110,7 @@ export default function App() {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Analytics />
     </Layout>
   );
 }
