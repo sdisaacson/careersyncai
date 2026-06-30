@@ -14,6 +14,9 @@ export const env = {
   databaseUrl: required("DATABASE_URL"),
   adminSecretPath: process.env.ADMIN_SECRET_PATH ?? "/admin/login",
   moonshotApiKey: process.env.MOONSHOT_API_KEY ?? "",
+  // AI Gateway can authenticate via Vercel OIDC automatically on Vercel, or via
+  // AI_GATEWAY_API_KEY for local/standalone usage.
+  aiGatewayApiKey: process.env.AI_GATEWAY_API_KEY ?? "",
   stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY ?? "",
   stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",

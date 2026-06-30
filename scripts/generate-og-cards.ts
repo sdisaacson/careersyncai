@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 import sharp from "sharp";
+import "dotenv/config";
+import { generateText } from "ai";
 import {
   ogCards,
   OG_CARD_WIDTH,
@@ -8,6 +10,11 @@ import {
 } from "../contracts/og-cards";
 
 const OUT_DIR = path.resolve(process.cwd(), "public/og-cards");
+
+// Nano Banana Pro multimodal model: images are returned as content parts in
+// result.files (not result.images). Falls back to SVG if generation fails or
+// the environment has no gateway credentials (Vercel OIDC or AI_GATEWAY_API_KEY).
+const IMAGE_MODEL = "google/gemini-3-pro-image";
 
 function escapeXml(str: string): string {
   return str
@@ -73,19 +80,66 @@ function buildSvg(card: (typeof ogCards)[number]): string {
 </svg>`;
 }
 
+async function renderFallbackPng(card: (typeof ogCards)[number]): Promise<Buffer> {
+  const svg = buildSvg(card);
+  return sharp(Buffer.from(svg))
+    .resize(OG_CARD_WIDTH, OG_CARD_HEIGHT)
+    .png()
+    .toBuffer();
+}
+
+async function generateCardPng(
+  card: (typeof ogCards)[number]
+): Promise<Buffer | null> {
+  try {
+    // The Vercel AI SDK automatically uses the AI Gateway for provider/model
+    // strings. On Vercel (or locally after `vercel env pull`) it authenticates
+    // via OIDC; otherwise set AI_GATEWAY_API_KEY in your .env.
+    const result = await generateText({
+      model: IMAGE_MODEL,
+      prompt: card.prompt,
+    });
+
+    if (result.warnings?.length) {
+      console.warn(`[${card.id}] warnings:`, result.warnings);
+    }
+
+    // Nano Banana Pro returns generated images as content parts in result.files.
+    const imageFile = result.files.find(f => f.mediaType?.startsWith("image/"));
+    if (!imageFile) {
+      console.warn(`[${card.id}] No image file returned; falling back to SVG.`);
+      return null;
+    }
+
+    // Ensure the returned image is exactly the right size and format.
+    return sharp(imageFile.uint8Array)
+      .resize(OG_CARD_WIDTH, OG_CARD_HEIGHT, { fit: "fill" })
+      .png()
+      .toBuffer();
+  } catch (err) {
+    console.error(`[${card.id}] Image generation failed:`, err);
+    console.log(`[${card.id}] Falling back to SVG renderer.`);
+    return null;
+  }
+}
+
 async function main() {
   if (!fs.existsSync(OUT_DIR)) {
     fs.mkdirSync(OUT_DIR, { recursive: true });
   }
 
   for (const card of ogCards) {
-    const svg = buildSvg(card);
     const outPath = path.join(OUT_DIR, `card-${card.id}.png`);
-    await sharp(Buffer.from(svg))
-      .resize(OG_CARD_WIDTH, OG_CARD_HEIGHT)
-      .png()
-      .toFile(outPath);
-    console.log(`Generated ${outPath}`);
+    let buffer = await generateCardPng(card);
+
+    if (!buffer) {
+      buffer = await renderFallbackPng(card);
+      console.log(`[${card.id}] Generated ${outPath} (SVG fallback)`);
+    } else {
+      console.log(`[${card.id}] Generated ${outPath} (AI Gateway)`);
+    }
+
+    await fs.promises.writeFile(outPath, buffer);
   }
 }
 
