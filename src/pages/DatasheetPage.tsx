@@ -746,7 +746,7 @@ export default function DatasheetPage() {
     const csv = [
       headers.join(","),
       ...rows.map(r =>
-        r.map(c => `"${String(c).replace(/"/g, '\\"')}"`).join(",")
+        r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")
       ),
     ].join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
